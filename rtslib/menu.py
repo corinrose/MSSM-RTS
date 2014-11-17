@@ -1,4 +1,5 @@
 import pygame, sys
+import rtslib
 
 class menu():
 	def __init__(self):
@@ -8,9 +9,13 @@ class menu():
 		surface.fill([255,0,0])
 		
 	def update(self, events):
+		out = {}
 		for event in events:
 			if event.type == pygame.MOUSEBUTTONDOWN:
 				print "MENU CLUNK"
 			if event.type == pygame.KEYDOWN:
+				print event.key
 				if event.key == pygame.K_RETURN:
-					print "ENTER"
+					out["state"] = "game"
+		
+		return out
