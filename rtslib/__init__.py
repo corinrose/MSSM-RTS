@@ -5,3 +5,5 @@ from tdworld import *
 from ssworld import *
 from menu import *
 from game import *
+from path import *
+from sheet import *

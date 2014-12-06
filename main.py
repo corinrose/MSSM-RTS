@@ -10,6 +10,8 @@ state = "menu"
 Menu = rtslib.menu()
 Game = rtslib.game()
 
+#rtslib.sheet("C:/Users/Andrew/Desktop/blobtex.png", [25,25])
+
 while True:
 	events = pygame.event.get()
 	for event in events:
@@ -26,5 +28,8 @@ while True:
 	
 	if "state" in out:
 		state = out["state"]
+		
+	if "title" in out:
+		pygame.display.set_caption(out["title"])
 	
 	pygame.display.flip()

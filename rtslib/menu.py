@@ -18,4 +18,5 @@ class menu():
 				if event.key == pygame.K_RETURN:
 					out["state"] = "game"
 		
+		out["title"] = "MSSM RTS Menu"
 		return out
