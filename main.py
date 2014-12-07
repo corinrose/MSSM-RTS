@@ -10,6 +10,8 @@ state = "menu"
 Menu = rtslib.menu()
 Game = rtslib.game()
 
+clock = pygame.time.Clock()
+
 while True:
 	events = pygame.event.get()
 	for event in events:
@@ -30,4 +32,5 @@ while True:
 	if "title" in out:
 		pygame.display.set_caption(out["title"])
 	
+	clock.tick(60)
 	pygame.display.flip()

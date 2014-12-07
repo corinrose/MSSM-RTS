@@ -2,7 +2,6 @@ import rtslib, pygame
 
 class game():
 	def __init__(self):
-		self.state = "main"
 		self.ssworld = rtslib.ssworld()
 		self.tdworld = rtslib.tdworld()
 		self.worldFocus = 1

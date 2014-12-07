@@ -9,6 +9,8 @@ class ssworld():
 		self.testpath = path([[30,30],[100,50],[200,150],[250,100],[375, 125]])
 		self.ssentities = []
 		
+		self.f = False
+		
 	def update(self):
 		for ent in self.ssentities:
 			ent.update()
@@ -17,6 +19,8 @@ class ssworld():
 			
 	def spawn(self):
 		self.ssentities.append(ssent(0.0, sheet("resources/stickman.png", [32,32]), self.testpath))
+		self.ssentities[-1].sheet.setFlipped(self.f)
+		self.f = not self.f
 		
 	def draw(self, surface):
 		self.testpath.debugDraw(surface)

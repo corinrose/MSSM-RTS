@@ -11,10 +11,10 @@ class ssent():
 		self.counter = 0
 		
 	def update(self):
-		self.dist+=0.005
+		self.dist+=0.05
 		self.pos = self.path.calcPos(self.dist)
 		self.counter+=1
-		if self.counter == 100:
+		if self.counter == 10:
 			self.sheet.nextImage()
 			self.counter = 0
 		if self.dist > self.path.distRange[1]:
