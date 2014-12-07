@@ -3,14 +3,14 @@ import rtslib
 
 pygame.init()
 
-screen = pygame.display.set_mode([1366,768])
+screen = pygame.display.set_mode([1280,720])
 
 state = "menu"
 
 Menu = rtslib.menu()
 Game = rtslib.game()
 
-#rtslib.sheet("C:/Users/Andrew/Desktop/blobtex.png", [25,25])
+rtslib.sheet("C:/Users/Andrew/Desktop/blobtex.png", [64,64])
 
 while True:
 	events = pygame.event.get()

@@ -1,6 +1,7 @@
 from rtslib.ssent import *
 from rtslib.tdent import *
 from rtslib.path import *
+from rtslib.sheet import *
 
 class ssworld():
 	def __init__(self):
@@ -11,9 +12,11 @@ class ssworld():
 	def update(self):
 		for ent in self.ssentities:
 			ent.update()
+			if ent.remove:
+				self.ssentities.remove(ent)
 			
 	def spawn(self):
-		self.ssentities.append(ssent(0.0, "sheet.png", self.testpath))
+		self.ssentities.append(ssent(0.0, sheet("resources/stickman.png", [32,32]), self.testpath))
 		
 	def draw(self, surface):
 		self.testpath.debugDraw(surface)

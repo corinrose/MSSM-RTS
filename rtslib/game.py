@@ -17,11 +17,13 @@ class game():
 	def update(self, events):
 		out = {}
 		for event in events:
+			if event.type == pygame.KEYDOWN:
+				self.worldFocus = not self.worldFocus
 			if event.type == pygame.MOUSEBUTTONDOWN:
 				if self.worldFocus == 1:
 					self.ssworld.spawn()
 		
 		self.tdworld.update()
 		self.ssworld.update()
-		out["title"] = "MSSM RTS"
+		out["title"] = "MSSM RTS - Battle View: "+str(self.worldFocus) 
 		return out
