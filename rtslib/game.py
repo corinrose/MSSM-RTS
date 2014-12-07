@@ -17,7 +17,7 @@ class game():
 		out = {}
 		for event in events:
 			if event.type == pygame.KEYDOWN:
-				if event.button == pygame.K_SPACE:
+				if event.key == pygame.K_SPACE:
 					self.worldFocus = not self.worldFocus
 					
 		if self.worldFocus == 1:
