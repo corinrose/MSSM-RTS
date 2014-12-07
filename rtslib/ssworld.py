@@ -11,16 +11,17 @@ class ssworld():
 		
 		self.f = False
 		
-	def update(self):
+	def update(self, events):
+		for event in events:
+			if event.type == pygame.MOUSEBUTTONDOWN:
+				self.ssentities.append(ssent(0.0, sheet("resources/stickman.png", [32,32]), self.testpath))
+				self.ssentities[-1].sheet.setFlipped(self.f)
+				self.f = not self.f	
+				
 		for ent in self.ssentities:
 			ent.update()
 			if ent.remove:
 				self.ssentities.remove(ent)
-			
-	def spawn(self):
-		self.ssentities.append(ssent(0.0, sheet("resources/stickman.png", [32,32]), self.testpath))
-		self.ssentities[-1].sheet.setFlipped(self.f)
-		self.f = not self.f
 		
 	def draw(self, surface):
 		self.testpath.debugDraw(surface)
