@@ -10,8 +10,6 @@ state = "menu"
 Menu = rtslib.menu()
 Game = rtslib.game()
 
-rtslib.sheet("C:/Users/Andrew/Desktop/blobtex.png", [64,64])
-
 while True:
 	events = pygame.event.get()
 	for event in events:
