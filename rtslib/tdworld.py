@@ -33,7 +33,7 @@ class tdworld():
 			
 	def spawnWorker(self):
 		# resources -= 10
-		self.entities.append(tdent(200, 200, 400, 400, True, pygame.image.load("resources/selectionMarker.png").convert_alpha(), 0.50, sheet("resources/stickman2.png", [32, 32]))) # worker
+		self.entities.append(tdent(400, 400, 200, 200, True, pygame.image.load("resources/selectionMarker.png").convert_alpha(), 0.50, sheet("resources/stickman.png", [32, 32]))) # worker
 		self.entities[-1].sheet.setFlipped(self.f)
 		self.f = not self.f
 		

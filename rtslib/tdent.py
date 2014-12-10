@@ -1,4 +1,4 @@
-import pygame
+import pygame, math
 from rtslib.sheet import *
 
 class tdent():
@@ -10,31 +10,30 @@ class tdent():
 		self.speed = speed
 		self.sheet = sheet
 		self.sheetCounter = 0
+		self.isMoving = False
 		
 	def draw(self, surface):
 		surface.blit(self.sheet.getImage(), self.pos)
-		self.sheetCounter+=1
-		if self.sheetCounter == 10: # 10 frames a sheet 
-			self.sheet.nextImage()
-			self.sheetCounter = 0
+		if self.isMoving:
+			self.sheetCounter+=1
+			if self.sheetCounter == 10: # 10 frames a sheet 
+				self.sheet.nextImage()
+				self.sheetCounter = 0
 		if self.isSelected:
 			surface.blit(self.selectionMarker, self.pos)
 	
 	def update(self):
-		if self.pos[0] != self.des[0]:
-			if self.pos[0] < self.des[0] < self.pos[0] + self.speed or self.pos[0] + self.speed < self.des[0] < self.pos[0]:
-				self.pos[0] = self.des[0]
-			elif self.pos[0] < self.des[0]:
-				self.pos[0] += self.speed
-			else:
-				self.pos[0] -= self.speed
-		elif self.pos[1] != self.des[1]:
-			if self.pos[1] < self.des[1] < self.pos[1] + self.speed or self.pos[1] + self.speed < self.des[1] < self.pos[1]:
-				self.pos[1] = self.des[1]
-			elif self.pos[1] < self.des[1]:
-				self.pos[1] += self.speed
-			else:
-				self.pos[1] -= self.speed
+		if (self.des[0] - self.pos[0])**2 + (self.des[1] - self.pos[1])**2 > (self.speed)**2:
+			self.isMoving = True 
+			xDis = self.des[0] - self.pos[0]
+			yDis = self.des[1] - self.pos[1]
+			Dis = abs(xDis) + abs(yDis) 
+			self.pos[0] += self.speed*xDis/Dis 
+			self.pos[1] += self.speed*yDis/Dis
+		else:
+			self.isMoving = False 
+			self.pos[0], self.pos[1] = self.des[0], self.des[1]
+			self.sheetCounter = 0
 	
 	def setDes(self, des):
 		self.des[0], self.des[1] = des
