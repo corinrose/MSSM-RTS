@@ -32,5 +32,5 @@ while True:
 	if "title" in out:
 		pygame.display.set_caption(out["title"])
 	
-	clock.tick(60)
+	clock.tick(60) # 60 frames per second?
 	pygame.display.flip()

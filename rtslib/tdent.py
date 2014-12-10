@@ -9,9 +9,14 @@ class tdent():
 		self.selectionMarker = selectionMarker 
 		self.speed = speed
 		self.sheet = sheet
+		self.sheetCounter = 0
 		
 	def draw(self, surface):
 		surface.blit(self.sheet.getImage(), self.pos)
+		self.sheetCounter+=1
+		if self.sheetCounter == 10: # 10 frames a sheet 
+			self.sheet.nextImage()
+			self.sheetCounter = 0
 		if self.isSelected:
 			surface.blit(self.selectionMarker, self.pos)
 	
@@ -33,3 +38,6 @@ class tdent():
 	
 	def setDes(self, des):
 		self.des[0], self.des[1] = des
+		
+	def setSel(self, isSelected):
+		self.isSelected = isSelected
