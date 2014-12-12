@@ -23,7 +23,7 @@ class tdent():
 			surface.blit(self.selectionMarker, self.pos)
 	
 	def update(self):
-		if (self.des[0] - self.pos[0])**2 + (self.des[1] - self.pos[1])**2 > (self.speed)**2:
+		if (self.des[0] - self.pos[0])**2 + (self.des[1] - self.pos[1])**2 > (self.speed)**2: # just go there if close enough
 			self.isMoving = True 
 			xDis = self.des[0] - self.pos[0]
 			yDis = self.des[1] - self.pos[1]

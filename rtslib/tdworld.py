@@ -22,7 +22,7 @@ class tdworld():
 							ent.setSel(True)
 						else:
 							ent.setSel(False)
-				elif event.button == 3: # right-click to send to des
+				elif event.button == 3: # right-click to send to destination
 					for ent in self.entities:
 						if ent.isSelected:
 							ent.setDes(pygame.mouse.get_pos())
