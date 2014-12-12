@@ -10,11 +10,6 @@ class tdworld():
 	def update(self, events):
 	    for event in events:
 			if event.type == pygame.MOUSEBUTTONDOWN:
-<<<<<<< HEAD
-				self.entities.append(tdent(200, 200, 400, 400, 0.5, sheet("resources/stickman.png", [32, 32]))) ### testing purposes
-				self.entities[-1].sheet.setFlipped(self.f)
-				self.f = not self.f	
-=======
 				if event.button == 1: # left-click to select unit
 					for ent in self.entities:
 						if ent.pos[0] < pygame.mouse.get_pos()[0] < ent.pos[0] + ent.sheet.dim[0] and \
@@ -29,7 +24,7 @@ class tdworld():
 			elif event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_w: # s to spawn worker 
 					self.spawnWorker();
->>>>>>> origin/master
+#>>>>>>> origin/master
 	    for ent in self.entities:
 		    ent.update()
 	
