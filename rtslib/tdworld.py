@@ -24,7 +24,6 @@ class tdworld():
 			elif event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_w: # s to spawn worker 
 					self.spawnWorker();
-#>>>>>>> origin/master
 	    for ent in self.entities:
 		    ent.update()
 	
@@ -37,4 +36,5 @@ class tdworld():
 		self.entities.append(tdent(400, 400, 200, 200, True, pygame.image.load("resources/selectionMarker.png").convert_alpha(), 0.50, sheet("resources/stickman.png", [32, 32]))) # worker
 		self.entities[-1].sheet.setFlipped(self.f)
 		self.f = not self.f
+
 		
