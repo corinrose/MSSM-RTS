@@ -7,7 +7,7 @@ class SpritesheetSizeError(Exception):
 class sheet():
 	def __init__(self, image, dimensions):
 		self.filename = image
-		self.image = pygame.image.load(image)
+		self.image = pygame.image.load(image).convert_alpha()
 		self.dim = dimensions
 		if int(float(self.image.get_width())/self.dim[0])!=(float(self.image.get_width())/self.dim[0]) or int(float(self.image.get_height())/self.dim[1])!=(float(self.image.get_height())/self.dim[1]):
 			raise SpritesheetSizeError("Frame size does not divide into sheet size")
