@@ -8,6 +8,7 @@ class ssworld():
 		self.tdentities = []
 		self.testpath = path([[30,30],[100,50],[200,150],[250,100],[375, 125]])
 		self.ssentities = []
+		self.cpos = 0
 		
 	def update(self, events):
 		for event in events:
@@ -20,6 +21,6 @@ class ssworld():
 				self.ssentities.remove(ent)
 		
 	def draw(self, surface):
-		self.testpath.debugDraw(surface)
+		self.testpath.debugDraw(surface, cpos)
 		for ent in self.ssentities:
-			ent.draw(surface)
+			ent.draw(surface, cpos)

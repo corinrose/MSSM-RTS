@@ -26,6 +26,6 @@ class ssent():
 	def distance(pos):
 		return math.sqrt(((pos[0]-self.pos[0])**2)+((pos[1]-self.pos[1])**2))
 		
-	def draw(self, surface):
+	def draw(self, surface, cpos):
 		#pygame.draw.circle(surface, [0,0,255], [int(self.pos[0]),int(self.pos[1])], 3, 0)
-		surface.blit(self.sheet.getImage(), self.pos)
+		surface.blit(self.sheet.getImage(), [self.pos[0]-cpos, self.pos[1]])
