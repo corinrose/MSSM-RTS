@@ -41,5 +41,7 @@ class path():
 		print "\tSegment Percentages: " + str(self.distPercents)
 	
 	def debugDraw(self, surface, cpos):
-		#TODO: Transform points to match camera
-		pygame.draw.lines(surface, (255,0,0), False, self.points, 2)
+		tp = []
+		for point in self.points:
+			tp.append([point[0]-cpos, point[1]])
+		pygame.draw.lines(surface, (255,0,0), False, tp, 2)

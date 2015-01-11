@@ -11,6 +11,7 @@ Menu = rtslib.menu()
 Game = rtslib.game()
 
 clock = pygame.time.Clock()
+pygame.key.set_repeat(5,5)
 
 while True:
 	events = pygame.event.get()

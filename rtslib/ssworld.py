@@ -14,6 +14,11 @@ class ssworld():
 		for event in events:
 			if event.type == pygame.MOUSEBUTTONDOWN:
 				self.ssentities.append(ssent(0.0, sheet("resources/stickman.png", [32,32]), self.testpath))
+			if event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_RIGHT:
+					self.cpos+=5
+				if event.key == pygame.K_LEFT:
+					self.cpos-=5
 				
 		for ent in self.ssentities:
 			ent.update()
@@ -21,6 +26,6 @@ class ssworld():
 				self.ssentities.remove(ent)
 		
 	def draw(self, surface):
-		self.testpath.debugDraw(surface, cpos)
+		self.testpath.debugDraw(surface, self.cpos)
 		for ent in self.ssentities:
-			ent.draw(surface, cpos)
+			ent.draw(surface, self.cpos)
