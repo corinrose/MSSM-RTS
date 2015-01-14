@@ -21,8 +21,8 @@ class tdworld():
 					for ent in self.entities:
 						if ent.isSelected:
 							ent.setDes(pygame.mouse.get_pos())
-			elif event.type == pygame.KEYDOWN:
-				if event.key == pygame.K_w: # s to spawn worker 
+			elif event.type == pygame.KEYUP:
+				if event.key == pygame.K_w: # w to spawn worker 
 					self.spawnWorker();
 	    for ent in self.entities:
 		    ent.update()

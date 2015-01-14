@@ -6,9 +6,10 @@ from rtslib.sheet import *
 class ssworld():
 	def __init__(self):
 		self.tdentities = []
-		self.testpath = path([[30,30],[100,50],[200,150],[250,100],[375, 125]])
+		self.testpath = path([[-50,53],[0,53],[492,165],[690,510],[1005, 585],[1376,348],[1869,260],[2050,260]])
 		self.ssentities = []
 		self.cpos = 0
+		self.testbg = pygame.image.load("resources/testpath.png").convert_alpha()
 		
 	def update(self, events):
 		for event in events:
@@ -18,7 +19,8 @@ class ssworld():
 				if event.key == pygame.K_RIGHT:
 					self.cpos+=5
 				if event.key == pygame.K_LEFT:
-					self.cpos-=5
+					if self.cpos>0:
+						self.cpos-=5
 				
 		for ent in self.ssentities:
 			ent.update()
@@ -26,6 +28,7 @@ class ssworld():
 				self.ssentities.remove(ent)
 		
 	def draw(self, surface):
-		self.testpath.debugDraw(surface, self.cpos)
+		surface.blit(self.testbg, [-self.cpos,0])
+		#self.testpath.debugDraw(surface, self.cpos)
 		for ent in self.ssentities:
 			ent.draw(surface, self.cpos)

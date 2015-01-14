@@ -16,7 +16,7 @@ class game():
 	def update(self, events):
 		out = {}
 		for event in events:
-			if event.type == pygame.KEYDOWN:
+			if event.type == pygame.KEYUP:
 				if event.key == pygame.K_SPACE:
 					self.worldFocus = not self.worldFocus
 					

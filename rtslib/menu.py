@@ -13,7 +13,7 @@ class menu():
 		for event in events:
 			if event.type == pygame.MOUSEBUTTONDOWN:
 				print "MENU CLUNK"
-			if event.type == pygame.KEYDOWN:
+			if event.type == pygame.KEYUP:
 				print event.key
 				if event.key == pygame.K_RETURN:
 					out["state"] = "game"
