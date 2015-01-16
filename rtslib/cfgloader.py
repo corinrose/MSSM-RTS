@@ -38,6 +38,11 @@ def loadCFG(filename):
 			boss["properties"]=sep[2:]
 	cfg["units"]=units
 	cfg["boss"]=boss
+	#Wave definitions
+	wstart = lines.index("<waves>")
+	wend = lines.index("</waves>")
+	wavelines = lines[wstart+1:uend]
+	#units = []
 	#Script definitions
 	sstart = lines.index("<script>")
 	send = lines.index("</script>")
@@ -49,8 +54,10 @@ def loadCFG(filename):
 		script[-1]["command"] = sep[0]
 		if sep[0]=="spawn":
 			arg = sep[1].split("x")
-			script[-1]["id"]=arg[0]
-			script[-1]["quantity"]=arg[1]
+			script[-1]["id"]=int(arg[0])
+			arg2 = arg[1].split("d")
+			script[-1]["quantity"]=int(arg2[0])
+			script[-1]["delay"]=int(arg2[1])
 		if sep[0]=="delay":
 			script[-1]["time"]=sep[1]
 	cfg["script"]=script
