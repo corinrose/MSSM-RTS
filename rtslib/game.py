@@ -27,5 +27,5 @@ class game():
 			self.ssworld.update([])
 			self.tdworld.update(events)
 			
-		out["title"] = "MSSM RTS - Battle View: "+str(self.worldFocus) 
+		out["title"] = "MSSM RTS - "+("Battle View"*self.worldFocus)+("Resource View"*(not self.worldFocus))
 		return out
