@@ -11,6 +11,15 @@ def loadCFG(filename):
 	cfg["desc"]=details[1]
 	cfg["unlocks"]=details[2]
 	cfg["setup"]=details[3]
+	#Path
+	pstart = lines.index("<path>")
+	pend = lines.index("</path>")
+	pointlines = lines[pstart+1:pend]
+	points = []
+	for line in pointlines:
+		sep = line.split(",")
+		points.append([int(sep[0]),int(sep[1])])
+	cfg["pathpoints"]=points
 	#Unit definitions
 	ustart = lines.index("<units>")
 	uend = lines.index("</units>")
