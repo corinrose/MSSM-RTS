@@ -4,7 +4,9 @@ from rtslib.sheet import *
 
 class tdworld():
 	def __init__(self):
-		self.entities = [tdent(400, 400, 200, 200, True, pygame.image.load("resources/selectionMarker.png").convert_alpha(), 0, sheet("resources/TownHall.png", [32, 32]), 1)]
+		self.entities = [tdent(400, 400, 200, 200, \
+							   True, pygame.image.load("resources/selectionMarker.png").convert_alpha(), 0, sheet("resources/TownHall.png", [32, 32]), \
+							   False, "UI SPRITE HERE", 1)]
 		self.f = False # for spritesheet alternating flipping
 		
 	def update(self, events):
@@ -22,13 +24,17 @@ class tdworld():
 						if ent.isSelected:
 							ent.setDes(pygame.mouse.get_pos())
 			elif event.type == pygame.KEYUP: 
-				if event.key == pygame.K_w: # w to spawn worker, should be replace with permanent UI
-					for ent in self.entities:
-						if ent.isSelected:
-							tmp = self 
-							ent.action(tmp)
+				for ent in self.entities:
+					if ent.isSelected:
+						tmp = self 
+						ent.action(tmp, event.key)
 		for ent in self.entities:
 			ent.update()
+			for ent2 in self.entities:
+				if ent2.type == 2 and ent.type == 0:
+					if ent2.pos[0] < ent.pos[0] < ent2.pos[0] + ent2.sheet.dim[0] and \
+					   ent2.pos[1] < ent.pos[1] < ent2.pos[2] + ent2.sheet.dim[1]:
+						# resources += 1
 	
 	def draw(self, surface):
 		for ent in self.entities:
