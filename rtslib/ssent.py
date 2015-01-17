@@ -19,7 +19,7 @@ class ssent():
 		if self.counter == 8:
 			self.sheet.nextImage()
 			self.counter = 0
-		if self.dist < 0:
+		if self.dist < 0 or self.dist > 100:
 			self.remove = True
 		for ent in entities: #basic, really bad combat!
 			if abs(self.dist-ent.dist)<0.05:
