@@ -28,21 +28,34 @@ def loadCFG(filename):
 	boss = {}
 	for line in unitlines:
 		sep = line.split(" ")
-		if sep[0]=="unit":
+		if sep[0] == "unit":
 			units.append({})
-			units[-1]["id"]=int(sep[1])
-			units[-1]["type"]=sep[2]
-			units[-1]["properties"]=sep[3:]
-		if sep[0]=="boss":
-			boss["type"]=sep[1]
-			boss["properties"]=sep[2:]
-	cfg["units"]=units
-	cfg["boss"]=boss
+			units[-1]["id"] = int(sep[1])
+			units[-1]["type"] = sep[2]
+			units[-1]["properties"] = sep[3:]
+		if sep[0] == "boss":
+			boss["type"] = sep[1]
+			boss["properties"] = sep[2:]
+	cfg["units"] = units
+	cfg["boss"] = boss
 	#Wave definitions
 	wstart = lines.index("<waves>")
 	wend = lines.index("</waves>")
-	wavelines = lines[wstart+1:uend]
-	#units = []
+	wavelines = lines[wstart+1:wend]
+	waves = []
+	for line in wavelines:
+		sep=line.split(" ")
+		if sep[0]=="wave":
+			waves.append({})
+			waves[-1]["id"] = sep[1]
+			sep2 = sep[2].split("d")
+			waves[-1]["delay"] = float(sep2[1])
+			patt = sep2[0].split(",")
+			for i in range(0, len(patt)):
+				patt[i] = int(patt[i])
+			waves[-1]["pattern"] = patt
+	print waves
+	cfg["waves"] = waves
 	#Script definitions
 	sstart = lines.index("<script>")
 	send = lines.index("</script>")
@@ -52,13 +65,15 @@ def loadCFG(filename):
 		script.append({})
 		sep = line.split(" ")
 		script[-1]["command"] = sep[0]
-		if sep[0]=="spawn":
+		if sep[0] == "spawn":
 			arg = sep[1].split("x")
-			script[-1]["id"]=int(arg[0])
+			script[-1]["id"] = int(arg[0])
 			arg2 = arg[1].split("d")
-			script[-1]["quantity"]=int(arg2[0])
-			script[-1]["delay"]=int(arg2[1])
-		if sep[0]=="delay":
-			script[-1]["time"]=sep[1]
-	cfg["script"]=script
+			script[-1]["quantity"] = int(arg2[0])
+			script[-1]["delay"] = float(arg2[1])
+		if sep[0]=="spawnwave":
+			script[-1]["id"] = int(sep[1]) 
+		if sep[0] == "delay":
+			script[-1]["time"] = sep[1]
+	cfg["script"] = script
 	return cfg
