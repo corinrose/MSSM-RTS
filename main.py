@@ -13,12 +13,24 @@ Game = rtslib.game()
 clock = pygame.time.Clock()
 pygame.key.set_repeat(5,5)
 
+fullscreen = False
+
 while True:
 	events = pygame.event.get()
 	for event in events:
 		if event.type == pygame.QUIT:
 			sys.exit()
-	
+		if event.type == pygame.KEYUP:
+			if event.key == pygame.K_ESCAPE:
+				if fullscreen:
+					fullscreen = False
+					screen = pygame.display.set_mode([1280,720])
+				else:
+					sys.exit()
+			if event.key == pygame.K_F1:
+				if not fullscreen:
+					fullscreen = True
+					screen = pygame.display.set_mode([1280,720], pygame.FULLSCREEN)
 	out = {}
 	if state == "menu":
 		out = Menu.update(events)

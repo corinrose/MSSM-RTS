@@ -54,7 +54,6 @@ def loadCFG(filename):
 			for i in range(0, len(patt)):
 				patt[i] = int(patt[i])
 			waves[-1]["pattern"] = patt
-	print waves
 	cfg["waves"] = waves
 	#Script definitions
 	sstart = lines.index("<script>")
