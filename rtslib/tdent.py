@@ -13,7 +13,7 @@ class tdent():
 		self.isMoving = False
 		self.isWorking = isWorking
 		self.UIsprite = UIsprite 
-		self.type = type # 0 = worker, 1 = town hall, 2 = resource
+		self.type = type # 0 = worker, 1 = town hall, 2 = barracks
 		
 	def draw(self, surface):
 		surface.blit(self.sheet.getImage(), self.pos)
@@ -50,8 +50,11 @@ class tdent():
 		
 	def action(self, tmp, eventKey):
 		if self.type == 0: 
-			if eventKey == pygame.K_w: # w
-				pass # special worker ability
+			if eventKey == pygame.K_w: 
+				#resources -= 50 
+				tmp.entities.append(tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
+									 False, pygame.image.load("resources/selectionMarker.png").convert_alpha(), 0, sheet("resources/Barracks.png", [320, 320]), \
+									 False, "UI SPRITE HERE", 0))
 		elif self.type == 1:
 			if eventKey == pygame.K_w: # w
 				# resources -= 10
@@ -60,3 +63,10 @@ class tdent():
 									 False, "UI SPRITE HERE", 0)) # worker
 				tmp.entities[-1].sheet.setFlipped(tmp.f)
 				tmp.f = not tmp.f
+		elif self.type == 3:
+			if eventKey == pygame.K_w:
+				pass
+				# resources -= 10
+				# spawn soldier
+
+	

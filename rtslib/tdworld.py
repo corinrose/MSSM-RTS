@@ -5,8 +5,11 @@ from rtslib.sheet import *
 class tdworld():
 	def __init__(self):
 		self.entities = [tdent(400, 400, 200, 200, \
-							   True, pygame.image.load("resources/selectionMarker.png").convert_alpha(), 0, sheet("resources/TownHall.png", [32, 32]), \
-							   False, "UI SPRITE HERE", 1)]
+							   True, pygame.image.load("resources/selectionMarker.png").convert_alpha(), 0, sheet("resources/TownHall.png", [320, 320]), \
+							   False, "UI SPRITE HERE", 1), \
+						tdent(100, 100, 200, 200, \
+							   True, pygame.image.load("resources/selectionMarker.png").convert_alpha(), 0, sheet("resources/Resource.png", [320, 320]), \
+							   False, "UI SPRITE HERE", 2)]
 		self.f = False # for spritesheet alternating flipping
 		
 	def update(self, events):
@@ -33,7 +36,7 @@ class tdworld():
 			for ent2 in self.entities:
 				if ent2.type == 2 and ent.type == 0:
 					if ent2.pos[0] < ent.pos[0] < ent2.pos[0] + ent2.sheet.dim[0] and \
-					   ent2.pos[1] < ent.pos[1] < ent2.pos[2] + ent2.sheet.dim[1]:
+					   ent2.pos[1] < ent.pos[1] < ent2.pos[1] + ent2.sheet.dim[1]:
 						ent.isWorking = True 
 						ent2.action(self, "placeholder")
 	
