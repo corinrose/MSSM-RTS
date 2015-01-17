@@ -56,7 +56,7 @@ class tdent():
 			if eventKey == pygame.K_w: # w
 				# resources -= 10
 				tmp.entities.append(tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
-									 True, pygame.image.load("resources/selectionMarker.png").convert_alpha(), 0.50, sheet("resources/stickman.png", [32, 32]), \
+									 False, pygame.image.load("resources/selectionMarker.png").convert_alpha(), 0.50, sheet("resources/stickman.png", [32, 32]), \
 									 False, "UI SPRITE HERE", 0)) # worker
 				tmp.entities[-1].sheet.setFlipped(tmp.f)
 				tmp.f = not tmp.f

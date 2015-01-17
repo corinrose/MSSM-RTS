@@ -26,15 +26,16 @@ class tdworld():
 			elif event.type == pygame.KEYUP: 
 				for ent in self.entities:
 					if ent.isSelected:
-						tmp = self 
-						ent.action(tmp, event.key)
+						ent.action(self, event.key)
 		for ent in self.entities:
 			ent.update()
+			ent.working = False
 			for ent2 in self.entities:
 				if ent2.type == 2 and ent.type == 0:
 					if ent2.pos[0] < ent.pos[0] < ent2.pos[0] + ent2.sheet.dim[0] and \
 					   ent2.pos[1] < ent.pos[1] < ent2.pos[2] + ent2.sheet.dim[1]:
-						# resources += 1
+						ent.isWorking = True 
+						ent2.action(self, "placeholder")
 	
 	def draw(self, surface):
 		for ent in self.entities:
