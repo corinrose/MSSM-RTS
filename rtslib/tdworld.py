@@ -6,11 +6,21 @@ class tdworld():
 	def __init__(self):
 		self.entities = [tdent(400, 400, 200, 200, \
 							   True, pygame.image.load("resources/selectionMarker.png").convert_alpha(), 0, sheet("resources/TownHall.png", [320, 320]), \
-							   "UI SPRITE HERE", 1), \
+							   pygame.image.load("resources/GameBottomBar.png").convert_alpha(), 1), \
 						tdent(50, 50, 200, 200, \
-							   True, pygame.image.load("resources/selectionMarker.png").convert_alpha(), 0, sheet("resources/Resource.png", [320, 320]), \
-							   "UI SPRITE HERE", 2)]
+							   False, pygame.image.load("resources/selectionMarker.png").convert_alpha(), 0, sheet("resources/Resource.png", [320, 320]), \
+							   pygame.image.load("resources/GameBottomBar.png").convert_alpha(), 2)]
 		self.f = False # for spritesheet alternating flipping
+		self.pop = 0.0
+		self.food = 100.0
+		self.wood = 0.0
+		self.gold = 0.0
+		self.topBarText = pygame.font.SysFont("monospace", 14) # text for top bar
+		self.UIelements = [[pygame.image.load("resources/GameTopBar.png").convert_alpha(), (0,0)], \
+						   [self.topBarText.render(     "pop: " + str(round(self.pop)) + \
+													"    food: " + str(round(self.food)) + \
+													"    wood: " + str(round(self.wood)) + \
+													"    gold: " + str(round(self.gold)), 1, (255,255,0)), (10, 10)]]
 		
 	def update(self, events):
 		for event in events:
@@ -30,17 +40,24 @@ class tdworld():
 				for ent in self.entities:
 					if ent.isSelected:
 						ent.action(self, event.key)
-		for ent in self.entities: # handles resource gathering
+		for ent in self.entities: 
 			ent.update(self)
-			for ent2 in self.entities:
+			for ent2 in self.entities: # handles resource gathering
 				if ent2.type == 2 and ent.type == 0:
 					if ent2.pos[0] < ent.pos[0] < ent2.pos[0] + ent2.sheet.dim[0] and \
 					   ent2.pos[1] < ent.pos[1] < ent2.pos[1] + ent2.sheet.dim[1]:
-						pass 
-						# ent2.action(self, "placeholder") # how are resources going to be handled?
+						ent2.action(self, "w") 
+		self.gold += self.pop * 10.0 / 360.0 # 10 gold per min per pop - gold trickle based on population
+		self.UIelements = [[pygame.image.load("resources/GameTopBar.png").convert_alpha(), (0,0)], \
+						   [self.topBarText.render(     "pop: " + str(round(self.pop)) + \
+													"    food: " + str(round(self.food)) + \
+													"    wood: " + str(round(self.wood)) + \
+													"    gold: " + str(round(self.gold)), 1, (255,255,0)), (10, 10)]]
 	
 	def draw(self, surface):
 		for ent in self.entities:
 			ent.draw(surface)
+		for element in self.UIelements:
+			surface.blit(element[0], element[1])
 
 		

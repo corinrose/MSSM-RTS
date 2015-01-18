@@ -12,7 +12,7 @@ class tdent():
 		self.sheetCounter = 0
 		self.isMoving = False
 		self.UIsprite = UIsprite 
-		self.type = type # 0 = worker, 1 = town hall, 2 = barracks
+		self.type = type # 0 = worker, 1 = town hall, 2 = resource, 3 = barracks
 		self.timer = -1 # positive means working, 0 is currently doing a task, -1 is finished
 		self.command = pygame.K_z # z
 		
@@ -28,14 +28,14 @@ class tdent():
 		if self.isSelected:
 			surface.blit(self.selectionMarker, self.pos)
 			surface.blit(self.selectionMarker, self.des) # should get a different destination marker
-			# surface.blit(self.UIsprite, ) # display UI
+			surface.blit(self.UIsprite, (1280-self.UIsprite.get_width(), 720-self.UIsprite.get_height())) # display UI
 	
-	def update(self, tmp):
+	def update(self, world):
 		if self.timer < 0:
 			self.move()
 		else:
 			if self.timer == 0:
-				self.action(tmp, self.command)
+				self.action(world, self.command)
 			self.timer -= 1
 	
 	def setDes(self, des):
@@ -43,27 +43,6 @@ class tdent():
 		
 	def setSel(self, isSelected):
 		self.isSelected = isSelected
-		
-	def action(self, tmp, eventKey):
-		if self.type == 0: 
-			if eventKey == pygame.K_w:
-				if self.timer == 0:
-					self.spawnBarracks(tmp)
-				else:
-					self.timer = 1*60
-		elif self.type == 1:
-			if eventKey == pygame.K_w: 
-				if self.timer == 0:
-					self.spawnWorker(tmp)
-				else:
-					self.timer = 1*60
-		elif self.type == 3:
-			if eventKey == pygame.K_w:
-				if self.timer == 0:
-					self.spawnSoldier(tmp)
-				else:
-					self.timer = 1*60
-		self.command = eventKey
 		
 	def move(self):
 		if (self.des[0] - self.pos[0])**2 + (self.des[1] - self.pos[1])**2 > (self.speed)**2: # just go there if close enough
@@ -80,23 +59,59 @@ class tdent():
 				
 ############################################################################ 
 
-	def spawnWorker(self, tmp):
-		if self.timer == 0:
-			# resources -= 10
-			tmp.entities.append(tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
-								False, pygame.image.load("resources/selectionMarker.png").convert_alpha(), 0.50, sheet("resources/stickman.png", [32, 32]), \
-								"UI SPRITE HERE", 0)) # worker
-			tmp.entities[-1].sheet.setFlipped(tmp.f)
-			tmp.f = not tmp.f
+	def action(self, world, eventKey):
+		if self.type == 0: 
+			if eventKey == pygame.K_w:
+				if self.timer == 0:
+					self.spawnBarracks(world)
+				else:
+					self.timer = 1*60
+		elif self.type == 1:
+			if eventKey == pygame.K_w: 
+				if self.timer == 0:
+					self.spawnWorker(world)
+				else:
+					self.timer = 1*60
+		elif self.type == 2:
+			if eventKey == "w": # w for wood
+				self.addWood(world)
+		elif self.type == 3:
+			if eventKey == pygame.K_w:
+				if self.timer == 0:
+					self.spawnSoldier(world)
+				else:
+					self.timer = 1*60
+			elif eventKey == pygame.K_e:
+				if self.timer == 0:
+					self.upgradeWorker(world)
+				else:
+					self.timer = 5*60
+		self.command = eventKey
+		
+	def addWood(self, world):
+		world.wood += 1.0
+		
+	def spawnWorker(self, world):
+		world.pop += 1
+		world.food -= 10
+		world.entities.append(tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
+							False, pygame.image.load("resources/selectionMarker.png").convert_alpha(), 0.50, sheet("resources/stickman.png", [32, 32]), \
+							pygame.image.load("resources/GameBottomBar.png").convert_alpha(), 0)) # worker
+		world.entities[-1].sheet.setFlipped(world.f)
+		world.f = not world.f
 	
-	def spawnBarracks(self, tmp):
-		if self.timer == 0:
-			#resources -= 50 
-			tmp.entities.append(tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
-								 False, pygame.image.load("resources/selectionMarker.png").convert_alpha(), 0, sheet("resources/Barracks.png", [320, 320]), \
-								 "UI SPRITE HERE", 0))
+	def spawnBarracks(self, world):
+		world.wood -= 20
+		world.entities.append(tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
+							 False, pygame.image.load("resources/selectionMarker.png").convert_alpha(), 0, sheet("resources/Barracks.png", [320, 320]), \
+							 pygame.image.load("resources/GameBottomBar.png").convert_alpha(), 0))
 	
-	def spawnSoldier(self, tmp):
-		pass
-		# resources -= 10
-		# spawn soldier
+	def spawnSoldier(self, world):
+		world.food -= 10 
+		world.wood -= 10
+		# spawn Soldier
+	
+	def upgradeWorker(self, world):
+		pass 
+		# resources -= 100
+		# upgrade worker
