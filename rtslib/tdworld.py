@@ -5,10 +5,10 @@ from rtslib.sheet import *
 class tdworld():
 	def __init__(self):
 		self.entities = [tdent(400, 400, 200, 200, \
-							   True, pygame.image.load("resources/selectionMarker.png").convert_alpha(), 0, sheet("resources/TownHall.png", [320, 320]), \
+							   True, 0, sheet("resources/TownHall.png", [320, 320]), \
 							   pygame.image.load("resources/GameBottomBar.png").convert_alpha(), 1), \
 						tdent(50, 50, 200, 200, \
-							   False, pygame.image.load("resources/selectionMarker.png").convert_alpha(), 0, sheet("resources/Resource.png", [320, 320]), \
+							   False, 0, sheet("resources/Resource.png", [320, 320]), \
 							   pygame.image.load("resources/GameBottomBar.png").convert_alpha(), 2)]
 		self.f = False # for spritesheet alternating flipping
 		self.pop = 0.0
@@ -16,11 +16,7 @@ class tdworld():
 		self.wood = 0.0
 		self.gold = 0.0
 		self.topBarText = pygame.font.SysFont("monospace", 14) # text for top bar
-		self.UIelements = [[pygame.image.load("resources/GameTopBar.png").convert_alpha(), (0,0)], \
-						   [self.topBarText.render(     "pop: " + str(round(self.pop)) + \
-													"    food: " + str(round(self.food)) + \
-													"    wood: " + str(round(self.wood)) + \
-													"    gold: " + str(round(self.gold)), 1, (255,255,0)), (10, 10)]]
+		self.UIelements = [] # defined in update
 		
 	def update(self, events):
 		for event in events:

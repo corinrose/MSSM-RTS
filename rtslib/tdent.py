@@ -2,11 +2,10 @@ import pygame, math
 from rtslib.sheet import *
 
 class tdent():
-	def __init__(self, posX, posY, desX, desY, isSelected, selectionMarker, speed, sheet, UIsprite, type):
+	def __init__(self, posX, posY, desX, desY, isSelected, speed, sheet, UIsprite, type):
 		self.pos = [posX, posY]
 		self.des = [desX, desY]
 		self.isSelected = isSelected 
-		self.selectionMarker = selectionMarker 
 		self.speed = speed
 		self.sheet = sheet
 		self.sheetCounter = 0
@@ -26,8 +25,8 @@ class tdent():
 				self.sheet.nextImage()
 				self.sheetCounter = 0
 		if self.isSelected:
-			surface.blit(self.selectionMarker, self.pos)
-			surface.blit(self.selectionMarker, self.des) # should get a different destination marker
+			self.drawSelectionMarker(surface)
+			self.drawDestinationMarker(surface)
 			surface.blit(self.UIsprite, (1280-self.UIsprite.get_width(), 720-self.UIsprite.get_height())) # display UI
 	
 	def update(self, world):
@@ -56,6 +55,16 @@ class tdent():
 			self.isMoving = False 
 			self.pos[0], self.pos[1] = self.des[0], self.des[1]
 			self.sheetCounter = 0
+			
+	def drawSelectionMarker(self, surface): # RED
+		pygame.draw.polygon(surface, (255, 0, 0), [self.pos, \
+									  [self.pos[0] + self.sheet.dim[0], self.pos[1]], \
+									  [self.pos[0] + self.sheet.dim[0], self.pos[1] + self.sheet.dim[1]], \
+									  [self.pos[0], self.pos[1] + self.sheet.dim[1]]], \
+									  2)
+								
+	def drawDestinationMarker(self, surface): # RED
+		pygame.draw.circle(surface, (255, 0, 0), self.des, 6, 2)
 				
 ############################################################################ 
 
@@ -95,7 +104,7 @@ class tdent():
 		world.pop += 1
 		world.food -= 10
 		world.entities.append(tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
-							False, pygame.image.load("resources/selectionMarker.png").convert_alpha(), 0.50, sheet("resources/stickman.png", [32, 32]), \
+							False, 0.50, sheet("resources/stickman.png", [32, 32]), \
 							pygame.image.load("resources/GameBottomBar.png").convert_alpha(), 0)) # worker
 		world.entities[-1].sheet.setFlipped(world.f)
 		world.f = not world.f
@@ -103,7 +112,7 @@ class tdent():
 	def spawnBarracks(self, world):
 		world.wood -= 20
 		world.entities.append(tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
-							 False, pygame.image.load("resources/selectionMarker.png").convert_alpha(), 0, sheet("resources/Barracks.png", [320, 320]), \
+							 False, 0, sheet("resources/Barracks.png", [320, 320]), \
 							 pygame.image.load("resources/GameBottomBar.png").convert_alpha(), 0))
 	
 	def spawnSoldier(self, world):
