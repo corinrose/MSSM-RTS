@@ -2,7 +2,7 @@ import pygame, math
 from rtslib.sheet import *
 
 class tdent():
-	def __init__(self, posX, posY, desX, desY, isSelected, speed, sheet, UIsprite, type):
+	def __init__(self, posX, posY, desX, desY, isSelected, speed, sheet, UIdesc, type):
 		self.pos = [posX, posY]
 		self.des = [desX, desY]
 		self.isSelected = isSelected 
@@ -10,10 +10,13 @@ class tdent():
 		self.sheet = sheet
 		self.sheetCounter = 0
 		self.isMoving = False
-		self.UIsprite = UIsprite 
 		self.type = type # 0 = worker, 1 = town hall, 2 = resource, 3 = barracks
 		self.timer = -1 # positive means working, 0 is currently doing a task, -1 is finished
 		self.command = pygame.K_z # z
+		
+		tmp = pygame.image.load("resources/GameBottomBar.png").convert_alpha()
+		self.UIsprite = [[tmp, (1280 - tmp.get_width(), 720 - tmp.get_height())], \
+						 [pygame.font.SysFont("monospace", 14).render(UIdesc, 1, (255, 255, 0)), (1280 - tmp.get_width() + 10, 720 - tmp.get_height() + 10)]]
 		
 	def draw(self, surface):
 		surface.blit(self.sheet.getImage(), self.pos)
@@ -27,7 +30,8 @@ class tdent():
 		if self.isSelected:
 			self.drawSelectionMarker(surface)
 			self.drawDestinationMarker(surface)
-			surface.blit(self.UIsprite, (1280-self.UIsprite.get_width(), 720-self.UIsprite.get_height())) # display UI
+			for sprite in self.UIsprite:
+				surface.blit(sprite[0], sprite[1]) # display unit-specific UI
 	
 	def update(self, world):
 		if self.timer < 0:
@@ -105,7 +109,7 @@ class tdent():
 		world.food -= 10
 		world.entities.append(tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
 							False, 0.50, sheet("resources/stickman.png", [32, 32]), \
-							pygame.image.load("resources/GameBottomBar.png").convert_alpha(), 0)) # worker
+							"worker", 0)) 
 		world.entities[-1].sheet.setFlipped(world.f)
 		world.f = not world.f
 	
@@ -113,7 +117,7 @@ class tdent():
 		world.wood -= 20
 		world.entities.append(tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
 							 False, 0, sheet("resources/Barracks.png", [320, 320]), \
-							 pygame.image.load("resources/GameBottomBar.png").convert_alpha(), 0))
+							"barracks", 0))
 	
 	def spawnSoldier(self, world):
 		world.food -= 10 

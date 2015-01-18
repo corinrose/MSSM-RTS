@@ -6,10 +6,10 @@ class tdworld():
 	def __init__(self):
 		self.entities = [tdent(400, 400, 200, 200, \
 							   True, 0, sheet("resources/TownHall.png", [320, 320]), \
-							   pygame.image.load("resources/GameBottomBar.png").convert_alpha(), 1), \
+							   "Town Hall", 1), \
 						tdent(50, 50, 200, 200, \
 							   False, 0, sheet("resources/Resource.png", [320, 320]), \
-							   pygame.image.load("resources/GameBottomBar.png").convert_alpha(), 2)]
+							   "Wood even though the image file says Resource", 2)]
 		self.f = False # for spritesheet alternating flipping
 		self.pop = 0.0
 		self.food = 100.0
