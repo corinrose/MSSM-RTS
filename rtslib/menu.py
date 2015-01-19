@@ -4,19 +4,28 @@ import rtslib
 class menu():
 	def __init__(self):
 		self.state = "main"
-		self.testbutton = rtslib.button([50,50], self.playTestLevel)
+		self.mainbuttons = [rtslib.button("play", [50,50], self.clickHandler),
+							rtslib.button("exit", [50,250], self.clickHandler)]
 		
 	def draw(self, surface):
 		surface.fill([255,0,0])
-		self.testbutton.draw(surface)
+		for b in self.mainbuttons:
+			b.draw(surface)
 		
-	def playTestLevel(self):
-		self.state = "level"
+	def clickHandler(self, button):
+		if self.state == "main":
+			if button == "play":
+				state = "fileselect"
+			if button == "exit":
+				self.state="exit"
 		
 	def update(self, events):
 		out = {}
-		self.testbutton.update(events)
+		for b in self.mainbuttons:
+			b.update(events)
 		if self.state == "level":
 			out["state"] = "game"
+		if self.state == "exit":
+			out["exit"]="now"
 		out["title"] = "MSSM RTS Menu"
 		return out

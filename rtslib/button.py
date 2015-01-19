@@ -6,7 +6,8 @@ def generateBasicButton(size, color):
 	return s
 
 class button():
-	def __init__(self, pos, onClick, images=[generateBasicButton([75,25],[200,200,200]),generateBasicButton([75,25],[150,150,150]),generateBasicButton([75,25],[100,100,100])]):
+	def __init__(self, name, pos, onClick, images=[generateBasicButton([75,25],[200,200,200]),generateBasicButton([75,25],[150,150,150]),generateBasicButton([75,25],[100,100,100])]):
+		self.name = name
 		self.pos = pos
 		self.onClick = onClick
 		self.images = images #First = idle, second = mouseover, third = mousedown
@@ -21,7 +22,7 @@ class button():
 			elif event.type == pygame.MOUSEBUTTONUP:
 				if self.checkInside(pygame.mouse.get_pos()):
 					self.state = 0
-					self.onClick()
+					self.onClick(self.name)
 		if self.checkInside(pygame.mouse.get_pos()):
 			if self.state!=2:
 				self.state = 1

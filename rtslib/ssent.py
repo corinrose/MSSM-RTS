@@ -15,8 +15,8 @@ class ssent():
 		
 	def update(self, entities):
 		self.dist+=self.speed
-		for ent in entities: #basic, really bad combat!
-			if abs(self.dist-ent.dist)<self.width+ent.width and self.dist!=ent.dist:
+		for ent in entities:
+			if abs(self.dist-ent.dist) < self.width+ent.width and self.dist!=ent.dist:
 				self.dist-=self.speed
 		self.pos = self.path.calcPos(self.dist)
 		self.counter+=1

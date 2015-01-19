@@ -44,6 +44,9 @@ while True:
 		
 	if "title" in out:
 		pygame.display.set_caption(out["title"])
+		
+	if "exit" in out:
+		sys.exit()
 	
 	clock.tick(60) # 60 frames per second???
 	pygame.display.flip()

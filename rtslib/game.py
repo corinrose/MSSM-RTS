@@ -2,7 +2,7 @@ import rtslib, pygame
 
 class game():
 	def __init__(self):
-		self.ssworld = rtslib.ssworld()
+		self.ssworld = rtslib.ssworld("resources/otherlevel")
 		self.tdworld = rtslib.tdworld()
 		self.worldFocus = 1
 		
