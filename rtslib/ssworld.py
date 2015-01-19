@@ -30,7 +30,7 @@ class ssworld():
 		#Handle events
 		for event in events:
 			if event.type == pygame.MOUSEBUTTONDOWN:
-				self.ssentities.append(ssent(0.0, 0.015, 0.3, sheet("resources/goodstick.png", [32,32]), self.path, True))
+				self.ssentities.append(ssent(0.0, 0.015, 0.3, sheet("resources/Knight.png", [36,36]), self.path, True))
 			if event.type == pygame.KEYDOWN:
 				#Camera movement
 				if event.key == pygame.K_RIGHT:

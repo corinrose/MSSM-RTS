@@ -34,4 +34,4 @@ class ssent():
 		
 	def draw(self, surface, cpos):
 		#pygame.draw.circle(surface, [0,0,255], [int(self.pos[0]),int(self.pos[1])], 3, 0)
-		surface.blit(self.sheet.getImage(), [self.pos[0]-cpos-(self.sheet.dim[0]/2), self.pos[1]-(self.sheet.dim[1]/2)])
+		surface.blit(self.sheet.getImage(), [self.pos[0]-cpos-(self.sheet.dim[0]/2), self.pos[1]-self.sheet.dim[1]])

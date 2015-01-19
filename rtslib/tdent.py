@@ -154,7 +154,7 @@ class tdent():
 			world.wood -= wood
 			world.gold -= gold
 			world.entities.append(tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
-								 False, 1.0, sheet("resources/Knight.png", [40, 40]), \
+								 False, 1.0, sheet("resources/Knight.png", [36, 36]), \
 								"Knight. Move to gate to transfer to battle.", 4.1))
 			world.entities[-1].sheet.setFlipped(world.f)
 			world.f = not world.f

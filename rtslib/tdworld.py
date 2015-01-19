@@ -13,7 +13,7 @@ class tdworld():
 						tdent(500, 270, 270, 270, \
 							   False, 0, sheet("resources/Gold.png", [80,80]), \
 							   "Gold", 2.3)]
-		self.f = False # for spritesheet alternating flipping
+		self.f = False # for spritesheet alternating flipping... Why are you still doing this?
 		self.poplimit = 10.0
 		self.pop = 0.0
 		self.food = 100.0
@@ -21,7 +21,7 @@ class tdworld():
 		self.gold = 0.0
 		self.topBarText = pygame.font.SysFont("monospace", 14) # text for top bar
 		self.UIelements = [] # defined in update
-		self.background = pygame.image.load("resources/resourceViewBG.png").convert_alpha()
+		self.background = pygame.image.load("resources/GameGrass.png").convert_alpha()
 		
 	def update(self, events):
 		for event in events:
