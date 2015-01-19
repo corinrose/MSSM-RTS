@@ -15,7 +15,7 @@ class menu():
 	def clickHandler(self, button):
 		if self.state == "main":
 			if button == "play":
-				state = "fileselect"
+				self.state = "level"
 			if button == "exit":
 				self.state="exit"
 		
