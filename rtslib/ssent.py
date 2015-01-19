@@ -1,9 +1,10 @@
 import pygame
 
 class ssent():
-	def __init__(self, dist, speed, sheet, path, team):
+	def __init__(self, dist, speed, width, sheet, path, team):
 		self.dist = dist
 		self.speed = speed
+		self.width = width
 		self.sheet = sheet
 		self.path = path
 		self.pos = self.path.calcPos(self.dist)
@@ -14,6 +15,9 @@ class ssent():
 		
 	def update(self, entities):
 		self.dist+=self.speed
+		for ent in entities: #basic, really bad combat!
+			if abs(self.dist-ent.dist)<self.width+ent.width and self.dist!=ent.dist:
+				self.dist-=self.speed
 		self.pos = self.path.calcPos(self.dist)
 		self.counter+=1
 		if self.counter == 8:
@@ -21,10 +25,6 @@ class ssent():
 			self.counter = 0
 		if self.dist < 0 or self.dist > 100:
 			self.remove = True
-		for ent in entities: #basic, really bad combat!
-			if abs(self.dist-ent.dist)<0.05:
-				if self.team!=ent.team:
-					self.remove = True
 		
 	def pathDistance(dist):
 		return abs(self.dist - dist)

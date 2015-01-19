@@ -30,7 +30,7 @@ class ssworld():
 		#Handle events
 		for event in events:
 			if event.type == pygame.MOUSEBUTTONDOWN:
-				self.ssentities.append(ssent(0.0, 0.015, sheet("resources/goodstick.png", [32,32]), self.path, True))
+				self.ssentities.append(ssent(0.0, 0.015, 0.3, sheet("resources/goodstick.png", [32,32]), self.path, True))
 			if event.type == pygame.KEYDOWN:
 				#Camera movement
 				if event.key == pygame.K_RIGHT:
@@ -61,7 +61,7 @@ class ssworld():
 			if self.script[self.currentop]["command"] == "spawn" or self.script[self.currentop]["command"] == "spawnwave": #Spawning enemies, or waiting between spawns in a "wave"
 				if self.currentwavespawned < len(self.spawnqueue):
 					if self.scripttimer == 0:
-						self.ssentities.append(ssent(100.0, -float(self.units[self.spawnqueue[self.currentwavespawned]]["properties"][1]), sheet("resources/badstick.png", [32,32]), self.path, False))
+						self.ssentities.append(ssent(100.0, -float(self.units[self.spawnqueue[self.currentwavespawned]]["properties"][1]), 0.3, sheet("resources/badstick.png", [32,32]), self.path, False))
 						self.currentwavespawned += 1
 						if self.script[self.currentop]["command"] == "spawn":
 							self.scripttimer = self.script[self.currentop]["delay"]*60
