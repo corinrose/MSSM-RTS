@@ -4,12 +4,15 @@ from rtslib.sheet import *
 
 class tdworld():
 	def __init__(self):
-		self.entities = [tdent(400, 400, 200, 200, \
-							   True, 0, sheet("resources/TownHall.png", [320, 320]), \
-							   "Town Hall", 1), \
+		self.entities = [tdent(400, 400, 400, 400, \
+							   True, 0, sheet("resources/TownHall.png", [160,160]), \
+							   "Town Hall. Press w to train worker : 10 food, 1 pop", 1), \
 						tdent(50, 50, 200, 200, \
-							   False, 0, sheet("resources/Resource.png", [320, 320]), \
-							   "Wood even though the image file says Resource", 2)]
+							   False, 0, sheet("resources/Wood.png", [80,80]), \
+							   "Wood", 2.2), \
+						tdent(500, 270, 270, 270, \
+							   False, 0, sheet("resources/Gold.png", [80,80]), \
+							   "Gold", 2.3)]
 		self.f = False # for spritesheet alternating flipping
 		self.pop = 0.0
 		self.food = 100.0
@@ -17,6 +20,7 @@ class tdworld():
 		self.gold = 0.0
 		self.topBarText = pygame.font.SysFont("monospace", 14) # text for top bar
 		self.UIelements = [] # defined in update
+		self.background = pygame.image.load("resources/resourceViewBG.png").convert_alpha()
 		
 	def update(self, events):
 		for event in events:
@@ -39,11 +43,11 @@ class tdworld():
 		for ent in self.entities: 
 			ent.update(self)
 			for ent2 in self.entities: # handles resource gathering
-				if ent2.type == 2 and ent.type == 0:
+				if round(ent2.type) == 2 and ent.type == 0: # type for resource 2.1-2.3
 					if ent2.pos[0] < ent.pos[0] < ent2.pos[0] + ent2.sheet.dim[0] and \
 					   ent2.pos[1] < ent.pos[1] < ent2.pos[1] + ent2.sheet.dim[1]:
-						ent2.action(self, "w") 
-		self.gold += self.pop * 10.0 / 360.0 # 10 gold per min per pop - gold trickle based on population
+						ent2.action(self, "")  # how to determine resource type
+		self.gold += self.pop * 10.0 / 3600.0 # 10 gold per min per pop - gold trickle based on population
 		self.UIelements = [[pygame.image.load("resources/GameTopBar.png").convert_alpha(), (0,0)], \
 						   [self.topBarText.render(     "pop: " + str(round(self.pop)) + \
 													"    food: " + str(round(self.food)) + \
@@ -51,6 +55,7 @@ class tdworld():
 													"    gold: " + str(round(self.gold)), 1, (255,255,0)), (10, 10)]]
 	
 	def draw(self, surface):
+		surface.blit(self.background, (0,0))# draw background
 		for ent in self.entities:
 			ent.draw(surface)
 		for element in self.UIelements:

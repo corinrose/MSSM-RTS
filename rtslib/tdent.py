@@ -16,7 +16,7 @@ class tdent():
 		
 		tmp = pygame.image.load("resources/GameBottomBar.png").convert_alpha()
 		self.UIsprite = [[tmp, (1280 - tmp.get_width(), 720 - tmp.get_height())], \
-						 [pygame.font.SysFont("monospace", 14).render(UIdesc, 1, (255, 255, 0)), (1280 - tmp.get_width() + 10, 720 - tmp.get_height() + 10)]]
+						 [pygame.font.SysFont("monospace", 14).render(UIdesc, 1, (255, 255, 0)), (1280 - tmp.get_width() + 15, 720 - tmp.get_height() + 15)]]
 		
 	def draw(self, surface):
 		surface.blit(self.sheet.getImage(), self.pos)
@@ -85,9 +85,14 @@ class tdent():
 					self.spawnWorker(world)
 				else:
 					self.timer = 1*60
-		elif self.type == 2:
-			if eventKey == "w": # w for wood
-				self.addWood(world)
+		elif round(self.type) == 2:
+			if eventKey == "":
+				if self.type == 2.1:  # 2.1 is food
+					self.addFood(world)
+				elif self.type == 2.2: # 2.2 is food
+					self.addWood(world)
+				elif self.type == 2.3: # 2.3 is food
+					self.addGold(world)
 		elif self.type == 3:
 			if eventKey == pygame.K_w:
 				if self.timer == 0:
@@ -101,28 +106,37 @@ class tdent():
 					self.timer = 5*60
 		self.command = eventKey
 		
+	def addFood(self, world):
+		world.food += 1/60.0
 	def addWood(self, world):
-		world.wood += 1.0
+		world.wood += 1/60.0
+	def addGold(self, world):
+		world.gold += 1/60.0
 		
 	def spawnWorker(self, world):
 		world.pop += 1
 		world.food -= 10
 		world.entities.append(tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
-							False, 0.50, sheet("resources/stickman.png", [32, 32]), \
-							"worker", 0)) 
+							False, 1.0, sheet("resources/worker.png", [40, 40]), \
+							"Worker. Press w to build barracks : 10 wood.", 0)) 
 		world.entities[-1].sheet.setFlipped(world.f)
 		world.f = not world.f
 	
 	def spawnBarracks(self, world):
 		world.wood -= 20
 		world.entities.append(tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
-							 False, 0, sheet("resources/Barracks.png", [320, 320]), \
-							"barracks", 0))
+							 False, 0, sheet("resources/Barracks.png", [160, 160]), \
+							"Barracks. Press w to train soldier : 10 food, 10 wood, 1 pop.", 3))
 	
 	def spawnSoldier(self, world):
+		world.pop += 1
 		world.food -= 10 
 		world.wood -= 10
-		# spawn Soldier
+		world.entities.append(tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
+							 False, 1.0, sheet("resources/Knight.png", [40, 40]), \
+							"Knight. Move to gate to transfer to battle.", 4.1))
+		world.entities[-1].sheet.setFlipped(world.f)
+		world.f = not world.f
 	
 	def upgradeWorker(self, world):
 		pass 
