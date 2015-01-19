@@ -7,7 +7,7 @@ class game():
 		self.worldFocus = 1
 		
 	def draw(self, surface):
-		surface.fill([0,255,0])
+		# surface.fill([0,255,0]) 
 		if self.worldFocus == 0:
 			self.tdworld.draw(surface)
 		if self.worldFocus == 1:

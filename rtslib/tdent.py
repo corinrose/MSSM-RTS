@@ -114,29 +114,50 @@ class tdent():
 		world.gold += 1/60.0
 		
 	def spawnWorker(self, world):
-		world.pop += 1
-		world.food -= 10
-		world.entities.append(tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
-							False, 1.0, sheet("resources/worker.png", [40, 40]), \
-							"Worker. Press w to build barracks : 10 wood.", 0)) 
-		world.entities[-1].sheet.setFlipped(world.f)
-		world.f = not world.f
+		pop = 1
+		food = 10
+		wood = 0
+		gold = 0
+		if world.pop + pop <= world.poplimit and world.food >= food and world.wood >= wood and world.gold >= gold:
+			world.pop += pop
+			world.food -= food
+			world.wood -= wood
+			world.gold -= gold
+			world.entities.append(tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
+								False, 1.0, sheet("resources/worker.png", [40, 40]), \
+								"Worker. Press w to build barracks : 10 wood.", 0)) 
+			world.entities[-1].sheet.setFlipped(world.f)
+			world.f = not world.f
 	
 	def spawnBarracks(self, world):
-		world.wood -= 20
-		world.entities.append(tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
-							 False, 0, sheet("resources/Barracks.png", [160, 160]), \
-							"Barracks. Press w to train soldier : 10 food, 10 wood, 1 pop.", 3))
+		pop = 0
+		food = 0
+		wood = 20
+		gold = 0
+		if world.pop + pop <= world.poplimit and world.food >= food and world.wood >= wood and world.gold >= gold:
+			world.pop += pop
+			world.food -= food
+			world.wood -= wood
+			world.gold -= gold
+			world.entities.append(tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
+								False, 0, sheet("resources/Barracks.png", [160, 160]), \
+								"Barracks. Press w to train soldier : 10 food, 10 wood, 1 pop.", 3))
 	
 	def spawnSoldier(self, world):
-		world.pop += 1
-		world.food -= 10 
-		world.wood -= 10
-		world.entities.append(tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
-							 False, 1.0, sheet("resources/Knight.png", [40, 40]), \
-							"Knight. Move to gate to transfer to battle.", 4.1))
-		world.entities[-1].sheet.setFlipped(world.f)
-		world.f = not world.f
+		pop = 1
+		food = 10
+		wood = 10
+		gold = 0
+		if world.pop + pop <= world.poplimit and world.food >= food and world.wood >= wood and world.gold >= gold:
+			world.pop += pop
+			world.food -= food
+			world.wood -= wood
+			world.gold -= gold
+			world.entities.append(tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
+								 False, 1.0, sheet("resources/Knight.png", [40, 40]), \
+								"Knight. Move to gate to transfer to battle.", 4.1))
+			world.entities[-1].sheet.setFlipped(world.f)
+			world.f = not world.f
 	
 	def upgradeWorker(self, world):
 		pass 

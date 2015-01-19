@@ -14,6 +14,7 @@ class tdworld():
 							   False, 0, sheet("resources/Gold.png", [80,80]), \
 							   "Gold", 2.3)]
 		self.f = False # for spritesheet alternating flipping
+		self.poplimit = 10.0
 		self.pop = 0.0
 		self.food = 100.0
 		self.wood = 0.0
@@ -43,22 +44,22 @@ class tdworld():
 		for ent in self.entities: 
 			ent.update(self)
 			for ent2 in self.entities: # handles resource gathering
-				if round(ent2.type) == 2 and ent.type == 0: # type for resource 2.1-2.3
+				if round(ent2.type) == 2 and ent.type == 0:
 					if ent2.pos[0] < ent.pos[0] < ent2.pos[0] + ent2.sheet.dim[0] and \
 					   ent2.pos[1] < ent.pos[1] < ent2.pos[1] + ent2.sheet.dim[1]:
-						ent2.action(self, "")  # how to determine resource type
+						ent2.action(self, "")  
 		self.gold += self.pop * 10.0 / 3600.0 # 10 gold per min per pop - gold trickle based on population
 		self.UIelements = [[pygame.image.load("resources/GameTopBar.png").convert_alpha(), (0,0)], \
 						   [self.topBarText.render(     "pop: " + str(round(self.pop)) + \
 													"    food: " + str(round(self.food)) + \
 													"    wood: " + str(round(self.wood)) + \
-													"    gold: " + str(round(self.gold)), 1, (255,255,0)), (10, 10)]]
+													"    gold: " + str(round(self.gold)), 1, (255,255,0)), (10, 10)]] # update resource UI
 	
 	def draw(self, surface):
-		surface.blit(self.background, (0,0))# draw background
-		for ent in self.entities:
+		surface.blit(self.background, (0,0)) # draw background
+		for ent in self.entities: # draw units, buildings, resources
 			ent.draw(surface)
-		for element in self.UIelements:
+		for element in self.UIelements: # draw UI
 			surface.blit(element[0], element[1])
 
 		
