@@ -10,7 +10,7 @@ class tdent():
 		self.sheet = sheet
 		self.sheetCounter = 0
 		self.isMoving = False
-		self.type = type # 0 = worker, 1 = town hall, 2 = resource, 3 = barracks
+		self.type = type # 0 = worker, 1 = town hall, 2.1-2.3= resource, 3 = barracks, 4.1 = knight
 		self.timer = -1 # positive means working, 0 is currently doing a task, -1 is finished
 		self.command = pygame.K_z # z
 		
@@ -27,6 +27,10 @@ class tdent():
 			if self.sheetCounter == 10: # 10 frames a sheet 
 				self.sheet.nextImage()
 				self.sheetCounter = 0
+		if self.des[0] < self.pos[0] and self.type in [0, 4.1]: # list of all moving units
+			self.sheet.setFlipped(True)
+		else:
+			self.sheet.setFlipped(False)
 		if self.isSelected:
 			self.drawSelectionMarker(surface)
 			self.drawDestinationMarker(surface)
@@ -126,8 +130,6 @@ class tdent():
 			world.entities.append(tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
 								False, 1.0, sheet("resources/worker.png", [40, 40]), \
 								"Worker. Press w to build barracks : 10 wood.", 0)) 
-			world.entities[-1].sheet.setFlipped(world.f)
-			world.f = not world.f
 	
 	def spawnBarracks(self, world):
 		pop = 0
@@ -156,8 +158,6 @@ class tdent():
 			world.entities.append(tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
 								 False, 1.0, sheet("resources/Knight.png", [36, 36]), \
 								"Knight. Move to gate to transfer to battle.", 4.1))
-			world.entities[-1].sheet.setFlipped(world.f)
-			world.f = not world.f
 	
 	def upgradeWorker(self, world):
 		pass 
