@@ -11,6 +11,7 @@ class tdent():
 		self.sheetCounter = 0
 		self.isMoving = False
 		self.type = type # 0 = worker, 1 = town hall, 2.1-2.3= resource, 3 = barracks, 4.1 = knight
+		self.taskTime = 0 
 		self.timer = -1 # positive means working, 0 is currently doing a task, -1 is finished
 		self.command = pygame.K_z # z
 		
@@ -20,9 +21,7 @@ class tdent():
 		
 	def draw(self, surface):
 		surface.blit(self.sheet.getImage(), self.pos)
-		if self.timer > 0:
-			pass # display universal working symbol
-		elif self.isMoving:
+		if self.isMoving:
 			self.sheetCounter+=1
 			if self.sheetCounter == 10: # 10 frames a sheet 
 				self.sheet.nextImage()
@@ -36,6 +35,7 @@ class tdent():
 			self.drawDestinationMarker(surface)
 			for sprite in self.UIsprite:
 				surface.blit(sprite[0], sprite[1]) # display unit-specific UI
+		self.drawWorkingMarker(surface)
 	
 	def update(self, world):
 		if self.timer < 0:
@@ -70,6 +70,12 @@ class tdent():
 									  [self.pos[0] + self.sheet.dim[0], self.pos[1] + self.sheet.dim[1]], \
 									  [self.pos[0], self.pos[1] + self.sheet.dim[1]]], \
 									  2)
+									  
+	def drawWorkingMarker(self, surface): # YELLOW
+		if self.taskTime != 0 and self.timer >= 0:
+			pygame.draw.polygon(surface, (255, 255, 0), [[self.pos[0], self.pos[1] + 6], \
+										  [self.pos[0] + ((float(self.taskTime) - float(self.timer))/float(self.taskTime))*self.sheet.dim[0], self.pos[1] + 6]], \
+										  3)
 								
 	def drawDestinationMarker(self, surface): # RED
 		pygame.draw.circle(surface, (255, 0, 0), self.des, 6, 2)
@@ -82,13 +88,13 @@ class tdent():
 				if self.timer == 0:
 					self.spawnBarracks(world)
 				else:
-					self.timer = 1*60
+					self.taskTime = 1*60
 		elif self.type == 1:
 			if eventKey == pygame.K_w: 
 				if self.timer == 0:
 					self.spawnWorker(world)
 				else:
-					self.timer = 1*60
+					self.taskTime = 1*60
 		elif round(self.type) == 2:
 			if eventKey == "":
 				if self.type == 2.1:  # 2.1 is food
@@ -102,12 +108,14 @@ class tdent():
 				if self.timer == 0:
 					self.spawnSoldier(world)
 				else:
-					self.timer = 1*60
+					self.taskTime = 1*60
 			elif eventKey == pygame.K_e:
 				if self.timer == 0:
 					self.upgradeWorker(world)
 				else:
-					self.timer = 5*60
+					self.taskTime = 5*60
+		if self.timer != 0:
+			self.timer = self.taskTime 
 		self.command = eventKey
 		
 	def addFood(self, world):
