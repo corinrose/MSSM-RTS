@@ -9,6 +9,9 @@ class menu():
 							pygame.image.load("resources/ButtonMouseClick.png").convert_alpha()
 							]
 		self.mainbg = pygame.image.load("resources/mainmenubg.png").convert_alpha()
+		self.fileselectbg = pygame.image.load("resources/fileselectbg.png").convert_alpha()
+		self.creditsbg = pygame.image.load("resources/creditsbg.png").convert_alpha()
+		
 		self.mainbuttons = [rtslib.button("play", [100,325], self.clickHandler, self.menubuttonset, "resources/Deutsch.ttf", "Play"),
 							rtslib.button("settings", [100,405], self.clickHandler, self.menubuttonset, "resources/Deutsch.ttf", "Settings"),
 							rtslib.button("credits", [100,485], self.clickHandler, self.menubuttonset, "resources/Deutsch.ttf", "Credits"),
@@ -32,7 +35,7 @@ class menu():
 			for b in self.mainbuttons:
 				b.draw(surface)
 		elif self.state == "fileselect":
-			surface.blit(self.mainbg, [0,0]) #change to a different bg
+			surface.blit(self.fileselectbg, [0,0]) #change to a different bg
 			for b in self.fileselectbuttons:
 				b.draw(surface)
 		elif self.state == "settings":
@@ -40,7 +43,7 @@ class menu():
 			for b in self.settingsbuttons:
 				b.draw(surface)
 		elif self.state == "credits":
-			surface.blit(self.mainbg, [0,0]) #change to a different bg
+			surface.blit(self.creditsbg, [0,0]) #change to a different bg
 			for b in self.creditsbuttons:
 				b.draw(surface)
 		
