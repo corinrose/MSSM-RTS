@@ -1,7 +1,8 @@
 import pygame
 
 class ssent():
-	def __init__(self, dist, speed, width, sheet, path, team, health, attack):
+	def __init__(self, id, dist, speed, width, sheet, path, team, health, attack):
+		self.id = id
 		self.dist = dist
 		self.speed = speed
 		self.width = width
@@ -15,23 +16,36 @@ class ssent():
 		self.maxhealth = health
 		self.health = health
 		self.attack = attack
+		if self.attack["style"]=="ranged":
+			self.attacktimer = self.attack["rate"]*60
 		
 	def update(self, entities):
-		self.dist+=self.speed
-		for ent in entities:
-			if abs(self.dist-ent.dist) < self.width+ent.width and self.dist!=ent.dist:
-				self.dist-=self.speed
-				if self.team != ent.team:
-					ent.health-=self.attack["power"]
-		self.pos = self.path.calcPos(self.dist)
-		self.counter+=1
-		if self.counter == 8:
-			self.sheet.nextImage()
-			self.counter = 0
-		if self.dist < 0 or self.dist > 100:
-			self.remove = True
 		if self.health <= 0:
-			self.remove = True
+				self.remove = True
+		else:
+			self.dist+=self.speed
+			for ent in entities:
+				if abs(self.dist-ent.dist) < self.width+ent.width and self.dist!=ent.dist:
+					self.dist-=self.speed
+					if self.attack["style"] == "melee":
+						if self.team != ent.team:
+							ent.health-=self.attack["power"]
+			self.pos = self.path.calcPos(self.dist)
+			self.counter+=1
+			if self.counter == 8:
+				self.sheet.nextImage()
+				self.counter = 0
+			if self.dist < 0 or self.dist > 100:
+				self.remove = True
+			if self.attack["style"]=="ranged": #{"style":"ranged", "power":10, "range":100, "rate":5}
+				self.attacktimer -= 1
+				if self.attacktimer <= 0:
+					for ent in entities:
+						if ent.team != self.team:
+							if self.distance(ent.pos) < self.attack["range"]:
+								self.attacktimer = self.attack["rate"]*60
+								#Spawn projectile
+								break
 		
 	def pathDistance(dist):
 		return abs(self.dist - dist)

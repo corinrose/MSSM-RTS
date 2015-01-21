@@ -15,7 +15,7 @@ class tdent():
 		self.timer = -1 # positive means working, 0 is currently doing a task, -1 is finished
 		self.command = pygame.K_z # z
 		
-		tmp = pygame.image.load("resources/GameBottomBar.png").convert_alpha()
+		tmp = pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha() #This might not be the best way to do this, as each entity owning a copy of this image might get expensive, but I don't know
 		self.UIsprite = [[tmp, (1280 - tmp.get_width(), 720 - tmp.get_height())], \
 						 [pygame.font.SysFont("monospace", 14).render(UIdesc, 1, (255, 255, 0)), (1280 - tmp.get_width() + 15, 720 - tmp.get_height() + 15)]]
 		

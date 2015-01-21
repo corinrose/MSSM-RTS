@@ -10,6 +10,7 @@ class ssworld():
 	def __init__(self, folder="resources/testlevel"):
 		self.tdentities = []
 		self.ssentities = []
+		self.cid = 0
 		self.cpos = 0
 		self.location = folder
 		self.cfg = loadCFG(self.location+"/config.cfg")
@@ -28,12 +29,14 @@ class ssworld():
 		
 		self.testattack = {"style":"melee", "power":0.05}
 		self.testattack2 = {"style":"melee", "power":1}
+		self.testattack3 = {"style":"ranged", "power":10, "range":100, "rate":5}
 		
 	def update(self, events):
 		#Handle events
 		for event in events:
 			if event.type == pygame.MOUSEBUTTONDOWN:
-				self.ssentities.append(ssent(0.0, 0.015, 0.3, sheet("resources/Knight.png", [36,36]), self.path, True, 100, self.testattack2))
+				self.ssentities.append(ssent(self.cid, 0.0, 0.015, 0.3, sheet("resources/Knight.png", [36,36]), self.path, True, 100, self.testattack2))
+				self.cid += 1
 			if event.type == pygame.KEYDOWN:
 				#Camera movement
 				if event.key == pygame.K_RIGHT:
@@ -64,7 +67,8 @@ class ssworld():
 			if self.script[self.currentop]["command"] == "spawn" or self.script[self.currentop]["command"] == "spawnwave": #Spawning enemies, or waiting between spawns in a "wave"
 				if self.currentwavespawned < len(self.spawnqueue):
 					if self.scripttimer == 0:
-						self.ssentities.append(ssent(100.0, -float(self.units[self.spawnqueue[self.currentwavespawned]]["properties"][1]), 0.3, sheet("resources/badstick.png", [32,32]), self.path, False, float(self.units[self.spawnqueue[self.currentwavespawned]]["properties"][0]), self.testattack))
+						self.ssentities.append(ssent(self.cid, 100.0, -float(self.units[self.spawnqueue[self.currentwavespawned]]["properties"][1]), 0.3, sheet("resources/badstick.png", [32,32]), self.path, False, float(self.units[self.spawnqueue[self.currentwavespawned]]["properties"][0]), self.testattack))
+						self.cid += 1
 						self.currentwavespawned += 1
 						if self.script[self.currentop]["command"] == "spawn":
 							self.scripttimer = self.script[self.currentop]["delay"]*60

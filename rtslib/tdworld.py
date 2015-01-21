@@ -62,11 +62,11 @@ class tdworld():
 					ent2.pos[0] -= ent2.speed*xDis/Dis 
 					ent2.pos[1] -= ent2.speed*yDis/Dis
 		self.gold += self.pop * 10.0 / 3600.0 # 10 gold per min per pop - gold trickle based on population
-		self.UIelements = [[pygame.image.load("resources/GameTopBar.png").convert_alpha(), (0,0)], \
+		self.UIelements = [[pygame.image.load("resources/ui/GameTopBar.png").convert_alpha(), (0,0)], \
 						   [self.topBarText.render(     "pop: " + str(int(self.pop)) + \
 													"    food: " + str(int(self.food)) + \
 													"    wood: " + str(int(self.wood)) + \
-													"    gold: " + str(int(self.gold)), 1, (255,255,0)), (10, 10)]] # update resource UI
+													"    gold: " + str(int(self.gold)), 1, (255,255,0)), (10, 10)]] # update resource UI #You should cache a copy of the base image so you don't have to constantly reload the file!
 	
 	def draw(self, surface):
 		surface.blit(self.background, (0,0)) # draw background
