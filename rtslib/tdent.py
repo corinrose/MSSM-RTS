@@ -89,6 +89,11 @@ class tdent():
 					self.spawnBarracks(world)
 				else:
 					self.taskTime = 1*60
+			elif eventKey == pygame.K_e:
+				if self.timer == 0:
+					self.spawnMill(world)
+				else:
+					self.timer == 1*60
 		elif self.type == 1:
 			if eventKey == pygame.K_w: 
 				if self.timer == 0:
@@ -139,6 +144,20 @@ class tdent():
 								False, 1.0, sheet("resources/worker.png", [40, 40]), \
 								"Worker. Press w to build barracks : 10 wood.", 0)) 
 	
+	def spawnMill(self, world):
+		pop = 0
+		food = 0
+		wood = 20
+		gold = 0
+		if world.pop + pop <= world.poplimit and world.food >= food and world.wood >= wood and world.gold >= gold:
+			world.pop += pop
+			world.food -= food
+			world.wood -= wood
+			world.gold -= gold
+			world.entities.insert(0, tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
+								False, 0, sheet("resources/Food.png", [160, 160]), \
+								"Mill. For food.", 2.1))
+		
 	def spawnBarracks(self, world):
 		pop = 0
 		food = 0
@@ -149,7 +168,7 @@ class tdent():
 			world.food -= food
 			world.wood -= wood
 			world.gold -= gold
-			world.entities.append(tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
+			world.entities.insert(0, tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
 								False, 0, sheet("resources/Barracks.png", [160, 160]), \
 								"Barracks. Press w to train soldier : 10 food, 10 wood, 1 pop.", 3))
 	
