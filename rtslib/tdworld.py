@@ -44,10 +44,24 @@ class tdworld():
 		for ent in self.entities: 
 			ent.update(self)
 			for ent2 in self.entities: # handles resource gathering
-				if round(ent2.type) == 2 and ent.type == 0:
+				if ent.type == 0 and round(ent2.type) == 2:
 					if ent2.pos[0] < ent.pos[0] < ent2.pos[0] + ent2.sheet.dim[0] and \
 					   ent2.pos[1] < ent.pos[1] < ent2.pos[1] + ent2.sheet.dim[1]:
-						ent2.action(self, "")  
+						ent2.action(self, "") 
+				if (ent.pos[0] - ent2.pos[0])**2 + (ent.pos[1] - ent2.pos[1])**2 > 0 and \
+				      (ent.pos[0] - ent2.pos[0])**2 + (ent.pos[1] - ent2.pos[1])**2 < 20**2: # built-in proximity limit  # handles collision
+					tmp0 = ent.pos[0]
+					tmp1 = ent.pos[1]
+					xDis = ent2.pos[0] - ent.pos[0]
+					yDis = ent2.pos[1] - ent.pos[1]
+					Dis = abs(xDis) + abs(yDis) 
+					ent.pos[0] -= ent.speed*xDis/Dis 
+					ent.pos[1] -= ent.speed*yDis/Dis
+					xDis = tmp0 - ent2.pos[0]
+					yDis = tmp1 - ent2.pos[1]
+					Dis = abs(xDis) + abs(yDis) 
+					ent2.pos[0] -= ent2.speed*xDis/Dis 
+					ent2.pos[1] -= ent2.speed*yDis/Dis
 		self.gold += self.pop * 10.0 / 3600.0 # 10 gold per min per pop - gold trickle based on population
 		self.UIelements = [[pygame.image.load("resources/GameTopBar.png").convert_alpha(), (0,0)], \
 						   [self.topBarText.render(     "pop: " + str(int(self.pop)) + \
