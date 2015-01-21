@@ -13,7 +13,6 @@ class tdworld():
 						tdent(500, 270, 270, 270, \
 							   False, 0, sheet("resources/Gold.png", [80,80]), \
 							   "Gold", 2.3)]
-		self.f = False # for spritesheet alternating flipping... Why are you still doing this?
 		self.poplimit = 10.0
 		self.pop = 0.0
 		self.food = 100.0
