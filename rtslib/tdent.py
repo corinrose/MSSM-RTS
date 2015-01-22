@@ -14,10 +14,7 @@ class tdent():
 		self.taskTime = 0 
 		self.timer = -1 # positive means working, 0 is currently doing a task, -1 is finished
 		self.command = pygame.K_z # z
-		
-		tmp = pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha() #This might not be the best way to do this, as each entity owning a copy of this image might get expensive, but I don't know
-		self.UIsprite = [[tmp, (1280 - tmp.get_width(), 720 - tmp.get_height())], \
-						 [pygame.font.SysFont("monospace", 14).render(UIdesc, 1, (255, 255, 0)), (1280 - tmp.get_width() + 15, 720 - tmp.get_height() + 15)]]
+		self.UIsprite = []pygame.font.SysFont("monospace", 14).render(UIdesc, 1, (255, 255, 0)), (1280 - tmp.get_width() + 15, 720 - tmp.get_height() + 15)]
 		
 	def draw(self, surface):
 		surface.blit(self.sheet.getImage(), self.pos)
@@ -33,8 +30,7 @@ class tdent():
 		if self.isSelected:
 			self.drawSelectionMarker(surface)
 			self.drawDestinationMarker(surface)
-			for sprite in self.UIsprite:
-				surface.blit(sprite[0], sprite[1]) # display unit-specific UI
+			surface.blit(sprite[0], sprite[1]) # display unit-specific UI text
 		self.drawWorkingMarker(surface)
 	
 	def update(self, world):
@@ -142,7 +138,7 @@ class tdent():
 			world.gold -= gold
 			world.entities.append(tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
 								False, 1.0, sheet("resources/worker.png", [40, 40]), \
-								"Worker. Press w to build barracks : 10 wood.", 0)) 
+								"Worker. Press w to build barracks : 20 wood. Press e to build mill.", 0)) 
 	
 	def spawnMill(self, world):
 		pop = 0

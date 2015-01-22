@@ -19,7 +19,8 @@ class tdworld():
 		self.wood = 0.0
 		self.gold = 0.0
 		self.topBarText = pygame.font.SysFont("monospace", 14) # text for top bar
-		self.UIelements = [] # defined in update
+		self.UIelements = [[pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha(), (1280 - pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha().get_width(), 720 - pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha().get_height())], \
+						   [pygame.image.load("resources/ui/GameTopBar.png").convert_alpha(), (0,0)], []] # defined in update
 		self.background = pygame.image.load("resources/GameGrass.png").convert_alpha()
 		
 	def update(self, events):
@@ -42,8 +43,8 @@ class tdworld():
 						ent.action(self, event.key)
 		for ent in self.entities: 
 			ent.update(self)
-			for ent2 in self.entities: # handles resource gathering
-				if ent.type == 0 and round(ent2.type) == 2:
+			for ent2 in self.entities: 
+				if ent.type == 0 and round(ent2.type) == 2: # handles resource gathering
 					if ent2.pos[0] < ent.pos[0] < ent2.pos[0] + ent2.sheet.dim[0] and \
 					   ent2.pos[1] < ent.pos[1] < ent2.pos[1] + ent2.sheet.dim[1]:
 						ent2.action(self, "") 
@@ -62,17 +63,18 @@ class tdworld():
 					ent2.pos[0] -= ent2.speed*xDis/Dis 
 					ent2.pos[1] -= ent2.speed*yDis/Dis
 		self.gold += self.pop * 10.0 / 3600.0 # 10 gold per min per pop - gold trickle based on population
-		self.UIelements = [[pygame.image.load("resources/ui/GameTopBar.png").convert_alpha(), (0,0)], \
-						   [self.topBarText.render(     "pop: " + str(int(self.pop)) + \
+		self.UIelements[2] = [self.topBarText.render(     "pop: " + str(int(self.pop)) + \
 													"    food: " + str(int(self.food)) + \
 													"    wood: " + str(int(self.wood)) + \
-													"    gold: " + str(int(self.gold)), 1, (255,255,0)), (10, 10)]] # update resource UI #You should cache a copy of the base image so you don't have to constantly reload the file!
+													"    gold: " + str(int(self.gold)), 1, (255,255,0)), (10, 10)] # update resource UI
 	
 	def draw(self, surface):
 		surface.blit(self.background, (0,0)) # draw background
 		for ent in self.entities: # draw units, buildings, resources
+			if ent.isSelected: # blits unit UI bar 
+				surface.blit(self.UIelements[0][0], self.UIelements[0][1])
 			ent.draw(surface)
-		for element in self.UIelements: # draw UI
-			surface.blit(element[0], element[1])
+		for i in range(1, len(self.UIelements)): # draw general UI (0 is unit UI)
+			surface.blit(self.UIelements[i][0], self.UIelements[i][1])
 
 		
