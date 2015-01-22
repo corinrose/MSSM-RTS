@@ -30,8 +30,10 @@ class tdent():
 		if self.isSelected:
 			self.drawSelectionMarker(surface)
 			self.drawDestinationMarker(surface)
-			surface.blit(self.UIsprite[0], self.UIsprite[1]) # display unit-specific UI text
 		self.drawWorkingMarker(surface)
+		
+	def drawUIText(self, surface):
+		surface.blit(self.UIsprite[0], self.UIsprite[1]) # display unit-specific UI text
 	
 	def update(self, world):
 		if self.timer < 0:
@@ -89,7 +91,7 @@ class tdent():
 				if self.timer == 0:
 					self.spawnMill(world)
 				else:
-					self.timer == 1*60
+					self.taskTime = 1*60
 		elif self.type == 1:
 			if eventKey == pygame.K_w: 
 				if self.timer == 0:

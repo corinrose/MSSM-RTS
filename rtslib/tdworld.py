@@ -16,7 +16,7 @@ class tdworld():
 		self.poplimit = 10.0
 		self.pop = 0.0
 		self.food = 100.0
-		self.wood = 0.0
+		self.wood = 50.0
 		self.gold = 0.0
 		self.topBarText = pygame.font.SysFont("monospace", 14) # text for top bar
 		self.UIelements = [[pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha(), (1280 - pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha().get_width(), 720 - pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha().get_height())], \
@@ -63,7 +63,7 @@ class tdworld():
 					ent2.pos[0] -= ent2.speed*xDis/Dis 
 					ent2.pos[1] -= ent2.speed*yDis/Dis
 		self.gold += self.pop * 10.0 / 3600.0 # 10 gold per min per pop - gold trickle based on population
-		self.UIelements[2] = [self.topBarText.render(     "pop: " + str(int(self.pop)) + \
+		self.UIelements[2] = [self.topBarText.render(     "pop: " + str(int(self.pop)) + "/" + str(int(self.poplimit)) + \
 													"    food: " + str(int(self.food)) + \
 													"    wood: " + str(int(self.wood)) + \
 													"    gold: " + str(int(self.gold)), 1, (255,255,0)), (10, 10)] # update resource UI
@@ -71,9 +71,10 @@ class tdworld():
 	def draw(self, surface):
 		surface.blit(self.background, (0,0)) # draw background
 		for ent in self.entities: # draw units, buildings, resources
-			if ent.isSelected: # blits unit UI bar 
-				surface.blit(self.UIelements[0][0], self.UIelements[0][1])
 			ent.draw(surface)
+			if ent.isSelected: # blits unit UI bar + text
+				surface.blit(self.UIelements[0][0], self.UIelements[0][1])
+				ent.drawUIText(surface)
 		for i in range(1, len(self.UIelements)): # draw general UI (0 is unit UI)
 			surface.blit(self.UIelements[i][0], self.UIelements[i][1])
 
