@@ -3,6 +3,9 @@ import rtslib
 
 pygame.init()
 
+icon = pygame.image.load("resources/icon.png")
+pygame.display.set_icon(icon)
+pygame.display.set_caption("Save Our City")
 screen = pygame.display.set_mode([1280,720])
 
 state = "menu"

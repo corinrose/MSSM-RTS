@@ -1,4 +1,5 @@
 import pygame
+from rtslib.projectile import *
 
 class ssent():
 	def __init__(self, id, dist, speed, width, sheet, path, team, health, attack):
@@ -19,7 +20,7 @@ class ssent():
 		if self.attack["style"]=="ranged":
 			self.attacktimer = self.attack["rate"]*60
 		
-	def update(self, entities):
+	def update(self, world, entities):
 		if self.health <= 0:
 				self.remove = True
 		else:
@@ -44,13 +45,13 @@ class ssent():
 						if ent.team != self.team:
 							if self.distance(ent.pos) < self.attack["range"]:
 								self.attacktimer = self.attack["rate"]*60
-								#Spawn projectile
+								world.projectiles.append(projectile(self.pos, 10, pygame.image.load("resources/arrow.png"), ent, {})) #(self, pos, speed, image, target, properties)
 								break
 		
-	def pathDistance(dist):
+	def pathDistance(self, dist):
 		return abs(self.dist - dist)
 		
-	def distance(pos):
+	def distance(self, pos):
 		return math.sqrt(((pos[0]-self.pos[0])**2)+((pos[1]-self.pos[1])**2))
 		
 	def draw(self, surface, cpos):
@@ -59,3 +60,6 @@ class ssent():
 		if self.health!=self.maxhealth:
 			pygame.draw.rect(surface, [255,0,0], [self.pos[0]-((self.sheet.dim[0])/2)-cpos, self.pos[1]-self.sheet.dim[1]-5-2, self.sheet.dim[0], 5], 0) 
 			pygame.draw.rect(surface, [0,255,0], [self.pos[0]-((self.sheet.dim[0])/2)-cpos, self.pos[1]-self.sheet.dim[1]-5-2, self.sheet.dim[0]*(self.health/self.maxhealth), 5], 0) 
+			
+	def predictFuture(self, timeahead):
+		return self.path.calcPos(self.dist+(timeahead*self.speed))

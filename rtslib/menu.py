@@ -88,5 +88,5 @@ class menu():
 			out["state"] = "game"
 		if self.state == "exit":
 			out["exit"]="now"
-		out["title"] = "MSSM RTS Menu"
+		out["title"] = "Save Our City"
 		return out
