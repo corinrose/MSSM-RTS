@@ -14,7 +14,7 @@ class tdent():
 		self.taskTime = 0 
 		self.timer = -1 # positive means working, 0 is currently doing a task, -1 is finished
 		self.command = pygame.K_z # z
-		self.UIsprite = []pygame.font.SysFont("monospace", 14).render(UIdesc, 1, (255, 255, 0)), (1280 - tmp.get_width() + 15, 720 - tmp.get_height() + 15)]
+		self.UIsprite = [pygame.font.SysFont("monospace", 14).render(UIdesc, 1, (255, 255, 0)), (15, 720 - 144 + 15)] # 144 is height, 15 is buffer zone
 		
 	def draw(self, surface):
 		surface.blit(self.sheet.getImage(), self.pos)
@@ -30,7 +30,7 @@ class tdent():
 		if self.isSelected:
 			self.drawSelectionMarker(surface)
 			self.drawDestinationMarker(surface)
-			surface.blit(sprite[0], sprite[1]) # display unit-specific UI text
+			surface.blit(self.UIsprite[0], self.UIsprite[1]) # display unit-specific UI text
 		self.drawWorkingMarker(surface)
 	
 	def update(self, world):
