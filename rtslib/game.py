@@ -2,9 +2,10 @@ import rtslib, pygame
 
 class game():
 	def __init__(self):
-		self.ssworld = rtslib.ssworld("resources/otherlevel")
+		self.ssworld = rtslib.ssworld("resources/smalllevel")
 		self.tdworld = rtslib.tdworld()
 		self.worldFocus = 1
+		self.availableUnits={}
 		
 	def draw(self, surface):
 		# surface.fill([0,255,0]) 

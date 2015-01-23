@@ -19,7 +19,7 @@ class path():
 			dist = self.distRange[1]
 		if dist < self.distRange[0]:
 			dist = self.distRange[0]
-		along = (dist-self.distRange[0])/(self.distRange[1]-self.distRange[0])
+		along = (dist-self.distRange[0])/(self.distRange[1]-self.distRange[0])-0.01 #Remove rounding magic please
 		tot = 0
 		for t in range(0, len(self.distPercents)):
 			tot+=self.distPercents[t]

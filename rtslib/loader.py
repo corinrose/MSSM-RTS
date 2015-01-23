@@ -76,3 +76,8 @@ def loadCFG(filename):
 			script[-1]["time"] = sep[1]
 	cfg["script"] = script
 	return cfg
+	
+def loadSave(saveFile):
+	f = open(saveFile, "r")
+	con = f.read().split("\n")
+	return con

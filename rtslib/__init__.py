@@ -9,3 +9,4 @@ from path import *
 from sheet import *
 from button import *
 from projectile import *
+from loader import *

@@ -45,7 +45,7 @@ class ssent():
 						if ent.team != self.team:
 							if self.distance(ent.pos) < self.attack["range"]:
 								self.attacktimer = self.attack["rate"]*60
-								world.projectiles.append(projectile(self.pos, 10, pygame.image.load("resources/arrow.png"), ent, {})) #(self, pos, speed, image, target, properties)
+								world.projectiles.append(projectile(self.pos, 5, pygame.image.load("resources/arrow.png"), ent, {})) #(self, pos, speed, image, target, properties)
 								break
 		
 	def pathDistance(self, dist):

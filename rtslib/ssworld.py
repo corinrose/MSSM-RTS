@@ -2,7 +2,7 @@ from rtslib.ssent import *
 from rtslib.tdent import *
 from rtslib.path import *
 from rtslib.sheet import *
-from rtslib.cfgloader import *
+from rtslib.loader import *
 
 import random
 
@@ -36,7 +36,7 @@ class ssworld():
 		#Handle events
 		for event in events:
 			if event.type == pygame.MOUSEBUTTONDOWN:
-				self.ssentities.append(ssent(self.cid, 0.0, 0.015, 0.3, sheet("resources/Knight.png", [36,36]), self.path, True, 100, self.testattack3))
+				self.ssentities.append(ssent(self.cid, 0.0, 0.035, 0.3, sheet("resources/Knight.png", [36,36]), self.path, True, 100, self.testattack3))
 				self.cid += 1
 			if event.type == pygame.KEYDOWN:
 				#Camera movement
@@ -64,6 +64,9 @@ class ssworld():
 		for ent in self.ssentities:
 			if ent.remove:
 				self.ssentities.remove(ent)
+		for pro in self.projectiles:
+			if pro.remove:
+				self.projectiles.remove(pro)
 				
 		#Handle current operation
 		if self.scriptstarted:
