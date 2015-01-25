@@ -20,7 +20,9 @@ class tdworld():
 		self.gold = 0.0
 		self.topBarText = pygame.font.SysFont("monospace", 14) # text for top bar
 		self.UIelements = [[pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha(), (1280 - pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha().get_width(), 720 - pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha().get_height())], \
-						   [pygame.image.load("resources/ui/GameTopBar.png").convert_alpha(), (0,0)], []] # defined in update
+						   [pygame.image.load("resources/ui/GameTopBar.png").convert_alpha(), (0,0)], \
+						   [], \
+						   [pygame.image.load("resources/ui/goldCoin.png"), (350, 10)]] # defined in update
 		self.background = pygame.image.load("resources/GameGrass.png").convert_alpha()
 		self.unitDictionary = {3.1:"knight"} # will eventually be a config thing
 		self.game = game 
@@ -66,9 +68,9 @@ class tdworld():
 					ent2.pos[1] -= ent2.speed*yDis/Dis
 		self.gold += self.pop * 10.0 / 3600.0 # 10 gold per min per pop - gold trickle based on population
 		self.UIelements[2] = [self.topBarText.render(     "pop: " + str(int(self.pop)) + "/" + str(int(self.poplimit)) + \
-													"    food: " + str(int(self.food)) + \
-													"    wood: " + str(int(self.wood)) + \
-													"    gold: " + str(int(self.gold)), 1, (255,255,0)), (10, 10)] # update resource UI
+													"      food: " + str(int(self.food)) + \
+													"      wood: " + str(int(self.wood)) + \
+													"            " + str(int(self.gold)), 1, (255,255,0)), (10, 10)] # update resource UI
 	
 	def draw(self, surface):
 		surface.blit(self.background, (0,0)) # draw background
