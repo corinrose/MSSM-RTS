@@ -127,3 +127,5 @@ class ssworld():
 			pro.draw(surface, self.cpos)
 		surface.blit(self.bottombar, [0,660])
 		surface.blit(self.topbar, [0,0])
+		for unit in self.game.availableUnits:
+			print unit+": "+str(self.game.availableUnits[unit])
