@@ -18,7 +18,7 @@ class tdworld():
 		self.food = 100.0
 		self.wood = 50.0
 		self.gold = 0.0
-		self.topBarText = pygame.font.SysFont("monospace", 14) # text for top bar
+		self.topBarText = pygame.font.Font("resources/fonts/Deutsch.ttf", 14) # text for top bar
 		self.UIelements = [[pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha(), (1280 - pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha().get_width(), 720 - pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha().get_height())], \
 						   [pygame.image.load("resources/ui/GameTopBar.png").convert_alpha(), (0,0)], \
 						   [], \
