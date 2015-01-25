@@ -3,6 +3,7 @@ from rtslib.tdent import *
 from rtslib.path import *
 from rtslib.sheet import *
 from rtslib.loader import *
+from rtslib.button import *
 
 import random
 
@@ -13,6 +14,14 @@ class ssworld():
 		self.topbar = pygame.image.load("resources/ui/GameTopBar.png").convert_alpha()
 		self.unitImages = [pygame.image.load("resources/Knight.png").convert_alpha(), pygame.image.load("resources/Crossbowman.png").convert_alpha(),
 						   pygame.image.load("resources/BattleAxer.png").convert_alpha()]
+		self.smallbuttonset = [pygame.image.load("resources/buttons/smallidle.png").convert_alpha(),
+							pygame.image.load("resources/buttons/smallhover.png").convert_alpha(),
+							pygame.image.load("resources/buttons/smallclick.png").convert_alpha()
+							]
+		self.buttons = [button("knight", [15,670], self.spawnButtonClick, self.smallbuttonset),
+						button("crossbow", [125,670], self.spawnButtonClick, self.smallbuttonset),
+						button("battleaxer", [235,670], self.spawnButtonClick, self.smallbuttonset),
+						]
 		#Basic Properties
 		self.game = game
 		self.tdentities = []
@@ -44,11 +53,11 @@ class ssworld():
 	def update(self, events):
 		#Handle events
 		for event in events:
-			if event.type == pygame.MOUSEBUTTONDOWN:
-				if self.game.availableUnits["knight"]>0:
-					self.ssentities.append(ssent(self.cid, 0.0, 0.035, 0.3, sheet("resources/Knight.png", [36,36]), self.path, True, 100, self.testattack2))
-					self.cid += 1
-					self.game.availableUnits["knight"]-=1
+			#if event.type == pygame.MOUSEBUTTONDOWN:
+			#	if self.game.availableUnits["knight"]>0:
+			#		self.ssentities.append(ssent(self.cid, 0.0, 0.035, 0.3, sheet("resources/Knight.png", [36,36]), self.path, True, 100, self.testattack2))
+			#		self.cid += 1
+			#		self.game.availableUnits["knight"]-=1
 					
 			if event.type == pygame.KEYDOWN:
 				#Camera movement
@@ -66,7 +75,9 @@ class ssworld():
 					if not self.scriptstarted:
 						self.scriptstarted = True
 						self.nextOperation()
-		
+		#Update Buttons
+		for button in self.buttons:
+			button.update(events)
 		#Update entities
 		for ent in self.ssentities:
 			ent.update(self, self.ssentities)
@@ -132,5 +143,13 @@ class ssworld():
 			pro.draw(surface, self.cpos)
 		surface.blit(self.bottombar, [0,650])
 		surface.blit(self.topbar, [0,0])
+		for button in self.buttons:
+			button.draw(surface)
 		for unitID in range(0, len(self.game.availableUnits)):
-			surface.blit(self.unitImages[unitID], [15+(unitID*100), 675])
+			surface.blit(self.unitImages[unitID], [15+(unitID*110), 675])
+			
+	def spawnButtonClick(self, button):
+		if self.game.availableUnits[button]>0:
+			self.ssentities.append(ssent(self.cid, 0.0, 0.035, 0.3, sheet("resources/Knight.png", [36,36]), self.path, True, 100, self.testattack2))
+			self.cid += 1
+			self.game.availableUnits[button]-=1
