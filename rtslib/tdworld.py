@@ -23,7 +23,7 @@ class tdworld():
 						   [pygame.image.load("resources/ui/GameTopBar.png").convert_alpha(), (0,0)], []] # defined in update
 		self.background = pygame.image.load("resources/GameGrass.png").convert_alpha()
 		
-	def update(self, events):
+	def update(self, game, events):
 		for event in events:
 			if event.type == pygame.MOUSEBUTTONDOWN:
 				if event.button == 1: # left-click to select unit

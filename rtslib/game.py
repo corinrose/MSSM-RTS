@@ -22,11 +22,11 @@ class game():
 					self.worldFocus = not self.worldFocus
 					
 		if self.worldFocus == 1:
-			self.ssworld.update(events)
-			self.tdworld.update([])
+			self.ssworld.update(self, events)
+			self.tdworld.update(self, [])
 		else:
-			self.ssworld.update([])
-			self.tdworld.update(events)
+			self.ssworld.update(self, [])
+			self.tdworld.update(self, events)
 			
 		out["title"] = "Save Our City - "+("Battle View"*self.worldFocus)+("Resource View"*(not self.worldFocus))
 		return out

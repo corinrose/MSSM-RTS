@@ -32,7 +32,7 @@ class ssworld():
 		self.testattack2 = {"style":"melee", "power":1}
 		self.testattack3 = {"style":"ranged", "power":10, "range":300, "rate":5}
 		
-	def update(self, events):
+	def update(self, game, events):
 		#Handle events
 		for event in events:
 			if event.type == pygame.MOUSEBUTTONDOWN:
