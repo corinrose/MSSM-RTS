@@ -25,7 +25,7 @@ class tdworld():
 		self.dictionary = {4.1:"knight"}
 		self.game = game
 		
-	def update(self, game, events):
+	def update(self, events):
 		for event in events:
 			if event.type == pygame.MOUSEBUTTONDOWN:
 				if event.button == 1: # left-click to select unit

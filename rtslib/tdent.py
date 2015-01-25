@@ -22,7 +22,7 @@ class tdent():
 			if self.sheetCounter == 10: # 10 frames a sheet 
 				self.sheet.nextImage()
 				self.sheetCounter = 0
-		if self.des[0] < self.pos[0] and self.type in [0, 4.1]: # list of all moving units
+		if self.des[0] < self.pos[0] and self.speed > 0: 
 			self.sheet.setFlipped(True)
 		else:
 			self.sheet.setFlipped(False)
@@ -133,6 +133,7 @@ class tdent():
 		
 	def transfer(self, world):
 		world.game.availableUnits[world.unitDictionary[self.type]] += 1
+		
 	def spawnWorker(self, world, eventKey):
 		pop = 1
 		food = 10
