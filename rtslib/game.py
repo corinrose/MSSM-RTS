@@ -3,7 +3,7 @@ import rtslib, pygame
 class game():
 	def __init__(self):
 		self.ssworld = rtslib.ssworld("resources/smalllevel")
-		self.tdworld = rtslib.tdworld()
+		self.tdworld = rtslib.tdworld(game)
 		self.worldFocus = 1
 		self.availableUnits={"knight":0}
 		
@@ -23,10 +23,10 @@ class game():
 					
 		if self.worldFocus == 1:
 			self.ssworld.update(self, events)
-			self.tdworld.update(self, [])
+			self.tdworld.update([])
 		else:
 			self.ssworld.update(self, [])
-			self.tdworld.update(self, events)
+			self.tdworld.update(events)
 			
 		out["title"] = "Save Our City - "+("Battle View"*self.worldFocus)+("Resource View"*(not self.worldFocus))
 		return out
