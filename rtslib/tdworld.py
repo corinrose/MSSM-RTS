@@ -22,7 +22,7 @@ class tdworld():
 		self.UIelements = [[pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha(), (1280 - pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha().get_width(), 720 - pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha().get_height())], \
 						   [pygame.image.load("resources/ui/GameTopBar.png").convert_alpha(), (0,0)], []] # defined in update
 		self.background = pygame.image.load("resources/GameGrass.png").convert_alpha()
-		self.dictionary = {4.1:"knight"}
+		self.unitDictionary = {4.1:"knight"}
 		self.game = game
 		
 	def update(self, events):
