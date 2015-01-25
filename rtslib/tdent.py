@@ -114,7 +114,7 @@ class tdent():
 			if len(self.command) > 0:
 				self.timer = self.command[0][1]
 		
-	def checkCost(food, wood, gold, pop, world):
+	def checkCost(self, food, wood, gold, pop, world):
 		if world.pop + pop <= world.poplimit and world.food >= food and world.wood >= wood and world.gold >= gold:
 			world.pop += pop
 			world.food -= food
