@@ -14,14 +14,16 @@ class ssworld():
 		self.topbar = pygame.image.load("resources/ui/GameTopBar.png").convert_alpha()
 		self.unitImages = [pygame.image.load("resources/Knight.png").convert_alpha(), pygame.image.load("resources/Crossbowman.png").convert_alpha(),
 						   pygame.image.load("resources/BattleAxer.png").convert_alpha()]
+		self.unitNumbers = ["knight", "crossbow", "battleaxe"]
 		self.smallbuttonset = [pygame.image.load("resources/buttons/smallidle.png").convert_alpha(),
 							pygame.image.load("resources/buttons/smallhover.png").convert_alpha(),
 							pygame.image.load("resources/buttons/smallclick.png").convert_alpha()
 							]
 		self.buttons = [button("knight", [15,670], self.spawnButtonClick, self.smallbuttonset),
 						button("crossbow", [125,670], self.spawnButtonClick, self.smallbuttonset),
-						button("battleaxer", [235,670], self.spawnButtonClick, self.smallbuttonset),
+						button("battleaxe", [235,670], self.spawnButtonClick, self.smallbuttonset),
 						]
+		self.numberfont = pygame.font.Font("resources/fonts/Deutsch.ttf", 36)
 		#Basic Properties
 		self.game = game
 		self.tdentities = []
@@ -147,6 +149,7 @@ class ssworld():
 			button.draw(surface)
 		for unitID in range(0, len(self.game.availableUnits)):
 			surface.blit(self.unitImages[unitID], [15+(unitID*110), 675])
+			surface.blit(self.numberfont.render(str(self.game.availableUnits[self.unitNumbers[unitID]]), True, [255,255,255]), [60+(unitID*110), 680])
 			
 	def spawnButtonClick(self, button):
 		if self.game.availableUnits[button]>0:
