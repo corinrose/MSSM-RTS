@@ -85,17 +85,27 @@ class tdent():
 	def action(self, world, eventKey):
 		if self.type == 0: # worker
 			if eventKey == pygame.K_w:
-				self.spawnBarracks(world, eventKey)
+				self.spawn(world, eventKey, [0, 20, 0, 1, 3*60], 
+						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
+								False, 0, sheet("resources/Barracks.png", [160, 160]), \
+								"Barracks. Press w to train soldier : 10 food, 10 wood, 1 pop.", 1.2))
 			elif eventKey == pygame.K_e:
-				self.spawnMill(world, eventKey)
+				self.spawn(world, eventKey, [0, 20, 0, 0, 3*60], 
+						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
+								False, 0, sheet("resources/Food.png", [160, 160]), \
+								"Mill. For food.", 2.1))
 		elif self.type == 1.1: # town hall
 			if eventKey == pygame.K_w: 
-				self.spawnWorker(world, eventKey)
+				self.spawn(world, eventKey, [10, 0, 0, 1, 1*60], 
+						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
+								False, 1.0, sheet("resources/worker.png", [40, 40]), \
+								"Worker. Press w to build barracks : 20 wood. Press e to build mill.", 0))
 		elif self.type == 1.2: # barracks
 			if eventKey == pygame.K_w:
-				self.spawnKnight(world, eventKey)
-			elif eventKey == pygame.K_e:
-				self.upgradeWorker(world, eventKey)
+				self.spawn(world, eventKey, [10, 10, 0, 1, 1*60], 
+						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
+								 False, 1.0, sheet("resources/Knight.png", [36, 36]), \
+								"Knight. Move to gate to transfer to battle.", 3.1))
 		elif int(self.type) == 2:
 			if eventKey == "":
 				if self.type == 2.1:  # 2.1 is food
@@ -114,12 +124,12 @@ class tdent():
 			if len(self.command) > 0:
 				self.timer = self.command[0][1]
 		
-	def checkCost(self, food, wood, gold, pop, world):
-		if world.pop + pop <= world.poplimit and world.food >= food and world.wood >= wood and world.gold >= gold:
-			world.pop += pop
-			world.food -= food
-			world.wood -= wood
-			world.gold -= gold
+	def checkCost(self, costList, world): # 0 = food, 1 = wood, 2 = gold, 3 = pop 
+		if world.food >= costList[0] and world.wood >= costList[1] and world.gold >= costList[2] and world.pop + costList[3] <= world.poplimit:
+			world.food -= costList[0]
+			world.wood -= costList[1]
+			world.gold -= costList[2]
+			world.pop += costList[3]
 			return True
 		else:
 			return False
@@ -132,69 +142,18 @@ class tdent():
 		world.gold += 1/60.0
 		
 	def transfer(self, world):
-		world.game.availableUnits[world.unitDictionary[self.type]] += 1
+		if world.unitDictionary[self.type] in world.game.availableUnits:
+			world.game.availableUnits[world.unitDictionary[self.type]] += 1
+		else:
+			world.game.availableUnits[world.unitDictionary[self.type]] = 1
 		world.entities.remove(self)
 		
-	#def spawn(self, world, eventKey, costList, ):
-		
-	def spawnWorker(self, world, eventKey):
-		pop = 1
-		food = 10
-		wood = 0
-		gold = 0
-		time = 1*60
+	def spawn(self, world, eventKey, costList, tdent):
 		if self.timer != 0:
-			if self.checkCost(food, wood, gold, pop, world):
-				self.command.append([eventKey, time])
+			if self.checkCost(costList, world):
+				self.command.append([eventKey, costList[4]]) # 4 = time
 		elif self.timer == 0:
-			world.entities.append(tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
-								False, 1.0, sheet("resources/worker.png", [40, 40]), \
-								"Worker. Press w to build barracks : 20 wood. Press e to build mill.", 0)) 
-			
-	
-	def spawnMill(self, world, eventKey):
-		pop = 0
-		food = 0
-		wood = 20
-		gold = 0
-		time = 3*60
-		if self.timer != 0:
-			if self.checkCost(food, wood, gold, pop, world):
-				self.command.append([eventKey, time])
-		elif self.timer == 0:
-			world.entities.insert(0, tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
-								False, 0, sheet("resources/Food.png", [160, 160]), \
-								"Mill. For food.", 2.1))
-		
-	def spawnBarracks(self, world, eventKey):
-		pop = 0
-		food = 0
-		wood = 20
-		gold = 0
-		time = 3*60
-		if self.timer != 0:
-			if self.checkCost(food, wood, gold, pop, world):
-				self.command.append([eventKey, time])
-		elif self.timer == 0:
-			world.entities.insert(0, tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
-								False, 0, sheet("resources/Barracks.png", [160, 160]), \
-								"Barracks. Press w to train soldier : 10 food, 10 wood, 1 pop.", 1.2))
-	
-	def spawnKnight(self, world, eventKey):
-		pop = 1
-		food = 10
-		wood = 10
-		gold = 0
-		time = 1*60
-		if self.timer != 0:
-			if self.checkCost(food, wood, gold, pop, world):
-				self.command.append([eventKey, time])
-		elif self.timer == 0:
-			world.entities.append(tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
-								 False, 1.0, sheet("resources/Knight.png", [36, 36]), \
-								"Knight. Move to gate to transfer to battle.", 3.1))
-	
-	def upgradeWorker(self, world, eventKey):
-		pass 
-		# resources -= 100
-		# upgrade worker
+			if self.speed != 0:
+				world.entities.insert(0, tdent)
+			else:
+				world.entities.append(tdent)
