@@ -8,12 +8,17 @@ import random
 
 class ssworld():
 	def __init__(self, folder="resources/testlevel"):
+		#UI Elements
+		self.bottombar = pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha()
+		self.topbar = pygame.image.load("resources/ui/GameTopBar.png").convert_alpha()
+		#Basic Properties
 		self.tdentities = []
 		self.ssentities = []
 		self.projectiles = []
 		self.cid = 0
 		self.cpos = 0
 		self.location = folder
+		#Level-specific things
 		self.cfg = loadCFG(self.location+"/config.cfg")
 		self.background = pygame.image.load(self.location+"/bg.png").convert_alpha()
 		self.width = self.background.get_width()
@@ -28,6 +33,7 @@ class ssworld():
 		self.currentwavespawned=0
 		self.spawnqueue=[]
 		
+		#Test stuff
 		self.testattack = {"style":"melee", "power":0.05}
 		self.testattack2 = {"style":"melee", "power":1}
 		self.testattack3 = {"style":"ranged", "power":10, "range":300, "rate":5}
@@ -118,3 +124,5 @@ class ssworld():
 			ent.draw(surface, self.cpos)
 		for pro in self.projectiles:
 			pro.draw(surface, self.cpos)
+		surface.blit(self.bottombar, [0,660])
+		surface.blit(self.topbar, [0,0])
