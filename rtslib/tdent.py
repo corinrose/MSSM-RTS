@@ -135,7 +135,7 @@ class tdent():
 		world.game.availableUnits[world.unitDictionary[self.type]] += 1
 		world.entities.remove(self)
 		
-	def spawn(self, world, eventKey, costList, ):
+	#def spawn(self, world, eventKey, costList, ):
 		
 	def spawnWorker(self, world, eventKey):
 		pop = 1
