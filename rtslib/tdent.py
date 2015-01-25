@@ -141,7 +141,7 @@ class tdent():
 		gold = 0
 		time = 1*60
 		if self.timer != 0:
-			if checkCost(food, wood, gold, pop, world):
+			if self.checkCost(food, wood, gold, pop, world):
 				self.command.append([eventKey, time])
 		elif self.timer == 0:
 			world.entities.append(tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
@@ -156,7 +156,7 @@ class tdent():
 		gold = 0
 		time = 3*60
 		if self.timer != 0:
-			if checkCost(food, wood, gold, pop, world):
+			if self.checkCost(food, wood, gold, pop, world):
 				self.command.append([eventKey, time])
 		elif self.timer == 0:
 			world.entities.insert(0, tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
@@ -170,7 +170,7 @@ class tdent():
 		gold = 0
 		time = 3*60
 		if self.timer != 0:
-			if checkCost(food, wood, gold, pop, world):
+			if self.checkCost(food, wood, gold, pop, world):
 				self.command.append([eventKey, time])
 		elif self.timer == 0:
 			world.entities.insert(0, tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
@@ -184,7 +184,7 @@ class tdent():
 		gold = 0
 		time = 1*60
 		if self.timer != 0:
-			if checkCost(food, wood, gold, pop, world):
+			if self.checkCost(food, wood, gold, pop, world):
 				self.command.append([eventKey, time])
 		elif self.timer == 0:
 			world.entities.append(tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
