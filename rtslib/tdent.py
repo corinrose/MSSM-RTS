@@ -105,7 +105,17 @@ class tdent():
 				self.spawn(world, eventKey, [10, 10, 0, 1, 1*60], 
 						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
 								 False, 1.0, sheet("resources/Knight.png", [36, 36]), \
-								"Knight. Move to gate to transfer to battle.", 3.1))
+								"Knight. Move to gate to transfer to battle.", 3.11))
+			elif eventKey == pygame.K_e:
+				self.spawn(world, eventKey, [10, 10, 0, 1, 1*60], 
+						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
+								 False, 1.0, sheet("resources/Crossbowman.png", [40, 40]), \
+								"Crossbowman. Move to gate to transfer to battle.", 3.12))
+			elif eventKey == pygame.K_r:
+				self.spawn(world, eventKey, [10, 10, 0, 1, 1*60], 
+						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
+								 False, 1.0, sheet("resources/Battleaxer.png", [40, 40]), \
+								"Crossbowman. Move to gate to transfer to battle.", 3.13))
 		elif int(self.type) == 2:
 			if eventKey == "":
 				if self.type == 2.1:  # 2.1 is food

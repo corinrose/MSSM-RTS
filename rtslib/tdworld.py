@@ -24,7 +24,7 @@ class tdworld():
 						   [], \
 						   [pygame.image.load("resources/ui/goldCoin.png"), (350, 10)]] # defined in update
 		self.background = pygame.image.load("resources/GameGrass.png").convert_alpha()
-		self.unitDictionary = {3.1:"knight"} # will eventually be a config thing
+		self.unitDictionary = {3.11:"knight", 3.12:"crossbow", 3.13:"battleaxe"} # will eventually be a config thing
 		self.game = game 
 		
 	def update(self, events):
