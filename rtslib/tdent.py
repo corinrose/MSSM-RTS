@@ -142,7 +142,7 @@ class tdent():
 			world.pop += costList[3]
 			return True
 		else:
-			return False
+			return False # play sound:"you require more resources" 
 			
 	def addFood(self, world):
 		world.food += 1/60.0
