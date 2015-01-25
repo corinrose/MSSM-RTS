@@ -11,6 +11,8 @@ class ssworld():
 		#UI Elements
 		self.bottombar = pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha()
 		self.topbar = pygame.image.load("resources/ui/GameTopBar.png").convert_alpha()
+		self.unitImages = [pygame.image.load("resources/Knight.png").convert_alpha(), pygame.image.load("resources/Crossbowman.png").convert_alpha(),
+						   pygame.image.load("resources/BattleAxer.png").convert_alpha()]
 		#Basic Properties
 		self.game = game
 		self.tdentities = []
@@ -128,7 +130,7 @@ class ssworld():
 			ent.draw(surface, self.cpos)
 		for pro in self.projectiles:
 			pro.draw(surface, self.cpos)
-		surface.blit(self.bottombar, [0,660])
+		surface.blit(self.bottombar, [0,650])
 		surface.blit(self.topbar, [0,0])
-		for unit in self.game.availableUnits:
-			print unit+": "+str(self.game.availableUnits[unit])
+		for unitID in range(0, len(self.game.availableUnits)):
+			surface.blit(self.unitImages[unitID], [15+(unitID*100), 675])
