@@ -3,10 +3,10 @@ from rtslib.tdent import *
 from rtslib.sheet import *
 
 class tdworld():
-	def __init__(self):
+	def __init__(self, game):
 		self.entities = [tdent(400, 400, 400, 400, \
 							   True, 0, sheet("resources/TownHall.png", [160,160]), \
-							   "Town Hall. Press w to train worker : 10 food, 1 pop", 1), \
+							   "Town Hall. Press w to train worker : 10 food, 1 pop", 1.1), \
 						tdent(50, 50, 200, 200, \
 							   False, 0, sheet("resources/Wood.png", [80,80]), \
 							   "Wood", 2.2), \
@@ -22,6 +22,8 @@ class tdworld():
 		self.UIelements = [[pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha(), (1280 - pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha().get_width(), 720 - pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha().get_height())], \
 						   [pygame.image.load("resources/ui/GameTopBar.png").convert_alpha(), (0,0)], []] # defined in update
 		self.background = pygame.image.load("resources/GameGrass.png").convert_alpha()
+		self.dictionary = {4.1:"knight"}
+		self.game = game
 		
 	def update(self, game, events):
 		for event in events:
