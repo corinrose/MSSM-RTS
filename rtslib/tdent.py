@@ -133,9 +133,10 @@ class tdent():
 		
 	def transfer(self, world):
 		world.game.availableUnits[world.unitDictionary[self.type]] += 1
+		world.entities.remove(self)
 		
+	def spawn(self, world, eventKey, costList, ):
 		
-	#def spawn(self, world, eventKey, costList, )
 	def spawnWorker(self, world, eventKey):
 		pop = 1
 		food = 10
