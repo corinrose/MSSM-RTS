@@ -1,8 +1,9 @@
 import pygame, math
 from rtslib.sheet import *
+from rtslib.button import *
 
 class tdent():
-	def __init__(self, posX, posY, desX, desY, isSelected, speed, sheet, UIdesc, type):
+	def __init__(self, posX, posY, desX, desY, isSelected, speed, sheet, UIdesc, type, buttons=[]):
 		self.pos = [posX, posY]
 		self.des = [desX, desY]
 		self.isSelected = isSelected 
@@ -10,10 +11,12 @@ class tdent():
 		self.sheet = sheet
 		self.sheetCounter = 0
 		self.isMoving = False
-		self.type = type # 0 = worker, 1 = buildings, 2.1-2.3= resource, 3.1 = knight
+		self.type = type # 0 = worker, 1 = buildings, 2.1-2.3= resource, 3.1 = knight, etc.
 		self.timer = -1 # positive means working, 0 is currently doing a task, -1 is finished
 		self.command = []
-		self.UIsprite = [pygame.font.SysFont("monospace", 14).render(UIdesc, 1, (255, 255, 0)), (15, 720 - 144 + 15)] # 144 is height, 15 is buffer zone
+		self.newCommands = []
+		self.UIsprite = [pygame.font.SysFont("monospace", 14).render(UIdesc, 1, (255, 255, 0)), (15, 720 - 144 + 15)] # FONT? 144 is height, 15 is buffer zone
+		self.buttons = []
 		
 	def draw(self, surface):
 		surface.blit(self.sheet.getImage(), self.pos)
@@ -33,15 +36,21 @@ class tdent():
 		
 	def drawUIText(self, surface):
 		surface.blit(self.UIsprite[0], self.UIsprite[1]) # display unit-specific UI text
-	
-	def update(self, world):
+		
+	def update(self, world, events):
+		if self.isSelected:
+			for i in range(0, len(self.buttons), 1):
+				self.buttons[i].update(events)
+		for command in self.newCommands:
+			self.action(world, command)
+		self.newCommands = []
 		if self.timer < 0:
 			self.move()
 		else:
 			if self.timer == 0:
 				self.action(world, self.command[0][0])
 			self.timer -= 1
-		if int(self.type) == 3: # attacking units
+		if int(self.type) == 3: # attacking units transfer
 			if self.pos[0] > 1200 and self.pos[1] > 240 and self.pos[1] < 480: # arbitrary gate size 
 				self.action(world, "")
 	
@@ -84,39 +93,44 @@ class tdent():
 								
 	def drawDestinationMarker(self, surface): # RED
 		pygame.draw.circle(surface, (255, 0, 0), self.des, 6, 2)
-				
-############################################################################ 
 
 	def action(self, world, eventKey): ########################################################################## ADD BUTTONS
 		if self.type == 0: # worker
-			if eventKey == pygame.K_w:
+			if eventKey == "Spawn Barracks":
 				self.spawn(world, eventKey, [0, 20, 0, 1, 3*60], 
 						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
 								False, 0, sheet("resources/Barracks.png", [160, 160]), \
-								"Barracks. Press w to train soldier : 10 food, 10 wood, 1 pop.", 1.2))
-			elif eventKey == pygame.K_e:
+								"Barracks.", 1.2))
+				if self.timer == 0:
+					world.entities[0].buttons = [button("Spawn Knight", [50, 650], world.entities[0].addCommand), \
+														button("Spawn Crossbowman", [150, 650], world.entities[0].addCommand), \
+														button("Spawn Battleaxer", [250, 650], world.entities[0].addCommand)]
+			elif eventKey == "Spawn Mill":
 				self.spawn(world, eventKey, [0, 20, 0, 0, 3*60], 
 						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
 								False, 0, sheet("resources/Food.png", [160, 160]), \
-								"Mill. For food.", 2.1))
+								"Mill.", 2.1))
 		elif self.type == 1.1: # town hall
-			if eventKey == pygame.K_w: 
+			if eventKey == "Spawn Worker":
 				self.spawn(world, eventKey, [10, 0, 0, 1, 1*60], 
 						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
 								False, 1.0, sheet("resources/worker.png", [40, 40]), \
-								"Worker. Press w to build barracks : 20 wood. Press e to build mill.", 0))
+								"Worker.", 0))
+				if self.timer == 0:
+					world.entities[-1].buttons = [button("Spawn Barracks", [50, 650], world.entities[-1].addCommand), \
+												   button("Spawn Mill", [150, 650], world.entities[-1].addCommand)]
 		elif self.type == 1.2: # barracks
-			if eventKey == pygame.K_w:
+			if eventKey == "Spawn Knight":
 				self.spawn(world, eventKey, [10, 10, 0, 1, 1*60], 
 						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
 								 False, 1.0, sheet("resources/Knight.png", [36, 36]), \
 								"Knight. Move to gate to transfer to battle.", 3.11))
-			elif eventKey == pygame.K_e:
+			elif eventKey == "Spawn Crossbowman":
 				self.spawn(world, eventKey, [10, 10, 0, 1, 1*60], 
 						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
 								 False, 1.0, sheet("resources/Crossbowman.png", [40, 40]), \
 								"Crossbowman. Move to gate to transfer to battle.", 3.12))
-			elif eventKey == pygame.K_r:
+			elif eventKey == "Spawn Battleaxer":
 				self.spawn(world, eventKey, [10, 10, 0, 1, 1*60], 
 						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
 								 False, 1.0, sheet("resources/Battleaxer.png", [40, 40]), \
@@ -138,6 +152,9 @@ class tdent():
 			self.command.pop(0)
 			if len(self.command) > 0:
 				self.timer = self.command[0][1]
+		
+	def addCommand(self, command):
+		self.newCommands.append(command)
 		
 	def checkCost(self, costList, world): # 0 = food, 1 = wood, 2 = gold, 3 = pop 
 		if world.food >= costList[0] and world.wood >= costList[1] and world.gold >= costList[2] and world.pop + costList[3] <= world.poplimit:
