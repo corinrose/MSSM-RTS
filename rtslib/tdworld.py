@@ -26,6 +26,7 @@ class tdworld():
 		self.background = pygame.image.load("resources/GameGrass.png").convert_alpha()
 		self.unitDictionary = {3.11:"knight", 3.12:"crossbow", 3.13:"battleaxe"} # will eventually be a config thing
 		self.game = game 
+		self.selectionCoordinates = [[], []]
 		
 	def update(self, events):
 		for event in events:
@@ -42,6 +43,8 @@ class tdworld():
 					for ent in self.entities:
 						if ent.isSelected:
 							ent.setDes(pygame.mouse.get_pos())
+			if event.type == pygame.MOUSEBUTTONUP:
+				
 			elif event.type == pygame.KEYUP: # handles unit key commands
 				for ent in self.entities:
 					if ent.isSelected:
