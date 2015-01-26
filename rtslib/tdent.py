@@ -154,7 +154,7 @@ class tdent():
 		
 	def rectangularCollision(self, topLeft, bottomRight):
 		if topLeft[0] > self.pos[0] + self.sheet.dim[0] and \
-		   topLeft[1] > self.pos[1] + self.sheet.dim[1] and \ 
+		   topLeft[1] > self.pos[1] + self.sheet.dim[1] and \
 		   bottomRight[0] < self.pos[0] and \
 		   bottomRight[1] < self.pos[1]:
 			return False 
