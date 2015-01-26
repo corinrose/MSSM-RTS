@@ -72,11 +72,15 @@ class tdent():
 									  2)
 									  
 	def drawWorkingMarker(self, surface): # YELLOW
-		if len(self.command) > 0 and self.timer >= 0:
-			for i in range(0, len(self.command), 1):
-				pygame.draw.polygon(surface, (255, 255, 0), [[self.pos[0], self.pos[1] + 4 + 4*i], \
-											  [self.pos[0] + ((float(self.command[i][1]) - float(self.timer))/float(self.command[i][1]))*self.sheet.dim[0], self.pos[1] + 4 + 4*i]], \
-											  2)
+		if self.isSelected:
+			if len(self.command) > 0 and self.timer >= 0:
+				pygame.draw.polygon(surface, (255, 255, 0), [[self.pos[0], self.pos[1] - 4], \
+												  [self.pos[0] + ((float(self.command[0][1]) - float(self.timer))/float(self.command[0][1]))*self.sheet.dim[0], self.pos[1] - 4]], \
+												  2)
+				for i in range(1, len(self.command), 1):
+					pygame.draw.polygon(surface, (255, 255, 0), [[self.pos[0], self.pos[1] - 4 - 4*i], \
+												  [self.pos[0] + self.sheet.dim[0], self.pos[1] - 4 - 4*i]], \
+												  2)
 								
 	def drawDestinationMarker(self, surface): # RED
 		pygame.draw.circle(surface, (255, 0, 0), self.des, 6, 2)
