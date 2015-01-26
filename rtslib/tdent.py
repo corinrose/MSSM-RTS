@@ -73,16 +73,17 @@ class tdent():
 									  
 	def drawWorkingMarker(self, surface): # YELLOW
 		if len(self.command) > 0 and self.timer >= 0:
-			pygame.draw.polygon(surface, (255, 255, 0), [[self.pos[0], self.pos[1] + 6], \
-						 				  [self.pos[0] + ((float(self.command[0][1]) - float(self.timer))/float(self.command[0][1]))*self.sheet.dim[0], self.pos[1] + 6]], \
-										  3)
+			for i in range(0, len(self.command), 1):
+				pygame.draw.polygon(surface, (255, 255, 0), [[self.pos[0], self.pos[1] + 4 + 4*i], \
+											  [self.pos[0] + ((float(self.command[i][1]) - float(self.timer))/float(self.command[i][1]))*self.sheet.dim[0], self.pos[1] + 4 + 4*i]], \
+											  2)
 								
 	def drawDestinationMarker(self, surface): # RED
 		pygame.draw.circle(surface, (255, 0, 0), self.des, 6, 2)
 				
 ############################################################################ 
 
-	def action(self, world, eventKey):
+	def action(self, world, eventKey): ########################################################################## ADD BUTTONS
 		if self.type == 0: # worker
 			if eventKey == pygame.K_w:
 				self.spawn(world, eventKey, [0, 20, 0, 1, 3*60], 
@@ -143,6 +144,18 @@ class tdent():
 			return True
 		else:
 			return False # play sound:"you require more resources" 
+		
+	def checkSize(self, tdent, world): 
+		for ent in world.entities:
+			if ent.rectangularCollision(tdent.pos, [tdent.pos[0] + tdent.sheet.dim[0], tdent.pos[1] + tdent.sheet.dim[1]]):
+				if ent != self:
+					return False 
+		return True 
+		
+	def rectangularCollision(self, topLeft, bottomRight):
+		if topLeft[0] <= self.pos[0] <= bottomRight[0] and \
+		   topLeft[1] <= self.pos[1] <= bottomRight[1]:
+			return True
 			
 	def addFood(self, world):
 		world.food += 1/60.0
@@ -160,8 +173,9 @@ class tdent():
 		
 	def spawn(self, world, eventKey, costList, tdent):
 		if self.timer != 0:
-			if self.checkCost(costList, world):
-				self.command.append([eventKey, costList[4]]) # 4 = time
+			if tdent.speed > 0 or self.checkSize(tdent, world):
+				if self.checkCost(costList, world):
+					self.command.append([eventKey, costList[4]]) # 4 = time
 		elif self.timer == 0:
 			if self.speed != 0:
 				world.entities.insert(0, tdent)
