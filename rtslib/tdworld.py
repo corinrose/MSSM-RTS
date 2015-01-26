@@ -22,35 +22,41 @@ class tdworld():
 		self.UIelements = [[pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha(), (1280 - pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha().get_width(), 720 - pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha().get_height())], \
 						   [pygame.image.load("resources/ui/GameTopBar.png").convert_alpha(), (0,0)], \
 						   [], \
-						   [pygame.image.load("resources/ui/goldCoin.png"), (350, 10)]] # defined in update
+						   [pygame.image.load("resources/ui/goldCoin.png"), (330, 10)]] # defined in update
 		self.background = pygame.image.load("resources/GameGrass.png").convert_alpha()
 		self.unitDictionary = {3.11:"knight", 3.12:"crossbow", 3.13:"battleaxe"} # will eventually be a config thing
 		self.game = game 
-		self.selectionCoordinates = [[], []]
+		self.selectionCoordinates = [[0,0], [0,0]]
+		self.selecting = False
 		
 	def update(self, events):
 		for event in events:
-			if event.type == pygame.MOUSEBUTTONDOWN: ##################################################### ADD RECTANGLE SELECTING 
+			if event.type == pygame.MOUSEBUTTONDOWN: 
 				if event.button == 1: # left-click to select unit
-					for ent in self.entities:
-						if ent.pos[0] < pygame.mouse.get_pos()[0] < ent.pos[0] + ent.sheet.dim[0] and \
-						   ent.pos[1] < pygame.mouse.get_pos()[1] < ent.pos[1] + ent.sheet.dim[1]: 
-							ent.setSel(True)
-							break
-						else:
-							ent.setSel(False)
+					self.selecting = True 
+					self.selectionCoordinates[0] = pygame.mouse.get_pos()
 				elif event.button == 3: # right-click to send to destination
 					for ent in self.entities:
 						if ent.isSelected:
 							ent.setDes(pygame.mouse.get_pos())
-			if event.type == pygame.MOUSEBUTTONUP:
-				pass #
+			elif event.type == pygame.MOUSEBUTTONUP: # left-click drag
+				if event.button == 1:
+					self.selecting = False
 			elif event.type == pygame.KEYUP: # handles unit key commands
 				for ent in self.entities:
 					if ent.isSelected:
 						ent.action(self, event.key)
+		if self.selecting: # drag selection
+			self.selectionCoordinates[1] = pygame.mouse.get_pos()
 		for ent in self.entities: 
 			ent.update(self)
+			if self.selecting:
+				if ent.rectangularCollision(self.selectionCoordinates[0], self.selectionCoordinates[1]): # drag selection
+					ent.setSel(True)
+					if self.selectionCoordinates[0] == self.selectionCoordinates[1]:
+						break
+				else:
+					ent.setSel(False)
 			for ent2 in self.entities: 
 				if ent.type == 0 and round(ent2.type) == 2: # handles resource gathering
 					if ent2.pos[0] < ent.pos[0] < ent2.pos[0] + ent2.sheet.dim[0] and \
@@ -80,6 +86,13 @@ class tdworld():
 		surface.blit(self.background, (0,0)) # draw background
 		for ent in self.entities: # draw units, buildings, resources
 			ent.draw(surface)
+		if self.selecting: # draw drag selection box 
+			pygame.draw.polygon(surface, (255, 255, 0), [self.selectionCoordinates[0], \
+														 [self.selectionCoordinates[1][0], self.selectionCoordinates[0][1]], \
+														 self.selectionCoordinates[1], \
+														 [self.selectionCoordinates[0][0], self.selectionCoordinates[1][1]]], \
+														 2)
+		for ent in self.entities:
 			if ent.isSelected: # blits unit UI bar + text
 				surface.blit(self.UIelements[0][0], self.UIelements[0][1])
 				ent.drawUIText(surface)
