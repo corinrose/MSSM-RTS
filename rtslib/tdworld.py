@@ -44,7 +44,7 @@ class tdworld():
 						if ent.isSelected:
 							ent.setDes(pygame.mouse.get_pos())
 			if event.type == pygame.MOUSEBUTTONUP:
-				
+				pass #
 			elif event.type == pygame.KEYUP: # handles unit key commands
 				for ent in self.entities:
 					if ent.isSelected:
