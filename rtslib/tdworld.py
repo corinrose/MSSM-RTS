@@ -51,7 +51,10 @@ class tdworld():
 		for ent in self.entities: 
 			ent.update(self)
 			if self.selecting:
-				if ent.rectangularCollision(self.selectionCoordinates[0], self.selectionCoordinates[1]): # drag selection
+				if ent.rectangularCollision([min(self.selectionCoordinates[0][0], self.selectionCoordinates[1][0]), \
+											 min(self.selectionCoordinates[0][1], self.selectionCoordinates[1][1])], \
+											[max(self.selectionCoordinates[0][0], self.selectionCoordinates[1][0]), \
+											 max(self.selectionCoordinates[0][1], self.selectionCoordinates[1][1])]): # drag selection
 					ent.setSel(True)
 					if self.selectionCoordinates[0] == self.selectionCoordinates[1]:
 						break
