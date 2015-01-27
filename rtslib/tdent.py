@@ -103,8 +103,8 @@ class tdent():
 								"Barracks.", 1.2))
 				if self.timer == 0:
 					world.entities[0].buttons = [button("Spawn Knight", [50, 650], world.entities[0].addCommand), \
-														button("Spawn Crossbowman", [150, 650], world.entities[0].addCommand), \
-														button("Spawn Battleaxer", [250, 650], world.entities[0].addCommand)]
+												    button("Spawn Crossbowman", [150, 650], world.entities[0].addCommand), \
+													button("Spawn Battleaxer", [250, 650], world.entities[0].addCommand)]
 			elif eventKey == "Spawn Mill":
 				self.spawn(world, eventKey, [0, 20, 0, 0, 3*60], 
 						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
@@ -118,7 +118,7 @@ class tdent():
 								"Worker.", 0))
 				if self.timer == 0:
 					world.entities[-1].buttons = [button("Spawn Barracks", [50, 650], world.entities[-1].addCommand), \
-												   button("Spawn Mill", [150, 650], world.entities[-1].addCommand)]
+												button("Spawn Mill", [150, 650], world.entities[-1].addCommand)]
 		elif self.type == 1.2: # barracks
 			if eventKey == "Spawn Knight":
 				self.spawn(world, eventKey, [10, 10, 0, 1, 1*60], 
@@ -204,3 +204,4 @@ class tdent():
 				world.entities.insert(0, tdent)
 			else:
 				world.entities.append(tdent)
+			

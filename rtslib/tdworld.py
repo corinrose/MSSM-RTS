@@ -9,7 +9,7 @@ class tdworld():
 							   True, 0, sheet("resources/TownHall.png", [160,160]), \
 							   "Town Hall.", 1.1), \
 						tdent(50, 50, 200, 200, \
-							   False, 0, sheet("resources/Wood.png", [80,80]), \
+							   False, 0, sheet("resources/Wood.png", [160,160]), \
 							   "Wood.", 2.2), \
 						tdent(500, 270, 270, 270, \
 							   False, 0, sheet("resources/Gold.png", [80,80]), \
@@ -55,14 +55,11 @@ class tdworld():
 											[max(self.selectionCoordinates[0][0], self.selectionCoordinates[1][0]), \
 											 max(self.selectionCoordinates[0][1], self.selectionCoordinates[1][1])]): # drag selection
 					ent.setSel(True)
-					if self.selectionCoordinates[0] == self.selectionCoordinates[1]:
-						break
 				elif min(self.selectionCoordinates[0][1], self.selectionCoordinates[1][1]) < 720-144: # ui size 
 					ent.setSel(False)
 			for ent2 in self.entities: 
 				if ent.type == 0 and round(ent2.type) == 2: # handles resource gathering
-					if ent2.pos[0] < ent.pos[0] < ent2.pos[0] + ent2.sheet.dim[0] and \
-					   ent2.pos[1] < ent.pos[1] < ent2.pos[1] + ent2.sheet.dim[1]:
+					if ent2.rectangularCollision(ent.pos, [ent.pos[0] + ent.sheet.dim[0], ent.pos[1] + ent.sheet.dim[1]]):
 						ent2.action(self, "") 
 				if (ent.pos[0] - ent2.pos[0])**2 + (ent.pos[1] - ent2.pos[1])**2 > 0 and \
 				      (ent.pos[0] - ent2.pos[0])**2 + (ent.pos[1] - ent2.pos[1])**2 < 20**2: # built-in proximity limit  # handles collision
