@@ -30,7 +30,8 @@ class tdworld():
 		self.selectionCoordinates = [[0,0], [0,0]]
 		self.selecting = False
 		
-		self.entities[0].buttons = [button("Spawn Worker", [50, 650], self.entities[0].addCommand)] # one-time deal
+		self.entities[0].buttons = [button("Spawn Worker", [50, 650], self.entities[0].addCommand), \
+									button("Increase Pop", [150, 650], self.entities[0].addCommand)] # one-time deal
 		
 	def update(self, events):
 		for event in events:

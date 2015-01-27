@@ -15,7 +15,7 @@ class tdent():
 		self.timer = -1 # positive means working, 0 is currently doing a task, -1 is finished
 		self.command = []
 		self.newCommands = []
-		self.UIsprite = [pygame.font.SysFont("monospace", 14).render(UIdesc, 1, (255, 255, 0)), (15, 720 - 144 + 15)] # FONT? 144 is height, 15 is buffer zone
+		self.UIsprite = [pygame.font.Font("resources/fonts/Deutsch.ttf", 14).render(UIdesc, 1, (255, 255, 0)), (15, 720 - 144 + 15)] # FONT? 144 is height, 15 is buffer zone
 		self.buttons = []
 		
 	def draw(self, surface):
@@ -119,6 +119,8 @@ class tdent():
 				if self.timer == 0:
 					world.entities[-1].buttons = [button("Spawn Barracks", [50, 650], world.entities[-1].addCommand), \
 												button("Spawn Mill", [150, 650], world.entities[-1].addCommand)]
+			elif eventKey == "Increase Pop":
+				self.addPop(world, [0, 0, 20, 0])
 		elif self.type == 1.2: # barracks
 			if eventKey == "Spawn Knight":
 				self.spawn(world, eventKey, [10, 10, 0, 1, 1*60], 
@@ -186,6 +188,9 @@ class tdent():
 		world.wood += 1/60.0
 	def addGold(self, world):
 		world.gold += 1/60.0
+	def addPop(self, world, costList):
+		if self.checkCost(costList, world):
+			world.poplimit += 10
 		
 	def transfer(self, world):
 		if world.unitDictionary[self.type] in world.game.availableUnits:
