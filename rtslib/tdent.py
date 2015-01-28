@@ -125,7 +125,7 @@ class tdent():
 			if eventKey == "Spawn Knight":
 				self.spawn(world, eventKey, [10, 10, 0, 1, 1*60], 
 						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
-								 False, 1.0, sheet("resources/Knight.png", [36, 36]), \
+								 False, 1.0, sheet("resources/Knight.png", [40, 40]), \
 								"Knight. Move to gate to transfer to battle.", 3.11))
 			elif eventKey == "Spawn Crossbowman":
 				self.spawn(world, eventKey, [10, 10, 0, 1, 1*60], 

@@ -18,7 +18,7 @@ class ssent():
 		self.health = health
 		self.attack = attack
 		if self.attack["style"]=="ranged":
-			self.attacktimer = self.attack["rate"]*60
+			self.attacktimer = self.attack["delay"]*60
 		
 	def update(self, world, entities):
 		if self.health <= 0:
@@ -28,7 +28,7 @@ class ssent():
 			for ent in entities:
 				if abs(self.dist-ent.dist) < self.width+ent.width and self.dist!=ent.dist:
 					self.dist-=self.speed
-					if self.attack["style"] == "melee":
+					if self.attack["style"] == "melee": #Have melee range instead of attacking on direct contact?
 						if self.team != ent.team:
 							ent.health-=self.attack["power"]
 			self.pos = self.path.calcPos(self.dist)
@@ -44,7 +44,7 @@ class ssent():
 					for ent in entities:
 						if ent.team != self.team:
 							if self.distance(ent.pos) < self.attack["range"]:
-								self.attacktimer = self.attack["rate"]*60
+								self.attacktimer = self.attack["delay"]*60
 								world.projectiles.append(projectile(self.pos, 5, pygame.image.load("resources/arrow.png"), ent, {})) #(self, pos, speed, image, target, properties)
 								break
 		

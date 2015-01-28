@@ -48,9 +48,11 @@ class ssworld():
 		self.spawnqueue=[]
 		
 		#Test stuff
+		self.attacks = loadAttacks("resources/attacks.cfg")
+		self.unitDefs = loadUnits("resources/player/units.cfg")
 		self.testattack = {"style":"melee", "power":0.05}
 		self.testattack2 = {"style":"melee", "power":1}
-		self.testattack3 = {"style":"ranged", "power":10, "range":300, "rate":5}
+		self.testattack3 = {"style":"ranged", "power":10, "range":300, "delay":5}
 		
 	def update(self, events):
 		#Handle events
@@ -153,6 +155,6 @@ class ssworld():
 			
 	def spawnButtonClick(self, button):
 		if self.game.availableUnits[button]>0:
-			self.ssentities.append(ssent(self.cid, 0.0, 0.035, 0.3, sheet("resources/Knight.png", [36,36]), self.path, True, 100, self.testattack2))
+			self.ssentities.append(ssent(self.cid, 0.0, self.unitDefs[button]["speed"], self.unitDefs[button]["width"], sheet(self.unitDefs[button]["image"], [40,40]), self.path, True, self.unitDefs[button]["health"], self.attacks[self.unitDefs[button]["attack"]]))
 			self.cid += 1
 			self.game.availableUnits[button]-=1

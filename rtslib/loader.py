@@ -81,3 +81,54 @@ def loadSave(saveFile):
 	f = open(saveFile, "r")
 	con = f.read().split("\n")
 	return con
+	
+def loadAttacks(fileName):
+	f = open(fileName, "r")
+	con = f.read().split("\n")
+	f.close()
+	attacks = {}
+	for line in con:
+		if line[0]!="#":
+			sl = line.split(" ")
+			attack = {}
+			if sl[1] == "melee":
+				attack["style"] = "melee"
+				attack["delay"] = float(sl[2])
+				attack["damage"] = float(sl[3])
+				attack["power"] = ((1/attack["delay"])*attack["damage"])/60 #Later on I won't need this property when I make attacks discrete events
+				
+			if sl[1] == "ranged":
+				attack["style"] = "ranged"
+				attack["delay"] = float(sl[2])
+				attack["range"] = float(sl[3])
+				attack["speed"] = float(sl[4])
+				attack["arc"] = bool(int(sl[5]))
+				attack["multitarget"] = bool(float(sl[6]))
+				attack["spreadrange"] = float(sl[6])
+				attack["image"] = sl[7]
+				if sl[8] == "damage":
+					attack["onhit"] = "damage"
+					attack["damage"] = float(sl[9])
+			attacks[sl[0]] = attack
+	for a in attacks:
+		print attacks[a]
+	return attacks
+	
+def loadUnits(fileName):
+	f = open(fileName, "r")
+	con = f.read().split("\n")
+	f.close()
+	units = {}
+	for line in con:
+		if line[0]!="#":
+			sl = line.split(" ")
+			unit = {}
+			unit["image"] = sl[1]
+			unit["attack"] = sl[2]
+			unit["health"] = float(sl[3])
+			unit["speed"] = float(sl[4])
+			unit["width"] = float(sl[5])
+			units[sl[0]] = unit
+	for unit in units:
+		print units[unit]
+	return units
