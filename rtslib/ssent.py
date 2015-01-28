@@ -28,6 +28,7 @@ class ssent():
 			for ent in entities:
 				if abs(self.dist-ent.dist) < self.width+ent.width and self.dist!=ent.dist:
 					self.dist-=self.speed
+					print "HIT"
 					if self.attack["style"] == "melee": #Have melee range instead of attacking on direct contact?
 						if self.team != ent.team:
 							ent.health-=self.attack["power"]
@@ -36,7 +37,7 @@ class ssent():
 			if self.counter == 8:
 				self.sheet.nextImage()
 				self.counter = 0
-			if self.dist < 0 or self.dist > 100:
+			if self.dist < 0 or self.dist > self.path.length:
 				self.remove = True
 			if self.attack["style"]=="ranged": #{"style":"ranged", "power":10, "range":100, "rate":5}
 				self.attacktimer -= 1

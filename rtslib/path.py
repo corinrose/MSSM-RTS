@@ -1,36 +1,31 @@
 import pygame, math
 
 class path():
-	def __init__(self, points, distMin = 0.0, distMax=100.0):
+	def __init__(self, points):
 		self.points = points
-		self.distRange = [distMin, distMax]
 		self.lengths = []
 		self.length = 0.0
+		self.lengthTotals = []
 		for p in range(0, len(self.points)-1):
 			d = math.sqrt(((self.points[p+1][0]-self.points[p][0])**2)+((self.points[p+1][1]-self.points[p][1])**2))
 			self.lengths.append(d)
 			self.length+=d
-		self.distPercents = []
-		for length in self.lengths:
-			self.distPercents.append(length/self.length)
+			self.lengthTotals.append(self.length)
+		self.distRange = [0, self.length]
+		print self.lengthTotals
 
 	def calcPos(self, dist):
-		if dist > self.distRange[1]:
-			dist = self.distRange[1]
-		if dist < self.distRange[0]:
-			dist = self.distRange[0]
-		along = (dist-self.distRange[0])/(self.distRange[1]-self.distRange[0])-0.01 #Remove rounding magic please
-		tot = 0
-		for t in range(0, len(self.distPercents)):
-			tot+=self.distPercents[t]
-			if tot>=along:
-				min = tot - self.distPercents[t]
-				max = tot
-				break
-		alongPercent = (along-min)/(max-min)
-		dx = self.points[t+1][0]-self.points[t][0]
-		dy = self.points[t+1][1]-self.points[t][1]
-		return [self.points[t][0]+(dx*alongPercent),self.points[t][1]+(dy*alongPercent)]
+		if dist > self.length:
+			dist = self.length
+		if dist < 0:
+			dist = 0
+		seg = 0
+		while dist>self.lengthTotals[seg]:
+			seg+=1
+		alongSeg = 1-((self.lengthTotals[seg]-dist)/self.lengths[seg])
+		dx = self.points[seg+1][0]-self.points[seg][0]
+		dy = self.points[seg+1][1]-self.points[seg][1]
+		return [self.points[seg][0]+(dx*alongSeg),self.points[seg][1]+(dy*alongSeg)]
 		
 	def dispInfo(self):
 		print "Path:"

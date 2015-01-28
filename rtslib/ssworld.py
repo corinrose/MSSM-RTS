@@ -100,7 +100,7 @@ class ssworld():
 			if self.script[self.currentop]["command"] == "spawn" or self.script[self.currentop]["command"] == "spawnwave": #Spawning enemies, or waiting between spawns in a "wave"
 				if self.currentwavespawned < len(self.spawnqueue):
 					if self.scripttimer == 0:
-						self.ssentities.append(ssent(self.cid, 100.0, -float(self.units[self.spawnqueue[self.currentwavespawned]]["properties"][1]), 0.3, sheet("resources/badstick.png", [32,32]), self.path, False, float(self.units[self.spawnqueue[self.currentwavespawned]]["properties"][0]), self.testattack))
+						self.ssentities.append(ssent(self.cid, self.path.length-1, -float(self.units[self.spawnqueue[self.currentwavespawned]]["properties"][1]), 20, sheet("resources/badstick.png", [32,32]), self.path, False, float(self.units[self.spawnqueue[self.currentwavespawned]]["properties"][0]), self.testattack))
 						self.cid += 1
 						self.currentwavespawned += 1
 						if self.script[self.currentop]["command"] == "spawn":
