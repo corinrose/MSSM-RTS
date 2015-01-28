@@ -2,8 +2,11 @@ from distutils.core import setup
 
 import py2exe, os, sys, shutil, pygame
 
+for p in sys.path:
+	if p[-13:] == "site-packages":
+		sppath = p
 try:
-	shutil.rmtree("D:\Python27\Lib\site-packages/rtslib")
+	shutil.rmtree(sppath+"/rtslib")
 except:
 	print "RTSLIB not removed"
 try:
@@ -12,7 +15,7 @@ except:
 	print "Build folder not removed"
 os.makedirs("../../Build")
 
-shutil.copytree("../rtslib", "D:\Python27\Lib\site-packages/rtslib")
+shutil.copytree("../rtslib", sppath+"/rtslib")
 
 sys.argv.append("py2exe")
 
