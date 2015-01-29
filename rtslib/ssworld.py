@@ -12,8 +12,8 @@ class ssworld():
 		#UI Elements
 		self.bottombar = pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha()
 		self.topbar = pygame.image.load("resources/ui/GameTopBar.png").convert_alpha()
-		self.unitImages = [pygame.image.load("resources/Knight.png").convert_alpha(), pygame.image.load("resources/Crossbowman.png").convert_alpha(),
-						   pygame.image.load("resources/BattleAxer.png").convert_alpha()]
+		self.unitImages = [pygame.image.load("resources/player/Knight.png").convert_alpha(), pygame.image.load("resources/player/Crossbowman.png").convert_alpha(),
+						   pygame.image.load("resources/player/BattleAxer.png").convert_alpha()]
 		self.unitNumbers = ["knight", "crossbow", "battleaxe"]
 		self.smallbuttonset = [pygame.image.load("resources/buttons/smallidle.png").convert_alpha(),
 							pygame.image.load("resources/buttons/smallhover.png").convert_alpha(),

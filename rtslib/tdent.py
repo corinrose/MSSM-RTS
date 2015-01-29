@@ -114,7 +114,7 @@ class tdent():
 			if eventKey == "Spawn Worker":
 				self.spawn(world, eventKey, [10, 0, 0, 1, 1*60], 
 						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
-								False, 1.0, sheet("resources/worker.png", [40, 40]), \
+								False, 1.0, sheet("resources/player/worker.png", [40, 40]), \
 								"Worker.", 0))
 				if self.timer == 0:
 					world.entities[-1].buttons = [button("Spawn Barracks", [50, 650], world.entities[-1].addCommand), \
@@ -125,17 +125,17 @@ class tdent():
 			if eventKey == "Spawn Knight":
 				self.spawn(world, eventKey, [10, 10, 0, 1, 1*60], 
 						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
-								 False, 1.0, sheet("resources/Knight.png", [40, 40]), \
+								 False, 1.0, sheet("resources/player/Knight.png", [40, 40]), \
 								"Knight. Move to gate to transfer to battle.", 3.11))
 			elif eventKey == "Spawn Crossbowman":
 				self.spawn(world, eventKey, [10, 10, 0, 1, 1*60], 
 						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
-								 False, 1.0, sheet("resources/Crossbowman.png", [40, 40]), \
+								 False, 1.0, sheet("resources/player/Crossbowman.png", [40, 40]), \
 								"Crossbowman. Move to gate to transfer to battle.", 3.12))
 			elif eventKey == "Spawn Battleaxer":
 				self.spawn(world, eventKey, [10, 10, 0, 1, 1*60], 
 						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
-								 False, 1.0, sheet("resources/Battleaxer.png", [40, 40]), \
+								 False, 1.0, sheet("resources/player/Battleaxer.png", [40, 40]), \
 								"Crossbowman. Move to gate to transfer to battle.", 3.13))
 		elif int(self.type) == 2:
 			if eventKey == "":
