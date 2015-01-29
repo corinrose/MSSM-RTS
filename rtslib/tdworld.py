@@ -13,7 +13,7 @@ class tdworld():
 							   "Wood.", 2.2), \
 						tdent(500, 270, 270, 270, \
 							   False, 0, sheet("resources/Gold.png", [80,80]), \
-							   "Gold.", 2.3)]
+							   "Gold.", 2.3)] 
 		self.poplimit = 10.0
 		self.pop = 0.0
 		self.food = 100.0

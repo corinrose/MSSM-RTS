@@ -3,7 +3,7 @@ from rtslib.sheet import *
 from rtslib.button import *
 
 class tdent():
-	def __init__(self, posX, posY, desX, desY, isSelected, speed, sheet, UIdesc, type, buttons=[]):
+	def __init__(self, posX, posY, desX, desY, isSelected, speed, sheet, UIdesc, type): #,buttons=[]):
 		self.pos = [posX, posY]
 		self.des = [desX, desY]
 		self.isSelected = isSelected 
@@ -31,7 +31,7 @@ class tdent():
 			self.sheet.setFlipped(False)
 		if self.isSelected:
 			self.drawSelectionMarker(surface)
-			if int(self.type) != 2:
+			if int(self.type) != 2: # not resource
 				self.drawDestinationMarker(surface)
 		self.drawWorkingMarker(surface)
 		
@@ -101,11 +101,9 @@ class tdent():
 				self.spawn(world, eventKey, [0, 20, 0, 1, 3*60], 
 						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
 								False, 0, sheet("resources/buildings/Barracks.png", [160, 160]), \
-								"Barracks.", 1.2))
-				if self.timer == 0:
-					world.entities[0].buttons = [button("Spawn Knight", [50, 650], world.entities[0].addCommand), \
-												    button("Spawn Crossbowman", [150, 650], world.entities[0].addCommand), \
-													button("Spawn Battleaxer", [250, 650], world.entities[0].addCommand)]
+								"Barracks.", 1.2), [["Spawn Knight", [50, 650]],\
+													["Spawn Crossbowman", [150, 650]],\
+													["Spawn Battleaxer", [250, 650]]])
 			elif eventKey == "Spawn Mill":
 				self.spawn(world, eventKey, [0, 20, 0, 0, 3*60], 
 						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
@@ -116,10 +114,7 @@ class tdent():
 				self.spawn(world, eventKey, [10, 0, 0, 1, 1*60], 
 						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
 								False, 1.0, sheet("resources/player/worker.png", [40, 40]), \
-								"Worker.", 0))
-				if self.timer == 0:
-					world.entities[-1].buttons = [button("Spawn Barracks", [50, 650], world.entities[-1].addCommand), \
-												button("Spawn Mill", [150, 650], world.entities[-1].addCommand)]
+								"Worker.", 0), [["Spawn Barracks", [50, 650]], ["Spawn Mill", [150, 650]]])
 			elif eventKey == "Increase Pop":
 				self.addPop(world, [0, 0, 20, 0])
 		elif self.type == 1.2: # barracks
@@ -200,7 +195,7 @@ class tdent():
 			world.game.availableUnits[world.unitDictionary[self.type]] = 1
 		world.entities.remove(self)
 		
-	def spawn(self, world, eventKey, costList, tdent):
+	def spawn(self, world, eventKey, costList, tdent, buttonSpecs=[]):
 		if self.timer != 0:
 			if tdent.speed > 0 or self.checkSize(tdent, world):
 				if self.checkCost(costList, world):
@@ -208,6 +203,9 @@ class tdent():
 		elif self.timer == 0:
 			if self.speed != 0:
 				world.entities.insert(0, tdent)
+				for buttonSpec in buttonSpecs:
+					world.entities[0].buttons.append(button(buttonSpec[0], buttonSpec[1], world.entities[0].addCommand))
 			else:
 				world.entities.append(tdent)
-			
+				for buttonSpec in buttonSpecs:
+					world.entities[-1].buttons.append(button(buttonSpec[0], buttonSpec[1], world.entities[-1].addCommand))
