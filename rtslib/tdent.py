@@ -31,7 +31,8 @@ class tdent():
 			self.sheet.setFlipped(False)
 		if self.isSelected:
 			self.drawSelectionMarker(surface)
-			self.drawDestinationMarker(surface)
+			if int(self.type) != 2:
+				self.drawDestinationMarker(surface)
 		self.drawWorkingMarker(surface)
 		
 	def drawUIText(self, surface):
