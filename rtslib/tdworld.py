@@ -29,6 +29,7 @@ class tdworld():
 		self.game = game 
 		self.selectionCoordinates = [[0,0], [0,0]]
 		self.selecting = False
+		### self.building = False ###
 		
 		self.entities[0].buttons = [button("Spawn Worker", [50, 650], self.entities[0].addCommand), \
 									button("Increase Pop", [150, 650], self.entities[0].addCommand)] # one-time deal
@@ -40,6 +41,7 @@ class tdworld():
 					self.selecting = True 
 					self.selectionCoordinates[0] = pygame.mouse.get_pos()
 				elif event.button == 3: # right-click to send to destination
+					### self.building = False ###
 					for ent in self.entities:
 						if ent.isSelected:
 							ent.setDes(pygame.mouse.get_pos())

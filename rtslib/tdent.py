@@ -116,7 +116,8 @@ class tdent():
 								False, 1.0, sheet("resources/player/worker.png", [40, 40]), \
 								"Worker.", 0), [["Spawn Barracks", [50, 650]], ["Spawn Mill", [150, 650]]])
 			elif eventKey == "Increase Pop":
-				self.addPop(world, [0, 0, 20, 0])
+				self.addResource(world, [0, 0,0, 10], [0,0,20,0])
+				self.addResource(world, [0, 0,0, 10], [0,0,20,0])
 		elif self.type == 1.2: # barracks
 			if eventKey == "Spawn Knight":
 				self.spawn(world, eventKey, [10, 10, 0, 1, 1*60], 
@@ -136,11 +137,11 @@ class tdent():
 		elif int(self.type) == 2:
 			if eventKey == "":
 				if self.type == 2.1:  # 2.1 is food
-					self.addFood(world)
-				elif self.type == 2.2: # 2.2 is food
-					self.addWood(world)
-				elif self.type == 2.3: # 2.3 is food
-					self.addGold(world)
+					self.addResource(world, [1/60.0, 0,0,0], [0,0,0,0])
+				elif self.type == 2.2: # 2.2 is wood
+					self.addResource(world, [0, 1/60.0,0,0], [0,0,0,0])
+				elif self.type == 2.3: # 2.3 is gold
+					self.addResource(world, [0, 0,1/60.0,0], [0,0,0,0])
 		elif int(self.type) == 3:
 			if eventKey == "":
 				self.transfer(world)
@@ -178,15 +179,12 @@ class tdent():
 		else:
 			return True
 			
-	def addFood(self, world):
-		world.food += 1/60.0
-	def addWood(self, world):
-		world.wood += 1/60.0
-	def addGold(self, world):
-		world.gold += 1/60.0
-	def addPop(self, world, costList):
+	def addResource(self, world, resourceList, costList):
 		if self.checkCost(costList, world):
-			world.poplimit += 10
+			world.food += resourceList[0]
+			world.wood += resourceList[1]
+			world.gold += resourceList[2]
+			world.poplimit += resourceList[3]
 		
 	def transfer(self, world):
 		if world.unitDictionary[self.type] in world.game.availableUnits:
@@ -195,7 +193,12 @@ class tdent():
 			world.game.availableUnits[world.unitDictionary[self.type]] = 1
 		world.entities.remove(self)
 		
+	### def build(self, world, eventKey, costList, tdent): ###
+		
 	def spawn(self, world, eventKey, costList, tdent, buttonSpecs=[]):
+		font_size = 12 # default font size
+		default_font = "resources/fonts/Deutsch.ttf" # default button font
+		images=[generateBasicButton([75,25],[200,200,200]),generateBasicButton([75,25],[150,150,150]),generateBasicButton([75,25],[100,100,100])] # default 
 		if self.timer != 0:
 			if tdent.speed > 0 or self.checkSize(tdent, world):
 				if self.checkCost(costList, world):
@@ -204,8 +207,8 @@ class tdent():
 			if self.speed != 0:
 				world.entities.insert(0, tdent)
 				for buttonSpec in buttonSpecs:
-					world.entities[0].buttons.append(button(buttonSpec[0], buttonSpec[1], world.entities[0].addCommand))
+					world.entities[0].buttons.append(button(buttonSpec[0], buttonSpec[1], world.entities[0].addCommand, images, default_font, buttonSpec[0], font_size))
 			else:
 				world.entities.append(tdent)
 				for buttonSpec in buttonSpecs:
-					world.entities[-1].buttons.append(button(buttonSpec[0], buttonSpec[1], world.entities[-1].addCommand))
+					world.entities[-1].buttons.append(button(buttonSpec[0], buttonSpec[1], world.entities[-1].addCommand, images, default_font, buttonSpec[0], font_size))
