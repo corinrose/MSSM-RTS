@@ -4,6 +4,7 @@ from rtslib.path import *
 from rtslib.sheet import *
 from rtslib.loader import *
 from rtslib.button import *
+from rtslib.base import *
 
 import random
 
@@ -47,9 +48,13 @@ class ssworld():
 		self.currentwavespawned=0
 		self.spawnqueue=[]
 		
-		#Test stuff
+		#Unit Definitions
 		self.attacks = loadAttacks("resources/attacks.cfg")
 		self.unitDefs = loadUnits("resources/player/units.cfg")
+		#Player unit spawning
+		self.playerQueue = []
+		
+		#Test Stuff
 		self.testattack = {"style":"melee", "power":0.05}
 		self.testattack2 = {"style":"melee", "power":1}
 		self.testattack3 = {"style":"ranged", "power":10, "range":300, "delay":5}
@@ -95,6 +100,14 @@ class ssworld():
 			if pro.remove:
 				self.projectiles.remove(pro)
 				
+		#Spawn a player unit if you can
+		if len(self.playerQueue)>0:
+			fir = self.playerQueue[0]
+			if self.checkClear([-3, self.unitDefs[fir]["width"]+3], 1):
+				self.playerQueue = self.playerQueue[1:]
+				self.ssentities.append(ssent(self.cid, 0.0, self.unitDefs[fir]["speed"], self.unitDefs[fir]["width"], sheet(self.unitDefs[fir]["image"], [40,40]), self.path, True, self.unitDefs[fir]["health"], self.attacks[self.unitDefs[fir]["attack"]]))
+				self.cid += 1
+				
 		#Handle current operation
 		if self.scriptstarted:
 			if self.script[self.currentop]["command"] == "spawn" or self.script[self.currentop]["command"] == "spawnwave": #Spawning enemies, or waiting between spawns in a "wave"
@@ -115,7 +128,14 @@ class ssworld():
 				self.scripttimer -= 1
 				if self.scripttimer == 0:
 					self.nextOperation();
-				
+	
+	def checkClear(self, distRange, team): #team: 0=bad 1=good 2=either
+		for unit in self.ssentities:
+			if checkWithin(unit.dist, distRange) or checkWithin(unit.dist-unit.width, distRange) or checkWithin(unit.dist+unit.width, distRange):
+				if unit.team == team or team == 2:
+					return False
+		return True
+	
 	def nextOperation(self):
 		self.currentop += 1
 		if self.script[self.currentop]["command"] == "repeat":
@@ -155,6 +175,5 @@ class ssworld():
 			
 	def spawnButtonClick(self, button):
 		if self.game.availableUnits[button]>0:
-			self.ssentities.append(ssent(self.cid, 0.0, self.unitDefs[button]["speed"], self.unitDefs[button]["width"], sheet(self.unitDefs[button]["image"], [40,40]), self.path, True, self.unitDefs[button]["health"], self.attacks[self.unitDefs[button]["attack"]]))
-			self.cid += 1
+			self.playerQueue.append(button)
 			self.game.availableUnits[button]-=1

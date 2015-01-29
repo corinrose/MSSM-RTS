@@ -28,7 +28,6 @@ class ssent():
 			for ent in entities:
 				if abs(self.dist-ent.dist) < self.width+ent.width and self.dist!=ent.dist:
 					self.dist-=self.speed
-					print "HIT"
 					if self.attack["style"] == "melee": #Have melee range instead of attacking on direct contact?
 						if self.team != ent.team:
 							ent.health-=self.attack["power"]
