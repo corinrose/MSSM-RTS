@@ -99,7 +99,7 @@ class tdent():
 			if eventKey == "Spawn Barracks":
 				self.spawn(world, eventKey, [0, 20, 0, 1, 3*60], 
 						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
-								False, 0, sheet("resources/Barracks.png", [160, 160]), \
+								False, 0, sheet("resources/buildings/Barracks.png", [160, 160]), \
 								"Barracks.", 1.2))
 				if self.timer == 0:
 					world.entities[0].buttons = [button("Spawn Knight", [50, 650], world.entities[0].addCommand), \
@@ -108,7 +108,7 @@ class tdent():
 			elif eventKey == "Spawn Mill":
 				self.spawn(world, eventKey, [0, 20, 0, 0, 3*60], 
 						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
-								False, 0, sheet("resources/Food.png", [160, 160]), \
+								False, 0, sheet("resources/buildings/Food.png", [160, 160]), \
 								"Mill.", 2.1))
 		elif self.type == 1.1: # town hall
 			if eventKey == "Spawn Worker":

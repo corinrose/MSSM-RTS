@@ -6,7 +6,7 @@ from rtslib.button import *
 class tdworld():
 	def __init__(self, game):
 		self.entities = [tdent(400, 400, 400, 400, \
-							   True, 0, sheet("resources/TownHall.png", [160,160]), \
+							   True, 0, sheet("resources/buildings/TownHall.png", [160,160]), \
 							   "Town Hall.", 1.1), \
 						tdent(50, 50, 200, 200, \
 							   False, 0, sheet("resources/Wood.png", [160,160]), \
