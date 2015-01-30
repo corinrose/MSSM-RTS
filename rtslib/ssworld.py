@@ -36,6 +36,7 @@ class ssworld():
 		#Level-specific things
 		self.cfg = loadCFG(self.location+"/config.cfg")
 		self.background = pygame.image.load(self.location+"/bg.png").convert_alpha()
+		self.foreground = pygame.image.load(self.location+"/fg.png").convert_alpha()
 		self.width = self.background.get_width()
 		self.path = path(self.cfg["pathpoints"])
 		#Script related variables
@@ -165,6 +166,7 @@ class ssworld():
 			ent.draw(surface, self.cpos)
 		for pro in self.projectiles:
 			pro.draw(surface, self.cpos)
+		surface.blit(self.foreground, [-self.cpos,0])
 		surface.blit(self.bottombar, [0,650])
 		surface.blit(self.topbar, [0,0])
 		for button in self.buttons:

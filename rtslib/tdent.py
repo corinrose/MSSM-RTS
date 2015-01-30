@@ -101,9 +101,9 @@ class tdent():
 				self.spawn(world, eventKey, [0, 20, 0, 1, 3*60], 
 						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
 								False, 0, sheet("resources/buildings/Barracks.png", [160, 160]), \
-								"Barracks.", 1.2), [["Spawn Knight", [50, 650]],\
-													["Spawn Crossbowman", [150, 650]],\
-													["Spawn Battleaxer", [250, 650]]])
+								"Barracks.", 1.2), [["Spawn Knight", [125, 670]],\
+													["Spawn Crossbowman", [235, 670]],\
+													["Spawn Battleaxer", [345, 670]]])
 			elif eventKey == "Spawn Mill":
 				self.spawn(world, eventKey, [0, 20, 0, 0, 3*60], 
 						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
@@ -114,7 +114,7 @@ class tdent():
 				self.spawn(world, eventKey, [10, 0, 0, 1, 1*60], 
 						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
 								False, 1.0, sheet("resources/player/worker.png", [40, 40]), \
-								"Worker.", 0), [["Spawn Barracks", [50, 650]], ["Spawn Mill", [150, 650]]])
+								"Worker.", 0), [["Spawn Barracks", [125, 670]], ["Spawn Mill", [235, 670]]])
 			elif eventKey == "Increase Pop":
 				self.addResource(world, [0, 0,0, 10], [0,0,20,0])
 				self.addResource(world, [0, 0,0, 10], [0,0,20,0])
@@ -198,7 +198,8 @@ class tdent():
 	def spawn(self, world, eventKey, costList, tdent, buttonSpecs=[]):
 		font_size = 12 # default font size
 		default_font = "resources/fonts/Deutsch.ttf" # default button font
-		images=[generateBasicButton([75,25],[200,200,200]),generateBasicButton([75,25],[150,150,150]),generateBasicButton([75,25],[100,100,100])] # default 
+		images=[pygame.image.load("resources/buttons/smallidle.png").convert_alpha(), pygame.image.load("resources/buttons/smallhover.png").convert_alpha(), pygame.image.load("resources/buttons/smallclick.png").convert_alpha()] #Please don't load this every spawn... we need to restructure this!
+		#[generateBasicButton([75,25],[200,200,200]),generateBasicButton([75,25],[150,150,150]),generateBasicButton([75,25],[100,100,100])] # default 
 		if self.timer != 0:
 			if tdent.speed > 0 or self.checkSize(tdent, world):
 				if self.checkCost(costList, world):

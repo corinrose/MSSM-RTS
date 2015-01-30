@@ -20,7 +20,7 @@ class tdworld():
 		self.wood = 50.0
 		self.gold = 0.0
 		self.topBarText = pygame.font.Font("resources/fonts/Deutsch.ttf", 14) # text for top bar
-		self.UIelements = [[pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha(), (1280 - pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha().get_width(), 720 - pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha().get_height())], \
+		self.UIelements = [[pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha(), (0, 650)], \
 						   [pygame.image.load("resources/ui/GameTopBar.png").convert_alpha(), (0,0)], \
 						   [], \
 						   [pygame.image.load("resources/ui/goldCoin.png"), (325, 10)]] # defined in update
@@ -30,9 +30,11 @@ class tdworld():
 		self.selectionCoordinates = [[0,0], [0,0]]
 		self.selecting = False
 		### self.building = False ###
-		
-		self.entities[0].buttons = [button("Spawn Worker", [50, 650], self.entities[0].addCommand), \
-									button("Increase Pop", [150, 650], self.entities[0].addCommand)] # one-time deal
+		self.smallbuttonset = [pygame.image.load("resources/buttons/smallidle.png").convert_alpha(),
+							   pygame.image.load("resources/buttons/smallhover.png").convert_alpha(),
+							   pygame.image.load("resources/buttons/smallclick.png").convert_alpha()]
+		self.entities[0].buttons = [button("Spawn Worker", [125, 670], self.entities[0].addCommand, self.smallbuttonset), \
+									button("Increase Pop", [235, 670], self.entities[0].addCommand, self.smallbuttonset)] # one-time deal
 		
 	def update(self, events):
 		for event in events:
