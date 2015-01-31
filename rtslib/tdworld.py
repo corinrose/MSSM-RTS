@@ -22,10 +22,11 @@ class tdworld():
 		self.topBarText = pygame.font.Font("resources/fonts/Deutsch.ttf", 14) # text for top bar
 		self.UIelements = [[pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha(), (0, 650)], 
 						   [pygame.image.load("resources/ui/GameTopBar.png").convert_alpha(), (0,0)], 
-						   [pygame.image.load("resources/ui/gold.png"), (305, 8)],
-						   [pygame.image.load("resources/ui/population.png"), (5, 5)],
-						   [pygame.image.load("resources/ui/food.png"), (105, 10)],
-						   [pygame.image.load("resources/ui/wood.png"), (205, 8)]
+						   [], #This is gross. We need to change this...
+						   [pygame.image.load("resources/ui/population.png").convert_alpha(), (5, 5)],
+						   [pygame.image.load("resources/ui/food.png").convert_alpha(), (105, 10)],
+						   [pygame.image.load("resources/ui/wood.png").convert_alpha(), (205, 8)],
+						   [pygame.image.load("resources/ui/gold.png").convert_alpha(), (305, 8)]
 						   ] # defined in update
 		self.background = pygame.image.load("resources/GameGrass.png").convert_alpha()
 		self.unitDictionary = {3.11:"knight", 3.12:"crossbow", 3.13:"battleaxe"} # will eventually be a config thing
