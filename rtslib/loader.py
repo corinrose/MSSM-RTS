@@ -25,6 +25,7 @@ def loadCFG(filename):
 	uend = lines.index("</units>")
 	unitlines = lines[ustart+1:uend]
 	units = []
+	gates = []
 	boss = {}
 	for line in unitlines:
 		sep = line.split(" ")
@@ -33,10 +34,16 @@ def loadCFG(filename):
 			units[-1]["id"] = int(sep[1])
 			units[-1]["type"] = sep[2]
 			units[-1]["properties"] = sep[3:]
+		if sep[0] == "gate":
+			gates.append({})
+			gates[-1]["id"] = int(sep[1])
+			gates[-1]["type"] = sep[2]
+			gates[-1]["distance"] = float(sep[3])
 		if sep[0] == "boss":
 			boss["type"] = sep[1]
 			boss["properties"] = sep[2:]
 	cfg["units"] = units
+	cfg["gates"] = gates
 	cfg["boss"] = boss
 	#Wave definitions
 	wstart = lines.index("<waves>")
@@ -110,8 +117,6 @@ def loadAttacks(fileName):
 					attack["onhit"] = "damage"
 					attack["damage"] = float(sl[9])
 			attacks[sl[0]] = attack
-	for a in attacks:
-		print attacks[a]
 	return attacks
 	
 def loadUnits(fileName):
@@ -129,6 +134,4 @@ def loadUnits(fileName):
 			unit["speed"] = float(sl[4])
 			unit["width"] = float(sl[5])
 			units[sl[0]] = unit
-	for unit in units:
-		print units[unit]
 	return units

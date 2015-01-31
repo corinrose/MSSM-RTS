@@ -20,10 +20,13 @@ class tdworld():
 		self.wood = 50.0
 		self.gold = 0.0
 		self.topBarText = pygame.font.Font("resources/fonts/Deutsch.ttf", 14) # text for top bar
-		self.UIelements = [[pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha(), (0, 650)], \
-						   [pygame.image.load("resources/ui/GameTopBar.png").convert_alpha(), (0,0)], \
-						   [], \
-						   [pygame.image.load("resources/ui/goldCoin.png"), (325, 10)]] # defined in update
+		self.UIelements = [[pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha(), (0, 650)], 
+						   [pygame.image.load("resources/ui/GameTopBar.png").convert_alpha(), (0,0)], 
+						   [pygame.image.load("resources/ui/gold.png"), (305, 8)],
+						   [pygame.image.load("resources/ui/population.png"), (5, 5)],
+						   [pygame.image.load("resources/ui/food.png"), (105, 10)],
+						   [pygame.image.load("resources/ui/wood.png"), (205, 8)]
+						   ] # defined in update
 		self.background = pygame.image.load("resources/GameGrass.png").convert_alpha()
 		self.unitDictionary = {3.11:"knight", 3.12:"crossbow", 3.13:"battleaxe"} # will eventually be a config thing
 		self.game = game 
@@ -81,10 +84,10 @@ class tdworld():
 					ent2.pos[0] -= ent2.speed*xDis/Dis 
 					ent2.pos[1] -= ent2.speed*yDis/Dis
 		self.gold += self.pop * 10.0 / 3600.0 # 10 gold per min per pop - gold trickle based on population
-		self.UIelements[2] = [self.topBarText.render(     "pop: " + str(int(self.pop)) + "/" + str(int(self.poplimit)) + \
-													"      food: " + str(int(self.food)) + \
-													"      wood: " + str(int(self.wood)) + \
-													"            " + str(int(self.gold)), 1, (255,255,0)), (10, 10)] # update resource UI
+		self.UIelements[2] = [self.topBarText.render("    " + str(int(self.pop)) + "/" + str(int(self.poplimit)) + \
+													"         " + str(int(self.food)) + \
+													"           " + str(int(self.wood)) + \
+													"           " + str(int(self.gold)), 1, (255,255,0)), (10, 15)] # update resource UI. We need to split this text up into separate lines for different numbers as things are having spacing problems
 	
 	def draw(self, surface):
 		surface.blit(self.background, (0,0)) # draw background

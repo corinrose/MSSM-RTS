@@ -2,7 +2,7 @@ import pygame
 from rtslib.projectile import *
 
 class ssent():
-	def __init__(self, id, dist, speed, width, sheet, path, team, health, attack):
+	def __init__(self, id, dist, speed, width, sheet, path, team, health, attack, teamPassthrough=False):
 		self.id = id
 		self.dist = dist
 		self.speed = speed
@@ -17,6 +17,7 @@ class ssent():
 		self.maxhealth = health
 		self.health = health
 		self.attack = attack
+		self.teamPassthrough = teamPassthrough
 		if self.attack["style"]=="ranged":
 			self.attacktimer = self.attack["delay"]*60
 		
@@ -26,18 +27,22 @@ class ssent():
 		else:
 			self.dist+=self.speed
 			for ent in entities:
-				if abs(self.dist-ent.dist) < self.width+ent.width and self.dist!=ent.dist:
-					self.dist-=self.speed
-					if self.attack["style"] == "melee": #Have melee range instead of attacking on direct contact?
-						if self.team != ent.team:
-							ent.health-=self.attack["power"]
+				if abs(self.dist-ent.dist) < self.width+ent.width and self.id!=ent.id:
+					if not (self.team == ent.team and ent.teamPassthrough):
+						self.dist-=self.speed
+						if self.attack["style"] == "melee": #Have melee range instead of attacking on direct contact?
+							if self.team != ent.team:
+								ent.health-=self.attack["power"]
 			self.pos = self.path.calcPos(self.dist)
+			#Update spritesheet image
 			self.counter+=1
 			if self.counter == 8:
 				self.sheet.nextImage()
 				self.counter = 0
+			#Die if at the ends of the path
 			if self.dist < 0 or self.dist > self.path.length:
 				self.remove = True
+			#Do a ranged attack if we have one	
 			if self.attack["style"]=="ranged": #{"style":"ranged", "power":10, "range":100, "rate":5}
 				self.attacktimer -= 1
 				if self.attacktimer <= 0:
@@ -55,7 +60,6 @@ class ssent():
 		return math.sqrt(((pos[0]-self.pos[0])**2)+((pos[1]-self.pos[1])**2))
 		
 	def draw(self, surface, cpos):
-		#pygame.draw.circle(surface, [0,0,255], [int(self.pos[0]),int(self.pos[1])], 3, 0)
 		surface.blit(self.sheet.getImage(), [self.pos[0]-cpos-(self.sheet.dim[0]/2), self.pos[1]-self.sheet.dim[1]])
 		if self.health!=self.maxhealth:
 			pygame.draw.rect(surface, [255,0,0], [self.pos[0]-((self.sheet.dim[0])/2)-cpos, self.pos[1]-self.sheet.dim[1]-5-2, self.sheet.dim[0], 5], 0) 

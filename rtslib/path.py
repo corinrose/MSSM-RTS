@@ -12,7 +12,6 @@ class path():
 			self.length+=d
 			self.lengthTotals.append(self.length)
 		self.distRange = [0, self.length]
-		print self.lengthTotals
 
 	def calcPos(self, dist):
 		if dist > self.length:
