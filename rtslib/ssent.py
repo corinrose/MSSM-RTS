@@ -25,17 +25,20 @@ class ssent():
 		if self.health <= 0:
 				self.remove = True
 		else:
+			hitThisFrame = False
 			self.dist+=self.speed
 			for ent in entities:
 				if abs(self.dist-ent.dist) < self.width+ent.width and self.id!=ent.id:
 					if not (self.team == ent.team and ent.teamPassthrough):
 						self.dist-=self.speed
+						hitThisFrame = True
 						if self.attack["style"] == "melee": #Have melee range instead of attacking on direct contact?
 							if self.team != ent.team:
 								ent.health-=self.attack["power"]
 			self.pos = self.path.calcPos(self.dist)
 			#Update spritesheet image
-			self.counter+=1
+			if not hitThisFrame:
+				self.counter+=1
 			if self.counter == 8:
 				self.sheet.nextImage()
 				self.counter = 0
@@ -50,7 +53,7 @@ class ssent():
 						if ent.team != self.team:
 							if self.distance(ent.pos) < self.attack["range"]:
 								self.attacktimer = self.attack["delay"]*60
-								world.projectiles.append(projectile(self.pos, 5, pygame.image.load("resources/arrow.png"), ent, {})) #(self, pos, speed, image, target, properties)
+								world.projectiles.append(projectile(self.pos, 5, pygame.image.load(self.attack["image"]), ent, {})) #(self, pos, speed, image, target, properties)
 								break
 		
 	def pathDistance(self, dist):

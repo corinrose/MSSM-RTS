@@ -5,7 +5,7 @@ class game():
 		self.ssworld = rtslib.ssworld(self, "resources/smalllevel")
 		self.tdworld = rtslib.tdworld(self)
 		self.worldFocus = 1
-		self.availableUnits={"knight":5, "crossbow":0, "battleaxe":0}
+		self.availableUnits={"knight":5, "crossbow":5, "battleaxe":5}
 		
 	def draw(self, surface):
 		# surface.fill([0,255,0]) 
