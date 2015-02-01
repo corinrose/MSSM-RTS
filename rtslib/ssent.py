@@ -2,7 +2,7 @@ import pygame
 from rtslib.projectile import *
 
 class ssent():
-	def __init__(self, id, dist, speed, width, sheet, path, team, health, attack, teamPassthrough=False):
+	def __init__(self, id, dist, speed, width, sheet, path, team, health, attack, frametime, teamPassthrough=False):
 		self.id = id
 		self.dist = dist
 		self.speed = speed
@@ -17,6 +17,7 @@ class ssent():
 		self.maxhealth = health
 		self.health = health
 		self.attack = attack
+		self.frametime = frametime
 		self.teamPassthrough = teamPassthrough
 		if self.attack["style"]=="ranged":
 			self.attacktimer = self.attack["delay"]*60
@@ -39,7 +40,7 @@ class ssent():
 			#Update spritesheet image
 			if not hitThisFrame:
 				self.counter+=1
-			if self.counter == 8:
+			if self.counter == self.frametime:
 				self.sheet.nextImage()
 				self.counter = 0
 			#Die if at the ends of the path
@@ -53,7 +54,7 @@ class ssent():
 						if ent.team != self.team:
 							if self.distance(ent.pos) < self.attack["range"]:
 								self.attacktimer = self.attack["delay"]*60
-								world.projectiles.append(projectile(self.pos, 5, pygame.image.load(self.attack["image"]), ent, {})) #(self, pos, speed, image, target, properties)
+								world.projectiles.append(projectile([self.pos[0], self.pos[1]-self.sheet.dim[1]], self.attack["speed"], pygame.image.load(self.attack["image"]), ent, {}, self.attack["arc"])) #(self, pos, speed, image, target, properties)
 								break
 		
 	def pathDistance(self, dist):

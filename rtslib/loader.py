@@ -129,9 +129,11 @@ def loadUnits(fileName):
 			sl = line.split(" ")
 			unit = {}
 			unit["image"] = sl[1]
-			unit["attack"] = sl[2]
-			unit["health"] = float(sl[3])
-			unit["speed"] = float(sl[4])
-			unit["width"] = float(sl[5])
+			unit["dimensions"] = [int(sl[2].split("x")[0]), int(sl[2].split("x")[1])]
+			unit["frametime"] = int(sl[3])
+			unit["attack"] = sl[4]
+			unit["health"] = float(sl[5])
+			unit["speed"] = float(sl[6])
+			unit["width"] = float(sl[7])
 			units[sl[0]] = unit
 	return units

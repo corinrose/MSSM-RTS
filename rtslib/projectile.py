@@ -2,7 +2,7 @@ from rtslib.base import *
 import math, pygame
 
 class projectile():
-	def __init__(self, pos, speed, image, target, properties):
+	def __init__(self, pos, speed, image, target, properties, arc):
 		#Basic properties
 		self.pos = [pos[0], pos[1]] #pass by reference problems
 		self.startpos = [pos[0], pos[1]] #pass by reference problems
@@ -10,20 +10,27 @@ class projectile():
 		self.image = image
 		self.target = target.id
 		self.properties = properties
-		self.archeight = 50
 		#Movement related
 		self.steps = int(distance(self.pos[0], self.pos[1], target.pos[0], target.pos[1]-(target.sheet.dim[1]/2))/speed) #Target the center of the enemy
 		self.targetposition = target.predictFuture(self.steps)
-		self.targetposition[1]-=target.sheet.dim[1]/2 #Target the center of the enemy
+		self.targetposition[1]-=target.sheet.dim[1] #Target the center of the enemy
 		self.flightdist = distance(self.pos[0], self.pos[1], self.targetposition[0], self.targetposition[1])
 		self.currentdist = 0
 		self.perframe = [(target.pos[0]-self.pos[0])/self.steps, (target.pos[1]-(target.sheet.dim[1]/2)-self.pos[1])/self.steps]
 		#End of flight
 		self.remove = False
+		#Arc things
+		self.arc = arc
+		if self.arc:
+			self.archeight = self.flightdist/5
 		
 	def draw(self, surface, cpos):
-		#im = self.image
-		im = pygame.transform.rotate(self.image, 57.295827908797774375395898255342*math.atan(math.cos(3.1415926*self.currentdist/self.flightdist)))
+		im = self.image
+		if self.arc:
+			angle = 57.2958279*math.atan(math.cos(3.1415926*self.currentdist/self.flightdist))
+			if self.perframe[0] < 0:
+				angle = -angle
+			im = pygame.transform.rotate(self.image, angle)
 		surface.blit(im, [self.pos[0]-cpos, self.pos[1]-(self.archeight*math.sin(3.1415926*self.currentdist/self.flightdist))])
 		
 	def update(self, entities):
@@ -33,6 +40,5 @@ class projectile():
 		if self.currentdist > self.flightdist:
 			for ent in entities:
 				if ent.id == self.target:
-					ent.health -= 10
-					self.remove = True
-		
+					ent.health -= 10#Get this from properties
+			self.remove = True

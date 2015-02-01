@@ -2,7 +2,7 @@ import rtslib, pygame
 
 class game():
 	def __init__(self):
-		self.ssworld = rtslib.ssworld(self, "resources/smalllevel")
+		self.ssworld = rtslib.ssworld(self, "resources/testlevel")
 		self.tdworld = rtslib.tdworld(self)
 		self.worldFocus = 1
 		self.availableUnits={"knight":5, "crossbow":5, "battleaxe":5}
