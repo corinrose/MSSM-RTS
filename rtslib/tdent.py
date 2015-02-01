@@ -15,7 +15,7 @@ class tdent():
 		self.timer = -1 # positive means working, 0 is currently doing a task, -1 is finished
 		self.command = []
 		self.newCommands = []
-		self.UIsprite = [pygame.font.Font("resources/fonts/Deutsch.ttf", 14).render(UIdesc, 1, (255, 255, 0)), (15, 720 - 144 + 15)] # FONT? 144 is height, 15 is buffer zone
+		self.UIsprite = [pygame.font.Font("resources/fonts/Deutsch.ttf", 14).render(UIdesc, 1, (255, 255, 0)), (15, 720 - 50 + 15)] # FONT? 50 is height, 15 is buffer zone
 		self.buttons = []
 		
 	def draw(self, surface):

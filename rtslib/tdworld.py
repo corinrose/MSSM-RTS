@@ -100,9 +100,9 @@ class tdworld():
 														 self.selectionCoordinates[1], \
 														 [self.selectionCoordinates[0][0], self.selectionCoordinates[1][1]]], \
 														 2)
+		surface.blit(self.UIelements[0][0], self.UIelements[0][1])
 		for ent in self.entities:
 			if ent.isSelected: # blits unit UI bar + text
-				surface.blit(self.UIelements[0][0], self.UIelements[0][1])
 				ent.drawUIText(surface)
 				for button in ent.buttons:
 					button.draw(surface)
