@@ -20,7 +20,7 @@ class tdent():
 		
 	def draw(self, surface):
 		surface.blit(self.sheet.getImage(), self.pos)
-		if self.isMoving:
+		if self.isMoving or self.speed == 0:
 			self.sheetCounter+=1
 			if self.sheetCounter == 10: # 10 frames a sheet 
 				self.sheet.nextImage()
