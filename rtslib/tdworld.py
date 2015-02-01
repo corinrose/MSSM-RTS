@@ -3,6 +3,9 @@ from rtslib.tdent import *
 from rtslib.sheet import *
 from rtslib.button import *
 
+def formatSpaces(desiredLength, string): # returns some spaces + a string
+		return " "*(desiredLength - len(string)) + string
+		
 class tdworld():
 	def __init__(self, game):
 		self.entities = [tdent(400, 400, 400, 400, \
@@ -85,10 +88,10 @@ class tdworld():
 					ent2.pos[0] -= ent2.speed*xDis/Dis 
 					ent2.pos[1] -= ent2.speed*yDis/Dis
 		self.gold += self.pop * 10.0 / 3600.0 # 10 gold per min per pop - gold trickle based on population
-		self.UIelements[2] = [self.topBarText.render("    " + str(int(self.pop)) + "/" + str(int(self.poplimit)) + \
-													"         " + str(int(self.food)) + \
-													"           " + str(int(self.wood)) + \
-													"           " + str(int(self.gold)), 1, (255,255,0)), (10, 15)] # update resource UI. We need to split this text up into separate lines for different numbers as things are having spacing problems
+		self.UIelements[2] = [self.topBarText.render(formatSpaces(8, str(int(self.pop))) + "/" + formatSpaces(3, str(int(self.poplimit))) + \
+													 formatSpaces(12, str(int(self.food))) + \
+													 formatSpaces(12, str(int(self.wood))) + \
+													 formatSpaces(12, str(int(self.gold))), 1, (255,255,0)), (10, 15)] # update resource UI.
 	
 	def draw(self, surface):
 		surface.blit(self.background, (0,0)) # draw background
@@ -108,5 +111,5 @@ class tdworld():
 					button.draw(surface)
 		for i in range(1, len(self.UIelements)): # draw general UI (0 is unit UI)
 			surface.blit(self.UIelements[i][0], self.UIelements[i][1])
-
-		
+	
+	
