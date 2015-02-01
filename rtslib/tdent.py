@@ -193,7 +193,8 @@ class tdent():
 			world.game.availableUnits[world.unitDictionary[self.type]] = 1
 		world.entities.remove(self)
 		
-	### def build(self, world, eventKey, costList, tdent): ###
+	### def build(self, world): ###
+		### world.building = True ###
 		
 	def spawn(self, world, eventKey, costList, tdent, buttonSpecs=[]):
 		font_size = 12 # default font size
