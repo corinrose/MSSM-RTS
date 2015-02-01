@@ -1,5 +1,5 @@
 from rtslib.base import *
-import math
+import math, pygame
 
 class projectile():
 	def __init__(self, pos, speed, image, target, properties):
@@ -22,7 +22,9 @@ class projectile():
 		self.remove = False
 		
 	def draw(self, surface, cpos):
-		surface.blit(self.image, [self.pos[0]-cpos, self.pos[1]-(self.archeight*math.sin(3.1415926*self.currentdist/self.flightdist))])
+		#im = self.image
+		im = pygame.transform.rotate(self.image, 57.295827908797774375395898255342*math.atan(math.cos(3.1415926*self.currentdist/self.flightdist)))
+		surface.blit(im, [self.pos[0]-cpos, self.pos[1]-(self.archeight*math.sin(3.1415926*self.currentdist/self.flightdist))])
 		
 	def update(self, entities):
 		self.pos[0]+=self.perframe[0]
