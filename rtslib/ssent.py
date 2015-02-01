@@ -54,7 +54,10 @@ class ssent():
 						if ent.team != self.team:
 							if self.distance(ent.pos) < self.attack["range"]:
 								self.attacktimer = self.attack["delay"]*60
-								world.projectiles.append(projectile([self.pos[0], self.pos[1]-self.sheet.dim[1]], self.attack["speed"], pygame.image.load(self.attack["image"]), ent, {}, self.attack["arc"])) #(self, pos, speed, image, target, properties)
+								props = {"arc":self.attack["arc"], "onhit":self.attack["onhit"]}
+								if props["onhit"]=="damage":
+									props["damage"] = self.attack["damage"]
+								world.projectiles.append(projectile([self.pos[0], self.pos[1]-self.sheet.dim[1]], self.attack["speed"], pygame.image.load(self.attack["image"]), ent, props))
 								break
 		
 	def pathDistance(self, dist):

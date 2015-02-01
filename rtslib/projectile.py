@@ -2,7 +2,7 @@ from rtslib.base import *
 import math, pygame
 
 class projectile():
-	def __init__(self, pos, speed, image, target, properties, arc):
+	def __init__(self, pos, speed, image, target, properties):
 		#Basic properties
 		self.pos = [pos[0], pos[1]] #pass by reference problems
 		self.startpos = [pos[0], pos[1]] #pass by reference problems
@@ -20,7 +20,7 @@ class projectile():
 		#End of flight
 		self.remove = False
 		#Arc things
-		self.arc = arc
+		self.arc = properties["arc"]
 		if self.arc:
 			self.archeight = self.flightdist/5
 		
@@ -40,5 +40,6 @@ class projectile():
 		if self.currentdist > self.flightdist:
 			for ent in entities:
 				if ent.id == self.target:
-					ent.health -= 10#Get this from properties
+					if self.properties["onhit"]=="damage":
+						ent.health -= self.properties["damage"]
 			self.remove = True
