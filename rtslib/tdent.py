@@ -20,7 +20,7 @@ class tdent():
 		
 	def draw(self, surface):
 		surface.blit(self.sheet.getImage(), self.pos)
-		if self.isMoving or self.speed == 0:
+		if (self.isMoving) or(self.speed == 0): 
 			self.sheetCounter+=1
 			if self.sheetCounter == 10: # 10 frames a sheet 
 				self.sheet.nextImage()
@@ -72,7 +72,8 @@ class tdent():
 		else:
 			self.isMoving = False 
 			self.pos[0], self.pos[1] = self.des[0], self.des[1]
-			self.sheetCounter = 0
+			if self.speed != 0:
+				self.sheetCounter = 0
 			
 	def drawSelectionMarker(self, surface): # RED
 		pygame.draw.polygon(surface, (255, 0, 0), [self.pos, \
