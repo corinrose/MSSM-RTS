@@ -52,9 +52,11 @@ class ssworld():
 		
 		#Unit Definitions
 		self.attacks = loadAttacks("resources/attacks.cfg")
-		self.unitDefs = loadUnits("resources/player/units.cfg")#+loadUnits("resources/skeletons/units.cfg")
+		self.unitDefs = loadUnits("resources/player/units.cfg")
+		self.unitDefs.update(loadUnits("resources/skeletons/units.cfg"))#Temporary solution, fix later on
 		#Player unit spawning
 		self.playerQueue = []
+		self.playerUnits = self.cfg["playerunits"]
 		
 		#Test Stuff
 		self.testattack = {"style":"melee", "power":0.05}
@@ -97,9 +99,15 @@ class ssworld():
 		#Spawn a player unit if you can
 		if len(self.playerQueue)>0:
 			fir = self.playerQueue[0]
-			if self.checkClear([-3, self.unitDefs[fir]["width"]+3], 1):
+			firclass = self.playerUnits[fir]
+			if self.checkClear([-3, self.unitDefs[firclass["class"]]["width"]+3], 1):
 				self.playerQueue = self.playerQueue[1:]
-				self.ssentities.append(ssent(self.cid, 0.0, self.unitDefs[fir]["speed"], self.unitDefs[fir]["width"], sheet(self.unitDefs[fir]["image"], self.unitDefs[fir]["dimensions"]), self.path, True, self.unitDefs[fir]["health"], self.attacks[self.unitDefs[fir]["attack"]],self.unitDefs[fir]["frametime"]))
+				self.ssentities.append(ssent(self.cid, 0.0, firclass["speed"], 
+										self.unitDefs[firclass["class"]]["width"], 
+										sheet(self.unitDefs[firclass["class"]]["image"], self.unitDefs[firclass["class"]]["dimensions"]), 
+										self.path, True, firclass["health"], 
+										self.attacks[self.unitDefs[firclass["class"]]["attack"]],
+										self.unitDefs[firclass["class"]]["frametime"]))
 				self.cid += 1
 				
 		#Handle current operation
@@ -107,7 +115,11 @@ class ssworld():
 			if self.script[self.currentop]["command"] == "spawn" or self.script[self.currentop]["command"] == "spawnwave": #Spawning enemies, or waiting between spawns in a "wave"
 				if self.currentwavespawned < len(self.spawnqueue):
 					if self.scripttimer == 0:
-						self.ssentities.append(ssent(self.cid, self.path.length-1, -float(self.units[self.spawnqueue[self.currentwavespawned]]["properties"][1]), 20, sheet("resources/skeletons/warcher.png", [40,40]), self.path, False, float(self.units[self.spawnqueue[self.currentwavespawned]]["properties"][0]), self.attacks["basicskelearrow"], 8))
+						self.ssentities.append(ssent(self.cid, self.path.length-1, -float(self.units[self.spawnqueue[self.currentwavespawned]]["properties"][1]), 
+												self.unitDefs[self.units[self.spawnqueue[self.currentwavespawned]]["type"]]["width"], 
+												sheet(self.unitDefs[self.units[self.spawnqueue[self.currentwavespawned]]["type"]]["image"], self.unitDefs[self.units[self.spawnqueue[self.currentwavespawned]]["type"]]["dimensions"]), 
+												self.path, False, float(self.units[self.spawnqueue[self.currentwavespawned]]["properties"][0]),
+												self.attacks[self.unitDefs[self.units[self.spawnqueue[self.currentwavespawned]]["type"]]["attack"]], self.unitDefs[self.units[self.spawnqueue[self.currentwavespawned]]["type"]]["frametime"]))
 						self.cid += 1
 						self.currentwavespawned += 1
 						if self.script[self.currentop]["command"] == "spawn":

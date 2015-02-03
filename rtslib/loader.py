@@ -20,6 +20,18 @@ def loadCFG(filename):
 		sep = line.split(",")
 		points.append([int(sep[0]),int(sep[1])])
 	cfg["pathpoints"]=points
+	#Player units
+	pustart = lines.index("<playerunits>")
+	puend = lines.index("</playerunits>")
+	pulines = lines[pustart+1:puend]
+	playerUnits = {}
+	for line in pulines:
+		sep = line.split(" ")
+		playerUnits[sep[0]] = {}
+		playerUnits[sep[0]]["class"] = sep[1]
+		playerUnits[sep[0]]["health"] = float(sep[2])
+		playerUnits[sep[0]]["speed"] = float(sep[3])
+	cfg["playerunits"]=playerUnits
 	#Unit definitions
 	ustart = lines.index("<units>")
 	uend = lines.index("</units>")
@@ -132,8 +144,6 @@ def loadUnits(fileName):
 			unit["dimensions"] = [int(sl[2].split("x")[0]), int(sl[2].split("x")[1])]
 			unit["frametime"] = int(sl[3])
 			unit["attack"] = sl[4]
-			unit["health"] = float(sl[5])
-			unit["speed"] = float(sl[6])
-			unit["width"] = float(sl[7])
+			unit["width"] = float(sl[5])
 			units[sl[0]] = unit
 	return units
