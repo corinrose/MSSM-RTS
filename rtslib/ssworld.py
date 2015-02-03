@@ -54,6 +54,7 @@ class ssworld():
 		self.attacks = loadAttacks("resources/attacks.cfg")
 		self.unitDefs = loadUnits("resources/player/units.cfg")
 		self.unitDefs.update(loadUnits("resources/skeletons/units.cfg"))#Temporary solution, fix later on
+		self.unitDefs.update(loadUnits("resources/zombies/units.cfg"))#Temporary solution, fix later on
 		#Player unit spawning
 		self.playerQueue = []
 		self.playerUnits = self.cfg["playerunits"]
@@ -115,17 +116,19 @@ class ssworld():
 			if self.script[self.currentop]["command"] == "spawn" or self.script[self.currentop]["command"] == "spawnwave": #Spawning enemies, or waiting between spawns in a "wave"
 				if self.currentwavespawned < len(self.spawnqueue):
 					if self.scripttimer == 0:
-						self.ssentities.append(ssent(self.cid, self.path.length-1, -float(self.units[self.spawnqueue[self.currentwavespawned]]["properties"][1]), 
-												self.unitDefs[self.units[self.spawnqueue[self.currentwavespawned]]["type"]]["width"], 
-												sheet(self.unitDefs[self.units[self.spawnqueue[self.currentwavespawned]]["type"]]["image"], self.unitDefs[self.units[self.spawnqueue[self.currentwavespawned]]["type"]]["dimensions"]), 
-												self.path, False, float(self.units[self.spawnqueue[self.currentwavespawned]]["properties"][0]),
-												self.attacks[self.unitDefs[self.units[self.spawnqueue[self.currentwavespawned]]["type"]]["attack"]], self.unitDefs[self.units[self.spawnqueue[self.currentwavespawned]]["type"]]["frametime"]))
-						self.cid += 1
-						self.currentwavespawned += 1
-						if self.script[self.currentop]["command"] == "spawn":
-							self.scripttimer = self.script[self.currentop]["delay"]*60
-						else:
-							self.scripttimer = self.waves[self.script[self.currentop]["id"]]["delay"]*60
+						if self.checkClear([self.path.length-self.unitDefs[self.units[self.spawnqueue[self.currentwavespawned]]["type"]]["width"]-3, self.path.length], 0):
+							#print "Spawning: "+self.units[self.spawnqueue[self.currentwavespawned]]["type"]
+							self.ssentities.append(ssent(self.cid, self.path.length-1, -float(self.units[self.spawnqueue[self.currentwavespawned]]["properties"][1]), 
+													self.unitDefs[self.units[self.spawnqueue[self.currentwavespawned]]["type"]]["width"], 
+													sheet(self.unitDefs[self.units[self.spawnqueue[self.currentwavespawned]]["type"]]["image"], self.unitDefs[self.units[self.spawnqueue[self.currentwavespawned]]["type"]]["dimensions"]), 
+													self.path, False, float(self.units[self.spawnqueue[self.currentwavespawned]]["properties"][0]),
+													self.attacks[self.unitDefs[self.units[self.spawnqueue[self.currentwavespawned]]["type"]]["attack"]], self.unitDefs[self.units[self.spawnqueue[self.currentwavespawned]]["type"]]["frametime"]))
+							self.cid += 1
+							self.currentwavespawned += 1
+							if self.script[self.currentop]["command"] == "spawn":
+								self.scripttimer = self.script[self.currentop]["delay"]*60
+							else:
+								self.scripttimer = self.waves[self.script[self.currentop]["id"]]["delay"]*60
 					else:
 						self.scripttimer -= 1
 				else:
@@ -165,6 +168,7 @@ class ssworld():
 			self.spawnqueue = self.waves[self.script[self.currentop]["id"]]["pattern"]
 	
 	def draw(self, surface):
+		surface.fill([200,200,200])
 		surface.blit(self.background, [-self.cpos,0])
 		#self.path.debugDraw(surface, self.cpos)
 		for ent in self.ssentities:
