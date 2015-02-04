@@ -51,6 +51,7 @@ def loadCFG(filename):
 			gates[-1]["id"] = int(sep[1])
 			gates[-1]["type"] = sep[2]
 			gates[-1]["distance"] = float(sep[3])
+			gates[-1]["health"] = float(sep[4])
 		if sep[0] == "boss":
 			boss["type"] = sep[1]
 			boss["properties"] = sep[2:]

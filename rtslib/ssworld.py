@@ -60,7 +60,14 @@ class ssworld():
 		self.playerUnits = self.cfg["playerunits"]
 		
 		#Test Stuff
-		self.testattack = {"style":"melee", "power":0.05}
+		self.gates = self.cfg["gates"]
+		for gate in self.gates:
+			self.ssentities.append(ssent(self.cid, gate["distance"], 0, 
+										self.unitDefs[gate["type"]]["width"], 
+										sheet(self.unitDefs[gate["type"]]["image"], self.unitDefs[gate["type"]]["dimensions"]), 
+										self.path, False, gate["health"],
+										self.attacks[self.unitDefs[gate["type"]]["attack"]], self.unitDefs[gate["type"]]["frametime"], True))
+			self.cid += 1
 		
 	def update(self, events):
 		#Handle events
