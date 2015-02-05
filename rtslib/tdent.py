@@ -22,7 +22,7 @@ class tdent():
 		surface.blit(self.sheet.getImage(), self.pos)
 		if (self.isMoving) or(self.speed == 0): 
 			self.sheetCounter+=1
-			if self.sheetCounter == 10: # 10 frames a sheet 
+			if self.sheetCounter == 6: # x frames a sheet 
 				self.sheet.nextImage()
 				self.sheetCounter = 0
 		if self.des[0] < self.pos[0] and self.speed > 0: 
