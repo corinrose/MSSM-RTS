@@ -72,10 +72,10 @@ class ssworld():
 		#Add the king
 		self.king = self.cfg["king"]
 		self.ssentities.append(ssent(self.cid, self.king["distance"], 0, 
-										self.unitDefs[self.king["class"]]["width"], 
-										sheet(self.unitDefs[self.king["class"]]["image"], self.unitDefs[self.king["class"]]["dimensions"]), 
+										self.unitDefs[self.king["type"]]["width"], 
+										sheet(self.unitDefs[self.king["type"]]["image"], self.unitDefs[self.king["type"]]["dimensions"]), 
 										self.path, True, self.king["health"],
-										self.attacks[self.unitDefs[self.king["class"]]["attack"]], self.unitDefs[self.king["class"]]["frametime"], True))
+										self.attacks[self.unitDefs[self.king["type"]]["attack"]], self.unitDefs[self.king["type"]]["frametime"], True))
 		self.cid += 1
 		self.king = self.ssentities[-1]
 		
@@ -122,14 +122,14 @@ class ssworld():
 		if len(self.playerQueue)>0:
 			fir = self.playerQueue[0]
 			firclass = self.playerUnits[fir]
-			if self.checkClear([-3, self.unitDefs[firclass["class"]]["width"]+3], 1):
+			if self.checkClear([-3, self.unitDefs[firclass["type"]]["width"]+3], 1):
 				self.playerQueue = self.playerQueue[1:]
 				self.ssentities.append(ssent(self.cid, 0.0, firclass["speed"], 
-										self.unitDefs[firclass["class"]]["width"], 
-										sheet(self.unitDefs[firclass["class"]]["image"], self.unitDefs[firclass["class"]]["dimensions"]), 
+										self.unitDefs[firclass["type"]]["width"], 
+										sheet(self.unitDefs[firclass["type"]]["image"], self.unitDefs[firclass["type"]]["dimensions"]), 
 										self.path, True, firclass["health"], 
-										self.attacks[self.unitDefs[firclass["class"]]["attack"]],
-										self.unitDefs[firclass["class"]]["frametime"]))
+										self.attacks[self.unitDefs[firclass["type"]]["attack"]],
+										self.unitDefs[firclass["type"]]["frametime"]))
 				self.cid += 1
 				
 		#Handle current operation
