@@ -43,7 +43,7 @@ while True:
 		Game.draw(screen)
 	
 	if "state" in out:
-		print "setting state to "+out["state"]
+		print "Setting state to "+out["state"]
 		state = out["state"]
 	
 	if "newgame" in out:

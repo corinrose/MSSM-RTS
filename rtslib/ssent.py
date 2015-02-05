@@ -19,7 +19,7 @@ class ssent():
 		self.attack = attack
 		self.frametime = frametime
 		self.teamPassthrough = teamPassthrough
-		if self.attack["style"]=="ranged":
+		if self.attack["style"]=="ranged" or self.attack["style"]=="melee":
 			self.attacktimer = self.attack["delay"]*60
 		
 	def update(self, world, entities):
@@ -33,9 +33,7 @@ class ssent():
 					if not (self.team == ent.team and ent.teamPassthrough):
 						self.dist-=self.speed
 						hitThisFrame = True
-						if self.attack["style"] == "melee": #Have melee range instead of attacking on direct contact?
-							if self.team != ent.team:
-								ent.health-=self.attack["power"]
+
 			self.pos = self.path.calcPos(self.dist)
 			#Update spritesheet image
 			if not hitThisFrame:
@@ -46,6 +44,8 @@ class ssent():
 			#Die if at the ends of the path
 			if self.dist < 0 or self.dist > self.path.length:
 				self.remove = True
+				
+			#Rewrite from multiple attacks!
 			#Do a ranged attack if we have one	
 			if self.attack["style"]=="ranged": #{"style":"ranged", "power":10, "range":100, "rate":5}
 				self.attacktimer -= 1
@@ -59,6 +59,16 @@ class ssent():
 									props["damage"] = self.attack["damage"]
 								world.projectiles.append(projectile([self.pos[0], self.pos[1]-self.sheet.dim[1]], self.attack["speed"], pygame.image.load(self.attack["image"]), ent, props))
 								break
+			
+			#Do a melee attack if we have one
+			if self.attack["style"]=="melee":
+				self.attacktimer -= 1
+				if self.attacktimer <= 0:
+					for ent in entities:
+						if ent.team != self.team:
+							if abs(self.dist-ent.dist) < self.attack["range"]+self.width+ent.width:
+								self.attacktimer = self.attack["delay"]*60
+								ent.health-=self.attack["damage"]
 		
 	def pathDistance(self, dist):
 		return abs(self.dist - dist)

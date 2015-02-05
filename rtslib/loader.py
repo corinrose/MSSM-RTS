@@ -122,8 +122,9 @@ def loadAttacks(fileName):
 			attack = {}
 			if sl[1] == "melee":
 				attack["style"] = "melee"
-				attack["delay"] = float(sl[2])
-				attack["damage"] = float(sl[3])
+				attack["range"] = float(sl[2])
+				attack["delay"] = float(sl[3])
+				attack["damage"] = float(sl[4])
 				attack["power"] = ((1/attack["delay"])*attack["damage"])/60 #Later on I won't need this property when I make attacks discrete events
 				
 			if sl[1] == "ranged":
