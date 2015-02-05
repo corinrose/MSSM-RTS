@@ -43,7 +43,12 @@ while True:
 		Game.draw(screen)
 	
 	if "state" in out:
+		print "setting state to "+out["state"]
 		state = out["state"]
+	
+	if "newGame" in out:
+		print "Resetting game"
+		Game = rtslib.game()
 		
 	if "title" in out:
 		pygame.display.set_caption(out["title"])

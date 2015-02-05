@@ -1,3 +1,5 @@
+#TODO: standardize type vs. class... really?
+
 def loadCFG(filename):
 	cfg = {}
 	f = open(filename, "r")
@@ -25,13 +27,20 @@ def loadCFG(filename):
 	puend = lines.index("</playerunits>")
 	pulines = lines[pustart+1:puend]
 	playerUnits = {}
+	king = {}
 	for line in pulines:
 		sep = line.split(" ")
-		playerUnits[sep[0]] = {}
-		playerUnits[sep[0]]["class"] = sep[1]
-		playerUnits[sep[0]]["health"] = float(sep[2])
-		playerUnits[sep[0]]["speed"] = float(sep[3])
+		if sep[0] == "king":
+			king["class"] = sep[1]
+			king["distance"] = float(sep[2])
+			king["health"] = int(sep[3])
+		else:
+			playerUnits[sep[0]] = {}
+			playerUnits[sep[0]]["class"] = sep[1]
+			playerUnits[sep[0]]["health"] = float(sep[2])
+			playerUnits[sep[0]]["speed"] = float(sep[3])
 	cfg["playerunits"]=playerUnits
+	cfg["king"] = king
 	#Unit definitions
 	ustart = lines.index("<units>")
 	uend = lines.index("</units>")

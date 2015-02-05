@@ -111,5 +111,4 @@ class tdworld():
 					button.draw(surface)
 		for i in range(1, len(self.UIelements)): # draw general UI (0 is unit UI)
 			surface.blit(self.UIelements[i][0], self.UIelements[i][1])
-	
-	
+			

@@ -69,6 +69,16 @@ class ssworld():
 										self.attacks[self.unitDefs[gate["type"]]["attack"]], self.unitDefs[gate["type"]]["frametime"], True))
 			self.cid += 1
 		
+		#Add the king
+		self.king = self.cfg["king"]
+		self.ssentities.append(ssent(self.cid, self.king["distance"], 0, 
+										self.unitDefs[self.king["class"]]["width"], 
+										sheet(self.unitDefs[self.king["class"]]["image"], self.unitDefs[self.king["class"]]["dimensions"]), 
+										self.path, True, self.king["health"],
+										self.attacks[self.unitDefs[self.king["class"]]["attack"]], self.unitDefs[self.king["class"]]["frametime"], True))
+		self.cid += 1
+		self.king = self.ssentities[-1]
+		
 	def update(self, events):
 		#Handle events
 		for event in events:					
@@ -96,14 +106,18 @@ class ssworld():
 			ent.update(self, self.ssentities)
 		for pro in self.projectiles:
 			pro.update(self.ssentities)
+		#Check for a game over
+		if self.king.remove:
+			self.game.gameOver = True
+			
 		#Remove any marked for deletion
 		for ent in self.ssentities:
 			if ent.remove:
 				self.ssentities.remove(ent)
 		for pro in self.projectiles:
 			if pro.remove:
-				self.projectiles.remove(pro)
-				
+				self.projectiles.remove(pro)		
+		
 		#Spawn a player unit if you can
 		if len(self.playerQueue)>0:
 			fir = self.playerQueue[0]
