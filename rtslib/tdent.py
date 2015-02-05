@@ -99,7 +99,7 @@ class tdent():
 	def action(self, world, eventKey): ########################################################################## ADD BUTTONS
 		if self.type == 0: # worker
 			if eventKey == "Spawn Barracks":
-				self.spawn(world, eventKey, [0, 20, 0, 1, 3*60], 
+				self.spawn(world, eventKey, [0, 20, 0, 0, 3*60], 
 						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
 								False, 0, sheet("resources/buildings/Barracks.png", [160, 160]), \
 								"Barracks.", 1.2), [["Spawn Knight", [125, 670]],\
@@ -192,6 +192,7 @@ class tdent():
 			world.game.availableUnits[world.unitDictionary[self.type]] += 1
 		else:
 			world.game.availableUnits[world.unitDictionary[self.type]] = 1
+		world.pop -= 1
 		world.entities.remove(self)
 		
 	### def build(self, world): ###
