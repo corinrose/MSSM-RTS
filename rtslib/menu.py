@@ -86,7 +86,7 @@ class menu():
 				b.update(events)
 		if self.state == "level":
 			out["state"] = "game"
-			self.state == "fileselect"
+			self.state = "fileselect"
 		if self.state == "exit":
 			out["exit"]="now"
 		out["title"] = "Save Our City"
