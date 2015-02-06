@@ -40,6 +40,7 @@ class tdworld():
 		self.smallbuttonset = [pygame.image.load("resources/buttons/smallidle.png").convert_alpha(),
 							   pygame.image.load("resources/buttons/smallhover.png").convert_alpha(),
 							   pygame.image.load("resources/buttons/smallclick.png").convert_alpha()]
+		self.selectedAlready = False
 		self.entities[0].buttons = [button("Spawn Worker", [125, 670], self.entities[0].addCommand, self.smallbuttonset), \
 									button("Increase Pop", [235, 670], self.entities[0].addCommand, self.smallbuttonset)] # one-time deal
 		
@@ -59,16 +60,23 @@ class tdworld():
 					self.selecting = False
 		if self.selecting: # drag selection
 			self.selectionCoordinates[1] = pygame.mouse.get_pos()
+			
+		self.selectedAlready = False 
+		for ent in reversed(self.entities):
+			if self.selecting:
+					if (not self.selectedAlready) and ent.rectangularCollision([min(self.selectionCoordinates[0][0], self.selectionCoordinates[1][0]), \
+																				  min(self.selectionCoordinates[0][1], self.selectionCoordinates[1][1])], \
+																				 [max(self.selectionCoordinates[0][0], self.selectionCoordinates[1][0]), \
+																				  max(self.selectionCoordinates[0][1], self.selectionCoordinates[1][1])]): # drag selection
+						ent.setSel(True)
+						if (self.selectionCoordinates[0][0] - self.selectionCoordinates[1][0])**2 + \
+						   (self.selectionCoordinates[0][1] - self.selectionCoordinates[1][1])**2 < 5: # 5 pixel single selection radius
+							self.selectedAlready = True
+					elif min(self.selectionCoordinates[0][1], self.selectionCoordinates[1][1]) < 720-144: # ui size 
+						ent.setSel(False)
+		
 		for ent in self.entities: 
 			ent.update(self, events)
-			if self.selecting:
-				if ent.rectangularCollision([min(self.selectionCoordinates[0][0], self.selectionCoordinates[1][0]), \
-											 min(self.selectionCoordinates[0][1], self.selectionCoordinates[1][1])], \
-											[max(self.selectionCoordinates[0][0], self.selectionCoordinates[1][0]), \
-											 max(self.selectionCoordinates[0][1], self.selectionCoordinates[1][1])]): # drag selection
-					ent.setSel(True)
-				elif min(self.selectionCoordinates[0][1], self.selectionCoordinates[1][1]) < 720-144: # ui size 
-					ent.setSel(False)
 			for ent2 in self.entities: 
 				if ent.type == 0 and round(ent2.type) == 2: # handles resource gathering
 					if ent2.rectangularCollision(ent.pos, [ent.pos[0] + ent.sheet.dim[0], ent.pos[1] + ent.sheet.dim[1]]):
