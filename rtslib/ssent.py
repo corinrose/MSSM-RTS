@@ -66,7 +66,7 @@ class ssent():
 				if self.attacktimer <= 0:
 					for ent in entities:
 						if ent.team != self.team:
-							if abs(self.dist-ent.dist) < self.attack["range"]+self.width+ent.width:
+							if self.pathDistance(ent.dist) < self.attack["range"]+self.width+ent.width:
 								self.attacktimer = self.attack["delay"]*60
 								ent.health-=self.attack["damage"]
 		

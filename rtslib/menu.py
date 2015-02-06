@@ -4,29 +4,25 @@ import rtslib
 class menu():
 	def __init__(self):
 		self.state = "main"
-		self.menubuttonset=[pygame.image.load("resources/buttons/largeidle.png").convert_alpha(),
-							pygame.image.load("resources/buttons/largehover.png").convert_alpha(),
-							pygame.image.load("resources/buttons/largeclick.png").convert_alpha()
-							]
 		self.mainbg = pygame.image.load("resources/menubg/main.png").convert_alpha()
 		self.fileselectbg = pygame.image.load("resources/menubg/fileselect.png").convert_alpha()
 		self.settingsbg = pygame.image.load("resources/menubg/settings.png").convert_alpha()
 		self.creditsbg = pygame.image.load("resources/menubg/credits.png").convert_alpha()
 		
-		self.mainbuttons = [rtslib.button("play", [100,325], self.clickHandler, self.menubuttonset, "resources/fonts/Deutsch.ttf", "Play"),
-							rtslib.button("settings", [100,405], self.clickHandler, self.menubuttonset, "resources/fonts/Deutsch.ttf", "Settings"),
-							rtslib.button("credits", [100,485], self.clickHandler, self.menubuttonset, "resources/fonts/Deutsch.ttf", "Credits"),
-							rtslib.button("exit", [100,565], self.clickHandler, self.menubuttonset, "resources/fonts/Deutsch.ttf", "Exit")]
+		self.mainbuttons = [rtslib.button("play", [100,325], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Play"),
+							rtslib.button("settings", [100,405], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Settings"),
+							rtslib.button("credits", [100,485], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Credits"),
+							rtslib.button("exit", [100,565], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Exit")]
 							
-		self.fileselectbuttons = [rtslib.button("file1", [60,250], self.clickHandler, self.menubuttonset, "resources/fonts/Deutsch.ttf", "File 1"),
-								  rtslib.button("file2", [480,250], self.clickHandler, self.menubuttonset, "resources/fonts/Deutsch.ttf", "File 2"),
-							      rtslib.button("file3", [900,250], self.clickHandler, self.menubuttonset, "resources/fonts/Deutsch.ttf", "File 3"),
-							      rtslib.button("back", [50,500], self.clickHandler, self.menubuttonset, "resources/fonts/Deutsch.ttf", "Back")]
+		self.fileselectbuttons = [rtslib.button("file1", [60,250], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "File 1"),
+								  rtslib.button("file2", [480,250], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "File 2"),
+							      rtslib.button("file3", [900,250], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "File 3"),
+							      rtslib.button("back", [50,500], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Back")]
 		
-		self.creditsbuttons = [rtslib.button("back", [480,650], self.clickHandler, self.menubuttonset, "resources/fonts/Deutsch.ttf", "Back")]
+		self.creditsbuttons = [rtslib.button("back", [480,650], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Back")]
 		
-		self.settingsbuttons = [rtslib.button("back", [480,650], self.clickHandler, self.menubuttonset, "resources/fonts/Deutsch.ttf", "Back"),
-							   rtslib.button("audio", [480,200], self.clickHandler, self.menubuttonset, "resources/fonts/Deutsch.ttf", "Audio")]
+		self.settingsbuttons = [rtslib.button("back", [480,650], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Back"),
+							   rtslib.button("audio", [480,200], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Audio")]
 								  
 		#self.settings
 		

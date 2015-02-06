@@ -1,6 +1,7 @@
 import pygame, math
 from rtslib.sheet import *
 from rtslib.button import *
+import rtslib
 
 class tdent():
 	def __init__(self, posX, posY, desX, desY, isSelected, speed, sheet, UIdesc, type): #,buttons=[]):
@@ -201,8 +202,6 @@ class tdent():
 	def spawn(self, world, eventKey, costList, tdent, buttonSpecs=[]):
 		font_size = 12 # default font size
 		default_font = "resources/fonts/Deutsch.ttf" # default button font
-		images=[pygame.image.load("resources/buttons/smallidle.png").convert_alpha(), pygame.image.load("resources/buttons/smallhover.png").convert_alpha(), pygame.image.load("resources/buttons/smallclick.png").convert_alpha()] #Please don't load this every spawn... we need to restructure this!
-		#[generateBasicButton([75,25],[200,200,200]),generateBasicButton([75,25],[150,150,150]),generateBasicButton([75,25],[100,100,100])] # default 
 		if self.timer != 0:
 			if tdent.speed > 0 or self.checkSize(tdent, world):
 				if self.checkCost(costList, world):
@@ -211,8 +210,8 @@ class tdent():
 			if self.speed != 0:
 				world.entities.insert(0, tdent)
 				for buttonSpec in buttonSpecs:
-					world.entities[0].buttons.append(button(buttonSpec[0], buttonSpec[1], world.entities[0].addCommand, images, default_font, buttonSpec[0], font_size))
+					world.entities[0].buttons.append(button(buttonSpec[0], buttonSpec[1], world.entities[0].addCommand, rtslib.common.buttonSets["hud"], default_font, buttonSpec[0], font_size))
 			else:
 				world.entities.append(tdent)
 				for buttonSpec in buttonSpecs:
-					world.entities[-1].buttons.append(button(buttonSpec[0], buttonSpec[1], world.entities[-1].addCommand, images, default_font, buttonSpec[0], font_size))
+					world.entities[-1].buttons.append(button(buttonSpec[0], buttonSpec[1], world.entities[-1].addCommand, rtslib.common.buttonSets["hud"], default_font, buttonSpec[0], font_size))

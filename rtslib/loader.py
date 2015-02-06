@@ -61,7 +61,8 @@ def loadCFG(filename):
 			gates[-1]["health"] = float(sep[4])
 		if sep[0] == "boss":
 			boss["type"] = sep[1]
-			boss["properties"] = sep[2:]
+			boss["distance"] = float(sep[2])
+			boss["health"] = int(sep[3])
 	cfg["units"] = units
 	cfg["gates"] = gates
 	cfg["boss"] = boss

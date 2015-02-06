@@ -2,6 +2,7 @@ import pygame
 from rtslib.tdent import *
 from rtslib.sheet import *
 from rtslib.button import *
+import rtslib
 
 def formatSpaces(desiredLength, string): # returns some spaces + a string
 		return " "*(desiredLength - len(string)) + string
@@ -37,12 +38,9 @@ class tdworld():
 		self.selectionCoordinates = [[0,0], [0,0]]
 		self.selecting = False
 		### self.building = False ###
-		self.smallbuttonset = [pygame.image.load("resources/buttons/smallidle.png").convert_alpha(),
-							   pygame.image.load("resources/buttons/smallhover.png").convert_alpha(),
-							   pygame.image.load("resources/buttons/smallclick.png").convert_alpha()]
 		self.selectedAlready = False
-		self.entities[0].buttons = [button("Spawn Worker", [125, 670], self.entities[0].addCommand, self.smallbuttonset), \
-									button("Increase Pop", [235, 670], self.entities[0].addCommand, self.smallbuttonset)] # one-time deal
+		self.entities[0].buttons = [button("Spawn Worker", [125, 670], self.entities[0].addCommand, rtslib.common.buttonSets["hud"]),
+									button("Increase Pop", [235, 670], self.entities[0].addCommand, rtslib.common.buttonSets["hud"])] # one-time deal
 		
 	def update(self, events):
 		for event in events:

@@ -6,17 +6,15 @@ class game():
 		self.tdworld = rtslib.tdworld(self)
 		self.worldFocus = 1
 		self.availableUnits={"knight":5, "crossbow":5, "battleaxe":5}
-		self.buttonset=[pygame.image.load("resources/buttons/largeidle.png").convert_alpha(), #TODO: Globalize this thing
-						pygame.image.load("resources/buttons/largehover.png").convert_alpha(),
-						pygame.image.load("resources/buttons/largeclick.png").convert_alpha()
-						]
 		#Endgame things
 		self.gameOver = False
 		self.gameOverBack = pygame.surface.Surface([1280, 720]).convert_alpha()
 		self.gameOverBack.fill([100, 100, 100, 0])
 		self.gameOverFade = 0
-		self.gameOverButtons = [rtslib.button("menu", [650,300], self.clickHandler, self.buttonset, "resources/fonts/Deutsch.ttf", "Menu")]
+		self.gameOverButtons = [rtslib.button("menu", [650,300], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Menu")]
 		self.goBack = False #TODO: This is bad
+		self.won = False
+		self.gameWonButtons = [rtslib.button("menu", [650,300], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Menu")]
 		
 	def draw(self, surface):
 		# surface.fill([0,255,0]) 
@@ -26,6 +24,12 @@ class game():
 			self.ssworld.draw(surface)
 		#Game over screen
 		if self.gameOver:
+			self.gameOverBack.fill([100,100,100,self.gameOverFade])
+			surface.blit(self.gameOverBack, [0,0])	
+			for button in self.gameOverButtons:
+				button.draw(surface)
+		#Game won screen
+		if self.won:
 			self.gameOverBack.fill([100,100,100,self.gameOverFade])
 			surface.blit(self.gameOverBack, [0,0])	
 			for button in self.gameOverButtons:

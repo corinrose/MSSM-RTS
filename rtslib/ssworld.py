@@ -5,6 +5,8 @@ from rtslib.sheet import *
 from rtslib.loader import *
 from rtslib.button import *
 from rtslib.base import *
+from rtslib.common import * #TODO: pls don't
+import rtslib #TODO: this too
 
 import random
 
@@ -16,13 +18,10 @@ class ssworld():
 		self.unitImages = [pygame.image.load("resources/player/Knight.png").convert_alpha(), pygame.image.load("resources/player/Crossbowman.png").convert_alpha(),
 						   pygame.image.load("resources/player/BattleAxer.png").convert_alpha()]
 		self.unitNumbers = ["knight", "crossbow", "battleaxe"]
-		self.smallbuttonset = [pygame.image.load("resources/buttons/smallidle.png").convert_alpha(),
-							pygame.image.load("resources/buttons/smallhover.png").convert_alpha(),
-							pygame.image.load("resources/buttons/smallclick.png").convert_alpha()
-							]
-		self.buttons = [button("knight", [15,670], self.spawnButtonClick, self.smallbuttonset),
-						button("crossbow", [125,670], self.spawnButtonClick, self.smallbuttonset),
-						button("battleaxe", [235,670], self.spawnButtonClick, self.smallbuttonset),
+
+		self.buttons = [button("knight", [15,670], self.spawnButtonClick, rtslib.common.buttonSets["hud"]),
+						button("crossbow", [125,670], self.spawnButtonClick, rtslib.common.buttonSets["hud"]),
+						button("battleaxe", [235,670], self.spawnButtonClick, rtslib.common.buttonSets["hud"]),
 						]
 		self.numberfont = pygame.font.Font("resources/fonts/Deutsch.ttf", 36)
 		#Basic Properties
@@ -79,6 +78,16 @@ class ssworld():
 		self.cid += 1
 		self.king = self.ssentities[-1]
 		
+		#Add the boss
+		self.boss = self.cfg["boss"]
+		self.ssentities.append(ssent(self.cid, self.path.length-self.boss["distance"], 0, 
+										self.unitDefs[self.boss["type"]]["width"], 
+										sheet(self.unitDefs[self.boss["type"]]["image"], self.unitDefs[self.boss["type"]]["dimensions"]), 
+										self.path, False, self.boss["health"],
+										self.attacks[self.unitDefs[self.boss["type"]]["attack"]], self.unitDefs[self.boss["type"]]["frametime"], True))
+		self.cid += 1
+		self.boss = self.ssentities[-1]
+		
 	def update(self, events):
 		#Handle events
 		for event in events:					
@@ -106,10 +115,11 @@ class ssworld():
 			ent.update(self, self.ssentities)
 		for pro in self.projectiles:
 			pro.update(self.ssentities)
-		#Check for a game over
+		#Check for a game over or win
 		if self.king.remove:
 			self.game.gameOver = True
-			
+		if self.boss.remove and not self.game.gameOver:
+			self.game.won = True
 		#Remove any marked for deletion
 		for ent in self.ssentities:
 			if ent.remove:
