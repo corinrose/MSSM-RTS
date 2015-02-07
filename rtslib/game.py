@@ -41,12 +41,20 @@ class game():
 			if event.type == pygame.KEYUP:
 				if event.key == pygame.K_SPACE:
 					self.worldFocus = not self.worldFocus
+					
 		if self.gameOver:
 			self.worldFocus = 1
 			if self.gameOverFade<100:
 				self.gameOverFade+=2
 			for button in self.gameOverButtons:
 				button.update(events)
+		if self.won:
+			self.worldFocus = 1
+			if self.gameOverFade<100:
+				self.gameOverFade+=2
+			for button in self.gameWonButtons:
+				button.update(events)
+				
 		if self.worldFocus == 1:
 			self.ssworld.update(events)
 			self.tdworld.update([])
@@ -56,7 +64,7 @@ class game():
 		out["title"] = "Save Our City - "+("Battle View"*self.worldFocus)+("Resource View"*(not self.worldFocus))
 		if self.goBack:
 			out["state"] = "menu"
-			if self.gameOver:
+			if self.gameOver or self.won:
 				out["newgame"] = True
 		return out
 		
