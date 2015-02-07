@@ -1,3 +1,4 @@
+#TODO: Put in an offset property for images
 def loadCFG(filename):
 	cfg = {}
 	f = open(filename, "r")
