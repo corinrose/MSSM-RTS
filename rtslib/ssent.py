@@ -57,7 +57,7 @@ class ssent():
 								props = {"arc":self.attack["arc"], "onhit":self.attack["onhit"]}
 								if props["onhit"]=="damage":
 									props["damage"] = self.attack["damage"]
-								world.projectiles.append(projectile([self.pos[0], self.pos[1]-self.sheet.dim[1]], self.attack["speed"], pygame.image.load(self.attack["image"]), ent, props))
+								world.projectiles.append(projectile([self.pos[0], self.pos[1]-self.sheet.dim[1]], self.attack["speed"], rtslib.common.images[self.attack["image"]], ent, props))
 								break
 			
 			#Do a melee attack if we have one

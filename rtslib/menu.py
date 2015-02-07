@@ -4,10 +4,10 @@ import rtslib
 class menu():
 	def __init__(self):
 		self.state = "main"
-		self.mainbg = pygame.image.load("resources/menubg/main.png").convert_alpha()
-		self.fileselectbg = pygame.image.load("resources/menubg/fileselect.png").convert_alpha()
-		self.settingsbg = pygame.image.load("resources/menubg/settings.png").convert_alpha()
-		self.creditsbg = pygame.image.load("resources/menubg/credits.png").convert_alpha()
+		self.mainbg = rtslib.common.images["resources/menubg/main.png"]
+		self.fileselectbg = rtslib.common.images["resources/menubg/fileselect.png"]
+		self.settingsbg = rtslib.common.images["resources/menubg/settings.png"]
+		self.creditsbg = rtslib.common.images["resources/menubg/credits.png"]
 		
 		self.mainbuttons = [rtslib.button("play", [100,325], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Play"),
 							rtslib.button("settings", [100,405], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Settings"),

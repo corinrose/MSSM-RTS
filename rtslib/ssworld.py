@@ -13,10 +13,10 @@ import random
 class ssworld():
 	def __init__(self, game, folder="resources/testlevel"):
 		#UI Elements
-		self.bottombar = pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha()
-		self.topbar = pygame.image.load("resources/ui/GameTopBar.png").convert_alpha()
-		self.unitImages = [pygame.image.load("resources/player/Knight.png").convert_alpha(), pygame.image.load("resources/player/Crossbowman.png").convert_alpha(),
-						   pygame.image.load("resources/player/BattleAxer.png").convert_alpha()]
+		self.bottombar = rtslib.common.images["resources/ui/GameBottomBar.png"]
+		self.topbar = rtslib.common.images["resources/ui/GameTopBar.png"]
+		self.unitImages = [rtslib.common.images["resources/player/Knight.png"], rtslib.common.images["resources/player/Crossbowman.png"],
+						   rtslib.common.images["resources/player/BattleAxer.png"]]
 		self.unitNumbers = ["knight", "crossbow", "battleaxe"]
 
 		self.buttons = [button("knight", [15,670], self.spawnButtonClick, rtslib.common.buttonSets["hud"]),
@@ -34,8 +34,8 @@ class ssworld():
 		self.location = folder
 		#Level-specific things
 		self.cfg = loadCFG(self.location+"/config.cfg")
-		self.background = pygame.image.load(self.location+"/bg.png").convert_alpha()
-		self.foreground = pygame.image.load(self.location+"/fg.png").convert_alpha()
+		self.background = rtslib.common.images[self.location+"/bg.png"]
+		self.foreground = rtslib.common.images[self.location+"/fg.png"]
 		self.width = self.background.get_width()
 		self.path = path(self.cfg["pathpoints"])
 

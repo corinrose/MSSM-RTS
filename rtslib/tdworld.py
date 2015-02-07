@@ -24,15 +24,15 @@ class tdworld():
 		self.wood = 50.0
 		self.gold = 0.0
 		self.topBarText = pygame.font.Font("resources/fonts/Deutsch.ttf", 14) # text for top bar
-		self.UIelements = [[pygame.image.load("resources/ui/GameBottomBar.png").convert_alpha(), (0, 650)], 
-						   [pygame.image.load("resources/ui/GameTopBar.png").convert_alpha(), (0,0)], 
+		self.UIelements = [[rtslib.common.images["resources/ui/GameBottomBar.png"], (0, 650)], 
+						   [rtslib.common.images["resources/ui/GameTopBar.png"], (0,0)], 
 						   [], #This is gross. We need to change this...
-						   [pygame.image.load("resources/ui/population.png").convert_alpha(), (5, 5)],
-						   [pygame.image.load("resources/ui/food.png").convert_alpha(), (105, 10)],
-						   [pygame.image.load("resources/ui/wood.png").convert_alpha(), (205, 8)],
-						   [pygame.image.load("resources/ui/gold.png").convert_alpha(), (305, 8)]
+						   [rtslib.common.images["resources/ui/population.png"], (5, 5)],
+						   [rtslib.common.images["resources/ui/food.png"], (105, 10)],
+						   [rtslib.common.images["resources/ui/wood.png"], (205, 8)],
+						   [rtslib.common.images["resources/ui/gold.png"], (305, 8)]
 						   ] # defined in update
-		self.background = pygame.image.load("resources/GameGrass.png").convert_alpha()
+		self.background = rtslib.common.images["resources/GameGrass.png"]
 		self.unitDictionary = {3.11:"knight", 3.12:"crossbow", 3.13:"battleaxe"} # will eventually be a config thing
 		self.game = game 
 		self.selectionCoordinates = [[0,0], [0,0]]
