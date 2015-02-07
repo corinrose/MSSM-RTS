@@ -1,5 +1,5 @@
 from rtslib.base import *
-import math, pygame
+import math, pygame, rtslib
 
 class projectile():
 	def __init__(self, pos, speed, image, target, properties):
