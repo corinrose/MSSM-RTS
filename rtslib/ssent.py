@@ -99,7 +99,7 @@ class ssent():
 		return abs(self.dist - dist)
 		
 	def distance(self, pos):
-		return math.sqrt(((pos[0]-self.pos[0])**2)+((pos[1]-self.pos[1])**2))
+		return math.sqrt(((pos[0]-self.pos[0]-self.offset[0])**2)+((pos[1]-self.pos[1]-self.offset[1])**2))
 		
 	def draw(self, surface, cpos):
 		surface.blit(self.sheet.getImage(), [self.pos[0]-cpos-(self.sheet.dim[0]/2)-self.offset[0], self.pos[1]-self.sheet.dim[1]-self.offset[1]])
@@ -108,4 +108,5 @@ class ssent():
 			pygame.draw.rect(surface, [0,255,0], [self.pos[0]-((self.sheet.dim[0])/2)-cpos-self.offset[0], self.pos[1]-self.sheet.dim[1]-5-2-self.offset[1], self.sheet.dim[0]*(self.health/self.maxhealth), 5], 0) 
 			
 	def predictFuture(self, timeahead):
-		return self.path.calcPos(self.dist+(timeahead*self.speed))
+		pos = self.path.calcPos(self.dist+(timeahead*self.speed))
+		return [pos[0]-self.offset[0], pos[1]-self.offset[1]]

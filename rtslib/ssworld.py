@@ -65,7 +65,7 @@ class ssworld():
 										self.unitDefs[gate["type"]]["width"], 
 										sheet(self.unitDefs[gate["type"]]["image"], self.unitDefs[gate["type"]]["dimensions"]), 
 										self.path, False, gate["health"],
-										self.attacks[self.unitDefs[gate["type"]]["attack"]], self.unitDefs[gate["type"]]["frametime"], [0, -30], True)) #Hard-coded offset = bad!
+										self.attacks[self.unitDefs[gate["type"]]["attack"]], self.unitDefs[gate["type"]]["frametime"], self.unitDefs[gate["type"]]["offset"], True)) #Hard-coded offset = bad!
 			self.cid += 1
 		
 		#Add the king
@@ -74,7 +74,7 @@ class ssworld():
 										self.unitDefs[self.king["type"]]["width"], 
 										sheet(self.unitDefs[self.king["type"]]["image"], self.unitDefs[self.king["type"]]["dimensions"]), 
 										self.path, True, self.king["health"],
-										self.attacks[self.unitDefs[self.king["type"]]["attack"]], self.unitDefs[self.king["type"]]["frametime"], [0,0], True))
+										self.attacks[self.unitDefs[self.king["type"]]["attack"]], self.unitDefs[self.king["type"]]["frametime"], self.unitDefs[self.king["type"]]["offset"], True))
 		self.cid += 1
 		self.king = self.ssentities[-1]
 		
@@ -84,7 +84,7 @@ class ssworld():
 										self.unitDefs[self.boss["type"]]["width"], 
 										sheet(self.unitDefs[self.boss["type"]]["image"], self.unitDefs[self.boss["type"]]["dimensions"]), 
 										self.path, False, self.boss["health"],
-										self.attacks[self.unitDefs[self.boss["type"]]["attack"]], self.unitDefs[self.boss["type"]]["frametime"], [0,0], True))
+										self.attacks[self.unitDefs[self.boss["type"]]["attack"]], self.unitDefs[self.boss["type"]]["frametime"], self.unitDefs[self.boss["type"]]["offset"], True))
 		self.cid += 1
 		self.boss = self.ssentities[-1]
 		
@@ -139,7 +139,7 @@ class ssworld():
 										sheet(self.unitDefs[firclass["type"]]["image"], self.unitDefs[firclass["type"]]["dimensions"]), 
 										self.path, True, firclass["health"], 
 										self.attacks[self.unitDefs[firclass["type"]]["attack"]],
-										self.unitDefs[firclass["type"]]["frametime"], [0,0]))
+										self.unitDefs[firclass["type"]]["frametime"], self.unitDefs[firclass["type"]]["offset"]))
 				self.cid += 1
 				
 		#Handle current operation
@@ -153,7 +153,8 @@ class ssworld():
 													self.unitDefs[self.units[self.spawnqueue[self.currentwavespawned]]["type"]]["width"], 
 													sheet(self.unitDefs[self.units[self.spawnqueue[self.currentwavespawned]]["type"]]["image"], self.unitDefs[self.units[self.spawnqueue[self.currentwavespawned]]["type"]]["dimensions"]), 
 													self.path, False, float(self.units[self.spawnqueue[self.currentwavespawned]]["properties"][0]),
-													self.attacks[self.unitDefs[self.units[self.spawnqueue[self.currentwavespawned]]["type"]]["attack"]], self.unitDefs[self.units[self.spawnqueue[self.currentwavespawned]]["type"]]["frametime"], [0,0]))
+													self.attacks[self.unitDefs[self.units[self.spawnqueue[self.currentwavespawned]]["type"]]["attack"]], self.unitDefs[self.units[self.spawnqueue[self.currentwavespawned]]["type"]]["frametime"], 
+													self.unitDefs[self.units[self.spawnqueue[self.currentwavespawned]]["type"]]["offset"]))
 							self.cid += 1
 							self.currentwavespawned += 1
 							if self.script[self.currentop]["command"] == "spawn":

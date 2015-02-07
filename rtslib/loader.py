@@ -1,4 +1,3 @@
-#TODO: Put in an offset property for images
 def loadCFG(filename):
 	cfg = {}
 	f = open(filename, "r")
@@ -156,5 +155,6 @@ def loadUnits(fileName):
 			unit["frametime"] = int(sl[3])
 			unit["attack"] = sl[4]
 			unit["width"] = float(sl[5])
+			unit["offset"] = [int(sl[6].split(",")[0]), int(sl[6].split(",")[1])]
 			units[sl[0]] = unit
 	return units
