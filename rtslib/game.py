@@ -1,8 +1,8 @@
 import rtslib, pygame
 
 class game():
-	def __init__(self):
-		self.ssworld = rtslib.ssworld(self, "resources/skele01")
+	def __init__(self, level):
+		self.ssworld = rtslib.ssworld(self, level)
 		self.tdworld = rtslib.tdworld(self)
 		self.worldFocus = 1
 		self.availableUnits={"knight":5, "crossbow":5, "battleaxe":5}
@@ -65,7 +65,7 @@ class game():
 		if self.goBack:
 			out["state"] = "menu"
 			if self.gameOver or self.won:
-				out["newgame"] = True
+				out["newgame"] = "resources/skele01"
 		return out
 		
 	def clickHandler(self, button):

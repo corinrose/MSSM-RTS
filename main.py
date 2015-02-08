@@ -13,7 +13,7 @@ rtslib.common.loadAll(screen)
 state = "menu"
 
 Menu = rtslib.menu()
-Game = rtslib.game()
+Game = rtslib.game("resources/skele01")
 
 clock = pygame.time.Clock()
 pygame.key.set_repeat(5,5)
@@ -50,7 +50,7 @@ while True:
 	
 	if "newgame" in out:
 		print "Resetting game"
-		Game = rtslib.game()
+		Game = rtslib.game(out["newgame"])
 		
 	if "title" in out:
 		pygame.display.set_caption(out["title"])
