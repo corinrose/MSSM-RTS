@@ -165,6 +165,8 @@ class tdent():
 			world.pop += costList[3]
 			return True
 		else:
+			pygame.mixer.music.load("resources/sounds/buzzer.mp3")
+			pygame.mixer.music.play()
 			return False # play sound:"you require more resources" 
 		
 	def checkSize(self, tdent, world): 
