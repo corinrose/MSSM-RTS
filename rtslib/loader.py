@@ -158,3 +158,18 @@ def loadUnits(fileName):
 			unit["offset"] = [int(sl[6].split(",")[0]), int(sl[6].split(",")[1])]
 			units[sl[0]] = unit
 	return units
+	
+def loadSettings():
+	f = open("resources/settings.cfg", "r")
+	con = f.read().split("\n")
+	f.close()
+	settings = {}
+	settings["fullscreen"] = bool(int(con[0]))
+	#load other settings
+	return settings
+	
+def saveSettings(settings):
+	f = open("resources/settings.cfg", "r")
+	f.write(int(settings["fullscreen"]))
+	#Write other settings
+	f.close()
