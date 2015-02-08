@@ -5,7 +5,7 @@ from rtslib.sheet import *
 from rtslib.loader import *
 from rtslib.button import *
 from rtslib.base import *
-from rtslib.common import * #TODO: pls don't
+import rtslib.common #TODO: pls don't
 import rtslib #TODO: this too
 
 import random

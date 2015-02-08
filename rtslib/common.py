@@ -4,12 +4,12 @@ buttonSets = {}
 images = {}
 loadTypes = [".png"]
 
-def loadAll(surface = None):
+def loadAll(surface):
 	global buttonSets, images
-	if surface!=None:
-		surface.fill([255,255,255])
-		pygame.draw.rect(surface, [0,0,0], [200, 300, 880, 120], 2)
-		pygame.display.flip()
+	#bg = pygame.image.load() #This goes against the entire idea of this module/function, but whatever
+	surface.fill([255,255,255])
+	pygame.draw.rect(surface, [0,0,0], [200, 300, 880, 120], 2)
+	pygame.display.flip()
 	res = list(os.walk("resources"))
 	totFiles = 0
 	for c in res:
@@ -17,7 +17,7 @@ def loadAll(surface = None):
 			if p[-4:] in loadTypes:
 				totFiles+=1
 	cFile = 0.0
-	for all in res: #TODO: Put a loading bar on here as it could take time eventually
+	for all in res:
 		for possFile in all[2]:
 			if possFile[-4:] in loadTypes:
 				surface.fill([255,255,255])

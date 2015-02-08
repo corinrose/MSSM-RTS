@@ -77,21 +77,21 @@ class tdent():
 				self.sheetCounter = 0
 			
 	def drawSelectionMarker(self, surface): # RED
-		pygame.draw.polygon(surface, (255, 0, 0), [self.pos, \
-									  [self.pos[0] + self.sheet.dim[0], self.pos[1]], \
-									  [self.pos[0] + self.sheet.dim[0], self.pos[1] + self.sheet.dim[1]], \
-									  [self.pos[0], self.pos[1] + self.sheet.dim[1]]], \
+		pygame.draw.polygon(surface, (255, 0, 0), [self.pos,
+									  [self.pos[0] + self.sheet.dim[0], self.pos[1]],
+									  [self.pos[0] + self.sheet.dim[0], self.pos[1] + self.sheet.dim[1]],
+									  [self.pos[0], self.pos[1] + self.sheet.dim[1]]],
 									  2)
 									  
 	def drawWorkingMarker(self, surface): # YELLOW
 		if self.isSelected:
 			if len(self.command) > 0 and self.timer >= 0:
-				pygame.draw.polygon(surface, (255, 255, 0), [[self.pos[0], self.pos[1] - 4], \
-												  [self.pos[0] + ((float(self.command[0][1]) - float(self.timer))/float(self.command[0][1]))*self.sheet.dim[0], self.pos[1] - 4]], \
+				pygame.draw.polygon(surface, (255, 255, 0), [[self.pos[0], self.pos[1] - 4],
+												  [self.pos[0] + ((float(self.command[0][1]) - float(self.timer))/float(self.command[0][1]))*self.sheet.dim[0], self.pos[1] - 4]],
 												  2)
 				for i in range(1, len(self.command), 1):
-					pygame.draw.polygon(surface, (255, 255, 0), [[self.pos[0], self.pos[1] - 4 - 4*i], \
-												  [self.pos[0] + self.sheet.dim[0], self.pos[1] - 4 - 4*i]], \
+					pygame.draw.polygon(surface, (255, 255, 0), [[self.pos[0], self.pos[1] - 4 - 4*i],
+												  [self.pos[0] + self.sheet.dim[0], self.pos[1] - 4 - 4*i]],
 												  2)
 								
 	def drawDestinationMarker(self, surface): # RED
@@ -101,21 +101,21 @@ class tdent():
 		if self.type == 0: # worker
 			if eventKey == "Spawn Barracks":
 				self.spawn(world, eventKey, [0, 20, 0, 0, 3*60], 
-						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
-								False, 0, sheet("resources/buildings/Barracks.png", [160, 160]), \
-								"Barracks.", 1.2), [["Spawn Knight", [125, 670]],\
-													["Spawn Crossbowman", [235, 670]],\
+						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1],
+								False, 0, sheet("resources/buildings/Barracks.png", [160, 160]),
+								"Barracks.", 1.2), [["Spawn Knight", [125, 670]],
+													["Spawn Crossbowman", [235, 670]],
 													["Spawn Battleaxer", [345, 670]]])
 			elif eventKey == "Spawn Mill":
 				self.spawn(world, eventKey, [0, 20, 0, 0, 3*60], 
-						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
-								False, 0, sheet("resources/buildings/Food.png", [160, 160]), \
+						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1],
+								False, 0, sheet("resources/buildings/Food.png", [160, 160]),
 								"Mill.", 2.1))
 		elif self.type == 1.1: # town hall
 			if eventKey == "Spawn Worker":
 				self.spawn(world, eventKey, [10, 0, 0, 1, 1*60], 
-						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
-								False, 1.0, sheet("resources/player/worker.png", [40, 40]), \
+						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1],
+								False, 1.0, sheet("resources/player/worker.png", [40, 40]),
 								"Worker.", 0), [["Spawn Barracks", [125, 670]], ["Spawn Mill", [235, 670]]])
 			elif eventKey == "Increase Pop":
 				self.addResource(world, [0, 0,0, 10], [0,0,20,0])
@@ -123,18 +123,18 @@ class tdent():
 		elif self.type == 1.2: # barracks
 			if eventKey == "Spawn Knight":
 				self.spawn(world, eventKey, [10, 10, 0, 1, 1*60], 
-						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
-								 False, 1.0, sheet("resources/player/Knight.png", [40, 40]), \
+						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1],
+								 False, 1.0, sheet("resources/player/Knight.png", [40, 40]),
 								"Knight. Move to gate to transfer to battle.", 3.11))
 			elif eventKey == "Spawn Crossbowman":
 				self.spawn(world, eventKey, [10, 10, 0, 1, 1*60], 
-						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
-								 False, 1.0, sheet("resources/player/Crossbowman.png", [40, 40]), \
+						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1],
+								 False, 1.0, sheet("resources/player/Crossbowman.png", [40, 40]),
 								"Crossbowman. Move to gate to transfer to battle.", 3.12))
 			elif eventKey == "Spawn Battleaxer":
 				self.spawn(world, eventKey, [10, 10, 0, 1, 1*60], 
-						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1], \
-								 False, 1.0, sheet("resources/player/Battleaxer.png", [40, 40]), \
+						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1],
+								 False, 1.0, sheet("resources/player/Battleaxer.png", [40, 40]),
 								"Crossbowman. Move to gate to transfer to battle.", 3.13))
 		elif int(self.type) == 2:
 			if eventKey == "":

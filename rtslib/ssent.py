@@ -1,7 +1,7 @@
 import pygame
 from rtslib.projectile import *
 
-#TODO: Put offset in collision things
+#TODO: Verify the offsets in collision things are working properly
 class ssent():
 	def __init__(self, id, dist, speed, width, sheet, path, team, health, attack, frametime, offset, teamPassthrough=False):
 		self.id = id

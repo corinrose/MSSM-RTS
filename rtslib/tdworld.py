@@ -9,14 +9,14 @@ def formatSpaces(desiredLength, string): # returns some spaces + a string
 		
 class tdworld():
 	def __init__(self, game):
-		self.entities = [tdent(400, 400, 400, 400, \
-							   True, 0, sheet("resources/buildings/TownHall.png", [160,160]), \
-							   "Town Hall.", 1.1), \
-						tdent(50, 50, 200, 200, \
-							   False, 0, sheet("resources/Wood.png", [160,160]), \
-							   "Wood.", 2.2), \
-						tdent(500, 270, 270, 270, \
-							   False, 0, sheet("resources/Gold.png", [80,80]), \
+		self.entities = [tdent(400, 400, 400, 400, 
+							   True, 0, sheet("resources/buildings/TownHall.png", [160,160]), 
+							   "Town Hall.", 1.1), 
+						tdent(50, 50, 200, 200, 
+							   False, 0, sheet("resources/Wood.png", [160,160]), 
+							   "Wood.", 2.2), 
+						tdent(500, 270, 270, 270, 
+							   False, 0, sheet("resources/Gold.png", [80,80]), 
 							   "Gold.", 2.3)] 
 		self.poplimit = 10.0
 		self.pop = 0.0
@@ -62,9 +62,9 @@ class tdworld():
 		self.selectedAlready = False 
 		for ent in reversed(self.entities):
 			if self.selecting:
-					if (not self.selectedAlready) and ent.rectangularCollision([min(self.selectionCoordinates[0][0], self.selectionCoordinates[1][0]), \
-																				  min(self.selectionCoordinates[0][1], self.selectionCoordinates[1][1])], \
-																				 [max(self.selectionCoordinates[0][0], self.selectionCoordinates[1][0]), \
+					if (not self.selectedAlready) and ent.rectangularCollision([min(self.selectionCoordinates[0][0], self.selectionCoordinates[1][0]), 
+																				  min(self.selectionCoordinates[0][1], self.selectionCoordinates[1][1])], 
+																				 [max(self.selectionCoordinates[0][0], self.selectionCoordinates[1][0]), 
 																				  max(self.selectionCoordinates[0][1], self.selectionCoordinates[1][1])]): # drag selection
 						ent.setSel(True)
 						if (self.selectionCoordinates[0][0] - self.selectionCoordinates[1][0])**2 + \
@@ -104,10 +104,10 @@ class tdworld():
 		for ent in self.entities: # draw units, buildings, resources
 			ent.draw(surface)
 		if self.selecting: # draw drag selection box 
-			pygame.draw.polygon(surface, (255, 255, 0), [self.selectionCoordinates[0], \
-														 [self.selectionCoordinates[1][0], self.selectionCoordinates[0][1]], \
-														 self.selectionCoordinates[1], \
-														 [self.selectionCoordinates[0][0], self.selectionCoordinates[1][1]]], \
+			pygame.draw.polygon(surface, (255, 255, 0), [self.selectionCoordinates[0],
+														 [self.selectionCoordinates[1][0], self.selectionCoordinates[0][1]],
+														 self.selectionCoordinates[1],
+														 [self.selectionCoordinates[0][0], self.selectionCoordinates[1][1]]],
 														 2)
 		surface.blit(self.UIelements[0][0], self.UIelements[0][1])
 		for ent in self.entities:
