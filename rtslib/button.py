@@ -22,7 +22,7 @@ class button():
 			self.font = pygame.font.Font(font, fontSize)
 			self.drawText = True
 			self.textImage = self.font.render(self.text, True, [255,255,255])
-			self.textpos = [self.pos[0]+(self.images[0].get_width()/2)-(self.textImage.get_width()/2), self.pos[1]+(self.images[1].get_height()/2)-(self.textImage.get_height()/2),]
+			self.textpos = [self.pos[0]+(self.images[0].get_width()/2)-(self.textImage.get_width()/2), self.pos[1]+(self.images[1].get_height()/2)-(self.textImage.get_height()/2)]
 		
 	def update(self, events):
 		for event in events:
@@ -47,6 +47,12 @@ class button():
 				return False
 		else:
 			return False
+			
+	def setText(self, text):
+		if self.drawText:
+			self.text = text
+			self.textImage = self.font.render(self.text, True, [255,255,255])
+			self.textpos = [self.pos[0]+(self.images[0].get_width()/2)-(self.textImage.get_width()/2), self.pos[1]+(self.images[1].get_height()/2)-(self.textImage.get_height()/2)]
 			
 	def draw(self, surface):
 		surface.blit(self.images[self.state], self.pos)

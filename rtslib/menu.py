@@ -2,7 +2,8 @@ import pygame, sys
 import rtslib
 
 class menu():
-	def __init__(self):
+	def __init__(self, settings):
+		self.settings = settings
 		self.state = "main"
 		self.mainbg = rtslib.common.images["resources/menubg/main.png"]
 		self.fileselectbg = rtslib.common.images["resources/menubg/fileselect.png"]
@@ -22,10 +23,10 @@ class menu():
 		self.creditsbuttons = [rtslib.button("back", [480,650], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Back")]
 		
 		self.settingsbuttons = [rtslib.button("back", [480,650], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Back"),
-							   rtslib.button("audio", [480,200], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Audio")]
-								  
-		#self.settings
-		
+							    rtslib.button("fullscreen", [480,200], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Fullscreen: "+("On"*self.settings["fullscreen"])+("Off"*(not self.settings["fullscreen"])))]
+
+		self.applySettings = False
+	
 	def draw(self, surface):
 		if self.state == "main":
 			surface.blit(self.mainbg, [0,0])
@@ -63,6 +64,11 @@ class menu():
 			if button == "back":
 				self.state = "main"
 		elif self.state == "settings":
+			if button == "fullscreen":
+				self.settings["fullscreen"] = not self.settings["fullscreen"]
+				self.settingsbuttons[1].setText("Fullscreen: "+("On"*self.settings["fullscreen"])+("Off"*(not self.settings["fullscreen"])))
+				self.applySettings = True
+				
 			if button == "back":
 				self.state = "main"
 		
@@ -83,6 +89,9 @@ class menu():
 		if self.state == "level":
 			out["state"] = "game"
 			self.state = "fileselect"
+		if self.applySettings:
+			out["applysettings"] = True
+			self.applySettings = False
 		if self.state == "exit":
 			out["exit"]="now"
 		out["title"] = "Save Our City"

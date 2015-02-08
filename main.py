@@ -14,7 +14,7 @@ rtslib.common.loadAll(screen)
 
 state = "menu"
 
-Menu = rtslib.menu()
+Menu = rtslib.menu(settings)
 Game = rtslib.game("resources/skele01")
 
 clock = pygame.time.Clock()
@@ -29,15 +29,8 @@ while True:
 			sys.exit()
 		if event.type == pygame.KEYUP:
 			if event.key == pygame.K_ESCAPE:
-				if fullscreen:
-					fullscreen = False
-					screen = pygame.display.set_mode([1280,720])
-				else:
-					sys.exit()
-			if event.key == pygame.K_F1:
-				if not fullscreen:
-					fullscreen = True
-					screen = pygame.display.set_mode([1280,720], pygame.FULLSCREEN)
+				sys.exit()
+
 	out = {}
 	if state == "menu":
 		out = Menu.update(events)
@@ -53,6 +46,10 @@ while True:
 	if "newgame" in out:
 		print "Resetting game"
 		Game = rtslib.game(out["newgame"])
+		
+	if "applysettings" in out:
+		screen = pygame.display.set_mode([1280,720], settings["fullscreen"]*pygame.FULLSCREEN)
+		rtslib.loader.saveSettings(settings)
 		
 	if "title" in out:
 		pygame.display.set_caption(out["title"])

@@ -169,7 +169,7 @@ def loadSettings():
 	return settings
 	
 def saveSettings(settings):
-	f = open("resources/settings.cfg", "r")
-	f.write(int(settings["fullscreen"]))
+	f = open("resources/settings.cfg", "w")
+	f.write(str(int(settings["fullscreen"])))
 	#Write other settings
 	f.close()
