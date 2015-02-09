@@ -44,6 +44,8 @@ class ssworld():
 		self.units = self.cfg["units"]
 		self.waves = self.cfg["waves"]
 		self.currentop = -1
+		self.scriptStartTime = self.cfg["startdelay"]
+		self.startIn = self.cfg["startdelay"]
 		self.scriptstarted = False
 		self.scripttimer = 0
 		self.currentwavespawned=0
@@ -169,6 +171,13 @@ class ssworld():
 				self.scripttimer -= 1
 				if self.scripttimer == 0:
 					self.nextOperation();
+		#If the script hasn't been started, count down the timer
+		else:
+			if self.startIn > 0:
+				self.startIn-=1
+			else:
+				self.scriptstarted = True
+				self.nextOperation()
 	
 	def checkClear(self, distRange, team): #team: 0=bad 1=good 2=either
 		for unit in self.ssentities:
@@ -208,13 +217,18 @@ class ssworld():
 		for pro in self.projectiles:
 			pro.draw(surface, self.cpos)
 		surface.blit(self.foreground, [-self.cpos,0])
+		#Bottom bar UI elements
 		surface.blit(self.bottombar, [0,650])
-		surface.blit(self.topbar, [0,0])
 		for button in self.buttons:
 			button.draw(surface)
 		for unitID in range(0, len(self.game.availableUnits)):
 			surface.blit(self.unitImages[unitID], [15+(unitID*110), 675])
 			surface.blit(self.numberfont.render(str(self.game.availableUnits[self.unitNumbers[unitID]]), True, [255,255,255]), [60+(unitID*110), 680])
+		#Top bar UI stuff
+		surface.blit(self.topbar, [0,0])
+		if not self.scriptstarted:
+			pygame.draw.rect(surface, [255,0,0], [440, 7, 400, 25], 0)
+			pygame.draw.rect(surface, [255,255,0], [440, 7, 400*(float(self.startIn)/self.scriptStartTime), 25], 0)
 			
 	def spawnButtonClick(self, button):
 		if self.game.availableUnits[button]>0:

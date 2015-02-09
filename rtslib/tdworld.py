@@ -118,3 +118,8 @@ class tdworld():
 		for i in range(1, len(self.UIelements)): # draw general UI (0 is unit UI)
 			surface.blit(self.UIelements[i][0], self.UIelements[i][1])
 			
+		#I don't think this is how you want me to do this, but whatever
+		if not self.game.ssworld.scriptstarted:
+			pygame.draw.rect(surface, [255,0,0], [440, 7, 400, 25], 0)
+			pygame.draw.rect(surface, [255,255,0], [440, 7, 400*(float(self.game.ssworld.startIn)/self.game.ssworld.scriptStartTime), 25], 0)
+			

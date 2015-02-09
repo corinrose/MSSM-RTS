@@ -11,6 +11,7 @@ def loadCFG(filename):
 	cfg["desc"]=details[1]
 	cfg["unlocks"]=details[2]
 	cfg["setup"]=details[3]
+	cfg["startdelay"]=int(details[4])*60
 	#Path
 	pstart = lines.index("<path>")
 	pend = lines.index("</path>")
