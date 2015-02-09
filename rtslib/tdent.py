@@ -134,7 +134,7 @@ class tdent():
 			elif eventKey == "Spawn Battleaxer":
 				self.spawn(world, eventKey, [10, 10, 0, 1, 1*60], 
 						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1],
-								 False, 1.0, sheet("resources/player/Battleaxer.png", [40, 40]),
+								 False, 1.0, sheet("resources/player/BattleAxer.png", [40, 40]),
 								"Crossbowman. Move to gate to transfer to battle.", 3.13))
 		elif int(self.type) == 2:
 			if eventKey == "":
@@ -165,8 +165,7 @@ class tdent():
 			world.pop += costList[3]
 			return True
 		else:
-			pygame.mixer.music.load("resources/sounds/buzzer.mp3")
-			pygame.mixer.music.play()
+			rtslib.common.sounds["resources/sounds/buzzer.wav"].play()
 			return False # play sound:"you require more resources" 
 		
 	def checkSize(self, tdent, world): 
