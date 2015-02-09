@@ -122,6 +122,7 @@ class ssworld():
 			self.game.gameOver = True
 		if self.boss.remove and not self.game.gameOver:
 			self.game.won = True
+			self.scriptstarted = False
 		#Remove any marked for deletion
 		for ent in self.ssentities:
 			if ent.remove:
@@ -231,6 +232,6 @@ class ssworld():
 			pygame.draw.rect(surface, [255,255,0], [440, 7, 400*(float(self.startIn)/self.scriptStartTime), 25], 0)
 			
 	def spawnButtonClick(self, button):
-		if self.game.availableUnits[button]>0:
+		if self.game.availableUnits[button]>0 and self.scriptstarted:
 			self.playerQueue.append(button)
 			self.game.availableUnits[button]-=1
