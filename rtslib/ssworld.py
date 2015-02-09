@@ -95,9 +95,9 @@ class ssworld():
 		for event in events:					
 			if event.type == pygame.KEYDOWN:
 				#Camera movement
-				if event.key == pygame.K_RIGHT:
+				if event.key == pygame.K_d:
 					self.cpos+=5
-				if event.key == pygame.K_LEFT:
+				if event.key == pygame.K_a:
 					self.cpos-=5
 				#Prevent camera from leaving the field
 				if self.cpos<0:

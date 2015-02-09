@@ -22,13 +22,14 @@ sys.argv.append("py2exe")
 #Hack to get fonts to work!
 origIsSystemDLL = py2exe.build_exe.isSystemDLL
 def isSystemDLL(pathname):
-       if os.path.basename(pathname).lower() in ["sdl_ttf.dll"]:
+       if os.path.basename(pathname).lower() in ["libfreetype-6.dll", "libogg-0.dll","sdl_ttf.dll"]:
                return 0
        return origIsSystemDLL(pathname)
 py2exe.build_exe.isSystemDLL = isSystemDLL
 #From http://thadeusb.com/weblog/2009/4/15/pygame_font_and_py2exe
 
-opts = {'py2exe': {"optimize":2, 'bundle_files':1, 'includes':["rtslib", "pygame"], 'dist_dir':"../../Build", 'dll_excludes':['pywintypes27.dll']}}
+exc = ['email', 'tk', 'socket', 'tcl', 'distutils', 'urllib', 'urllib2', "urlparse", 'AppKit', 'curses', 'webbrowser', 'setuptools', 'pydoc', '_ssl', "BaseHTTPServer"]
+opts = {'py2exe': {"optimize":2, 'bundle_files':1, 'includes':["rtslib", "pygame"], 'dist_dir':"../../Build", 'dll_excludes':['pywintypes27.dll'], 'excludes':exc}}
 
 setup(name='Save Our City', data_files=[], windows=[{'script':'../main.py', "icon_resources": [(1, "../resources/icon.ico")]}], options=opts, zipfile=None)
 
