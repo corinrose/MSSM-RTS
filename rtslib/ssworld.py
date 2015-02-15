@@ -69,6 +69,7 @@ class ssworld():
 										self.path, False, gate["health"],
 										self.attacks[self.unitDefs[gate["type"]]["attack"]], self.unitDefs[gate["type"]]["frametime"], self.unitDefs[gate["type"]]["offset"], True)) #Hard-coded offset = bad!
 			self.cid += 1
+		self.startpos=0
 		
 		#Add the king
 		self.king = self.cfg["king"]
@@ -90,20 +91,23 @@ class ssworld():
 		self.cid += 1
 		self.boss = self.ssentities[-1]
 		
+	def clampCamera(self):
+		if self.cpos<0:
+			self.cpos=0
+		if self.cpos+1280>self.width:
+			self.cpos=self.width-1280
+			
 	def update(self, events):
 		#Handle events
-		for event in events:					
+		for event in events:	
+			if event.type == pygame.MOUSEBUTTONDOWN:
+				self.startpos = event.pos[0]+self.cpos
 			if event.type == pygame.KEYDOWN:
 				#Camera movement
 				if event.key == pygame.K_d:
 					self.cpos+=5
 				if event.key == pygame.K_a:
 					self.cpos-=5
-				#Prevent camera from leaving the field
-				if self.cpos<0:
-					self.cpos=0
-				if self.cpos+1280>self.width:
-					self.cpos = self.width-1280
 				#Start script on pressing "s"
 				if event.key == pygame.K_s:
 					if not self.scriptstarted:
@@ -112,6 +116,9 @@ class ssworld():
 		#Update Buttons
 		for button in self.buttons:
 			button.update(events)
+		if pygame.mouse.get_pressed()[0]:
+			self.cpos=self.startpos-pygame.mouse.get_pos()[0]
+		self.clampCamera()#Prevents camera from leaving the field
 		#Update entities
 		for ent in self.ssentities:
 			ent.update(self, self.ssentities)

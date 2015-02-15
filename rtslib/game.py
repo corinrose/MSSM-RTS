@@ -6,6 +6,8 @@ class game():
 		self.tdworld = rtslib.tdworld(self)
 		self.worldFocus = 1
 		self.availableUnits={"knight":5, "crossbow":5, "battleaxe":5}
+		#Common UI Stuff
+		self.buttons =[rtslib.button("switch", [0,0], self.clickHandler, rtslib.common.buttonSets["hud"], "resources/fonts/Deutsch.ttf", "Swap")]
 		#Endgame things
 		self.gameOver = False
 		self.gameOverBack = pygame.surface.Surface([1280, 720]).convert_alpha()
@@ -22,6 +24,8 @@ class game():
 			self.tdworld.draw(surface)
 		if self.worldFocus == 1:
 			self.ssworld.draw(surface)
+		for button in self.buttons:
+			button.draw(surface)
 		#Game over screen
 		if self.gameOver:
 			self.gameOverBack.fill([100,100,100,self.gameOverFade])
@@ -41,7 +45,10 @@ class game():
 			if event.type == pygame.KEYUP:
 				if event.key == pygame.K_SPACE:
 					self.worldFocus = not self.worldFocus
-					
+		
+		for button in self.buttons:
+			button.update(events)
+			
 		if self.gameOver:
 			self.worldFocus = 1
 			if self.gameOverFade<100:
@@ -71,3 +78,5 @@ class game():
 	def clickHandler(self, button):
 		if button == "menu":
 			self.goBack = True
+		if button == "switch":
+			self.worldFocus = not self.worldFocus
