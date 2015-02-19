@@ -32,6 +32,6 @@ def loadAll(surface):
 					sounds[(all[0]+"/"+possFile).replace("\\", "/")] = pygame.mixer.Sound(all[0]+"/"+possFile)
 				cFile+=1
 					
-	buttonSets = {"large":[images["resources/buttons/largeidle.png"], images["resources/buttons/largehover.png"], images["resources/buttons/largeclick.png"]],
-				  "hud":[images["resources/buttons/smallidle.png"], images["resources/buttons/smallhover.png"], images["resources/buttons/smallclick.png"]]
+	buttonSets = {"large":[images["resources/buttons/largeidle.png"], images["resources/buttons/largehover.png"], images["resources/buttons/largeclick.png"], images["resources/buttons/largedisabled.png"]],
+				  "hud":[images["resources/buttons/smallidle.png"], images["resources/buttons/smallhover.png"], images["resources/buttons/smallclick.png"], images["resources/buttons/smalldisabled.png"]]
 				}

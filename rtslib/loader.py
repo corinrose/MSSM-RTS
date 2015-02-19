@@ -174,3 +174,13 @@ def saveSettings(settings):
 	f.write(str(int(settings["fullscreen"])))
 	#Write other settings
 	f.close()
+	
+def loadLevelButtons():
+	f = open("resources/levels.cfg", "r")
+	lines = f.read().split("\n")
+	f.close()
+	buttons = []
+	for line in lines:
+		if line[0] != "#":
+			print line
+	return buttons
