@@ -20,7 +20,7 @@ class menu():
 							      rtslib.button("saves/3.sav", [900,250], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "File 3"),
 							      rtslib.button("back", [50,500], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Back")]
 		
-		self.levelselectbuttons = []
+		self.levelselectbuttons = [rtslib.button("back", [480,650], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Back"),]
 		self.levelbuttons = rtslib.loader.loadLevelButtons(self)
 		
 		self.creditsbuttons = [rtslib.button("back", [480,650], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Back")]
@@ -79,7 +79,9 @@ class menu():
 				self.state = "levelselect"
 		elif self.state == "levelselect":
 			if button == "back":
-				pass
+				self.save = ""
+				self.saveData=[]
+				self.state="fileselect"
 			else:
 				self.state="play-"+button
 		elif self.state == "credits":
