@@ -198,4 +198,5 @@ def loadLevelButtons(menu):
 			sep = line.split(" ")
 			pos = [int(sep[3].split(",")[0]), int(sep[3].split(",")[1])]
 			buttons[int(sep[0])] = rtslib.button(sep[1], pos, menu.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", sep[2])
+			buttons[int(sep[0])].setEnabled(False)
 	return buttons

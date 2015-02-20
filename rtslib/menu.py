@@ -75,6 +75,8 @@ class menu():
 				self.saveData = rtslib.loader.loadSave(self.save)
 				print self.save
 				print self.saveData
+				for level in self.saveData:
+					self.levelbuttons[level].setEnabled(True)
 				self.state = "levelselect"
 		elif self.state == "levelselect":
 			if button == "back":
