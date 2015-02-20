@@ -1,3 +1,5 @@
+import rtslib
+
 def loadCFG(filename):
 	cfg = {}
 	f = open(filename, "r")
@@ -108,8 +110,19 @@ def loadCFG(filename):
 	
 def loadSave(saveFile):
 	f = open(saveFile, "r")
-	con = f.read().split("\n")
-	return con
+	con = f.read().split(",")
+	out = []
+	for i in con:
+		out.append(int(i))
+	return out
+	
+def saveSave(save, saveFile):
+	f = open(saveFile, "w")
+	outstr = ""
+	for lev in save:
+		outstr+=str(lev)+","
+	f.write(outstr[:-1])
+	f.close()
 	
 def loadAttacks(fileName):
 	f = open(fileName, "r")
@@ -175,12 +188,14 @@ def saveSettings(settings):
 	#Write other settings
 	f.close()
 	
-def loadLevelButtons():
+def loadLevelButtons(menu):
 	f = open("resources/levels.cfg", "r")
 	lines = f.read().split("\n")
 	f.close()
-	buttons = []
+	buttons = {}
 	for line in lines:
 		if line[0] != "#":
-			print line
+			sep = line.split(" ")
+			pos = [int(sep[3].split(",")[0]), int(sep[3].split(",")[1])]
+			buttons[int(sep[0])] = rtslib.button(sep[1], pos, menu.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", sep[2])
 	return buttons

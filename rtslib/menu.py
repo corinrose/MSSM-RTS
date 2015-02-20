@@ -15,12 +15,13 @@ class menu():
 							rtslib.button("credits", [100,485], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Credits"),
 							rtslib.button("exit", [100,565], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Exit")]
 							
-		self.fileselectbuttons = [rtslib.button("file1", [60,250], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "File 1"),
-								  rtslib.button("file2", [480,250], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "File 2"),
-							      rtslib.button("file3", [900,250], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "File 3"),
+		self.fileselectbuttons = [rtslib.button("saves/1.sav", [60,250], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "File 1"),
+								  rtslib.button("saves/2.sav", [480,250], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "File 2"),
+							      rtslib.button("saves/3.sav", [900,250], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "File 3"),
 							      rtslib.button("back", [50,500], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Back")]
 		
-		self.levelselectbuttons = rtslib.loader.loadLevelButtons()
+		self.levelselectbuttons = []
+		self.levelbuttons = rtslib.loader.loadLevelButtons(self)
 		
 		self.creditsbuttons = [rtslib.button("back", [480,650], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Back")]
 		
@@ -28,6 +29,9 @@ class menu():
 							    rtslib.button("fullscreen", [480,200], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Fullscreen: "+("On"*self.settings["fullscreen"])+("Off"*(not self.settings["fullscreen"])))]
 
 		self.applySettings = False
+		
+		self.save = None
+		self.saveData = []
 	
 	def draw(self, surface):
 		if self.state == "main":
@@ -38,6 +42,12 @@ class menu():
 			surface.blit(self.fileselectbg, [0,0])
 			for b in self.fileselectbuttons:
 				b.draw(surface)
+		elif self.state == "levelselect":
+			surface.fill([150,150,150])
+			for b in self.levelselectbuttons:
+				b.draw(surface)
+			for b in self.levelbuttons:
+				self.levelbuttons[b].draw(surface)
 		elif self.state == "settings":
 			surface.blit(self.settingsbg, [0,0])
 			for b in self.settingsbuttons:
@@ -61,7 +71,16 @@ class menu():
 			if button == "back":
 				self.state = "main"
 			else:
-				self.state = "level"
+				self.save = button
+				self.saveData = rtslib.loader.loadSave(self.save)
+				print self.save
+				print self.saveData
+				self.state = "levelselect"
+		elif self.state == "levelselect":
+			if button == "back":
+				pass
+			else:
+				self.state="play-"+button
 		elif self.state == "credits":
 			if button == "back":
 				self.state = "main"
@@ -82,15 +101,22 @@ class menu():
 		elif self.state == "fileselect":
 			for b in self.fileselectbuttons:
 				b.update(events)
+		elif self.state == "levelselect":
+			for b in self.levelselectbuttons:
+				b.update(events)
+			for b in self.levelbuttons:
+				self.levelbuttons[b].update(events)
 		elif self.state == "settings":
 			for b in self.settingsbuttons:
 				b.update(events)
 		elif self.state == "credits":
 			for b in self.creditsbuttons:
 				b.update(events)
-		if self.state == "level":
+				
+		if self.state[0:4] == "play":
 			out["state"] = "game"
-			self.state = "fileselect"
+			out["newgame"] = self.state[5:]
+			self.state = "levelselect"
 		if self.applySettings:
 			out["applysettings"] = True
 			self.applySettings = False

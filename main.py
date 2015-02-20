@@ -39,13 +39,13 @@ while True:
 		out = Game.update(events)
 		Game.draw(screen)
 	
+	if "newgame" in out:
+		print "Resetting game, loading " + out["newgame"]
+		Game = rtslib.game(out["newgame"])
+	
 	if "state" in out:
 		print "Setting state to "+out["state"]
 		state = out["state"]
-	
-	if "newgame" in out:
-		print "Resetting game"
-		Game = rtslib.game(out["newgame"])
 		
 	if "applysettings" in out:
 		screen = pygame.display.set_mode([1280,720], settings["fullscreen"]*pygame.FULLSCREEN)
