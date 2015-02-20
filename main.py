@@ -42,6 +42,9 @@ while True:
 	if "newgame" in out:
 		print "Resetting game, loading " + out["newgame"]
 		Game = rtslib.game(out["newgame"])
+		
+	if "unlocks" in out:
+		Menu.unlock(out["unlocks"])
 	
 	if "state" in out:
 		print "Setting state to "+out["state"]
