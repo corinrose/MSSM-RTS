@@ -75,8 +75,7 @@ class menu():
 				self.saveData = rtslib.loader.loadSave(self.save)
 				print self.save
 				print self.saveData
-				for level in self.saveData:
-					self.levelbuttons[level].setEnabled(True)
+				self.enableLevelButtons()
 				self.state = "levelselect"
 		elif self.state == "levelselect":
 			if button == "back":
@@ -126,3 +125,16 @@ class menu():
 			out["exit"]="now"
 		out["title"] = "Save Our City"
 		return out
+	
+	def enableLevelButtons(self):
+		for b in self.levelbuttons:
+			self.levelbuttons[b].setEnabled(False)
+		for level in self.saveData:
+					self.levelbuttons[level].setEnabled(True)
+	
+	def unlock(self, unlocks):
+		for unlock in unlocks:
+			if unlock not in self.saveData:
+				self.saveData.append(unlock)
+		rtslib.loader.saveSave(self.saveData, self.save)
+		self.enableLevelButtons()

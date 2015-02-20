@@ -71,8 +71,8 @@ class game():
 		out["title"] = "Save Our City - "+("Battle View"*self.worldFocus)+("Resource View"*(not self.worldFocus))
 		if self.goBack:
 			out["state"] = "menu"
-			if self.gameOver or self.won:
-				out["newgame"] = "resources/skele01"
+			if self.won:
+				out["unlocks"] = self.ssworld.cfg["unlocks"] #TODO: NO. Just no.
 		return out
 		
 	def clickHandler(self, button):

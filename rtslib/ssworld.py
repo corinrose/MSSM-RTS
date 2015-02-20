@@ -33,7 +33,7 @@ class ssworld():
 		self.cpos = 0
 		self.location = folder
 		#Level-specific things
-		self.cfg = loadCFG(self.location+"/config.cfg")
+		self.cfg = loadCFG(self.location+"/config.cfg") #TODO Move cfg to game object, add tdworld stuff
 		self.background = rtslib.common.images[self.location+"/bg.png"]
 		self.foreground = rtslib.common.images[self.location+"/fg.png"]
 		self.width = self.background.get_width()

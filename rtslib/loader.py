@@ -11,7 +11,7 @@ def loadCFG(filename):
 	details = lines[dstart+1:dend]
 	cfg["name"]=details[0] #Must be in this order!
 	cfg["desc"]=details[1]
-	cfg["unlocks"]=details[2]
+	cfg["unlocks"]=[int(i) for i in details[2].split(" ")] #Finally found a one-liner for this!
 	cfg["setup"]=details[3]
 	cfg["startdelay"]=int(details[4])*60
 	#Path
