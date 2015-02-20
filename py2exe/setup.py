@@ -37,3 +37,13 @@ shutil.rmtree("build")
 shutil.copytree("../resources", "../../Build/resources")
 os.remove("../../Build/w9xpopen.exe")
 os.rename("../../Build/main.exe", "../../Build/Save Our City.exe")
+#Write default saves
+os.mkdir("../../Build/saves/")
+for save in ["1", "2", "3"]:
+	f = open("../../Build/saves/"+save+".sav", "w")
+	f.write("0")
+	f.close()
+#Write default settings
+f = open("../../Build/resources/settings.cfg", "w")
+f.write("0")
+f.close()
