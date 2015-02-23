@@ -38,8 +38,14 @@ class projectile():
 		self.pos[1]+=self.perframe[1]
 		self.currentdist = distance(self.pos[0], self.pos[1], self.startpos[0], self.startpos[1])
 		if self.currentdist > self.flightdist:
+			hits=[]
 			for ent in entities:
 				if ent.id == self.target:
-					if self.properties["onhit"]=="damage":
-						ent.health -= self.properties["damage"]
+					hits.append(ent)
+				elif self.properties["multitarget"]:			
+					if distance(self.pos[0], self.pos[1], ent.pos[0], ent.pos[1])<self.properties["spreadrange"]:
+						hits.append(ent)
+			for ent in hits:	
+				if self.properties["onhit"]=="damage":
+					ent.health -= self.properties["damage"]
 			self.remove = True

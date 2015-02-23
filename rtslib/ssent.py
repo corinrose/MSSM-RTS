@@ -63,9 +63,11 @@ class ssent():
 							self.attacktimer -= 1
 							if self.attacktimer <= 0:
 								self.attacktimer = self.attack["delay"]*60
-								props = {"arc":self.attack["arc"], "onhit":self.attack["onhit"]}
+								props = {"arc":self.attack["arc"], "onhit":self.attack["onhit"],"multitarget":self.attack["multitarget"]}
 								if props["onhit"]=="damage":
 									props["damage"] = self.attack["damage"]
+								if props["multitarget"]:
+									props["spreadrange"] = self.attack["spreadrange"]
 								world.projectiles.append(projectile([self.pos[0], self.pos[1]-self.sheet.dim[1]], self.attack["speed"], rtslib.common.images[self.attack["image"]], ent, props))
 								break
 							else:
