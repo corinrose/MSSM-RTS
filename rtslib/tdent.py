@@ -43,8 +43,9 @@ class tdent():
 		if self.isSelected:
 			for i in range(0, len(self.buttons), 1):
 				self.buttons[i].update(events)
-		for command in self.newCommands:
-			self.action(world, command)
+		if len(self.command) == 0 or (len(self.command) > 0 and self.command[0][0] not in ["Spawn Mill", "Spawn Barracks"]): # can't queue buildings
+			for command in self.newCommands:
+					self.action(world, command)
 		self.newCommands = []
 		if self.timer < 0:
 			self.move()
