@@ -152,6 +152,11 @@ def loadAttacks(fileName):
 				if sl[8] == "damage":
 					attack["onhit"] = "damage"
 					attack["damage"] = float(sl[9])
+				if sl[8] == "slow":
+					attack["onhit"] = "slow"
+					attack["percent"] = float(sl[9])
+					attack["time"] = float(sl[10])*60
+				
 			attacks[sl[0]] = attack
 	return attacks
 	

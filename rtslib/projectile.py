@@ -48,4 +48,6 @@ class projectile():
 			for ent in hits:	
 				if self.properties["onhit"]=="damage":
 					ent.health -= self.properties["damage"]
+				if self.properties["onhit"]=="slow":
+					ent.applyEffect(["slow", self.properties["percent"], self.properties["time"]])
 			self.remove = True
