@@ -2,13 +2,32 @@ import pygame
 from rtslib.tdent import *
 from rtslib.sheet import *
 from rtslib.button import *
-import rtslib
+from rtslib.common import *
+import rtslib # redundancy???
 
 def formatSpaces(desiredLength, string): # returns some spaces + a string
 		return " "*(desiredLength - len(string)) + string
 		
+def loadCFG(file):
+	config = {}
+	f = open(file, "r")
+	lines = f.read().split("\n")
+	f.close()
+	# Comments
+	Ustart = lines.index("<units>")
+	Uend = lines.index("</units>")
+	details = []
+	for i in range(Ustart+1, Uend, 1):
+		details.append(lines[i].split(" "))
+	config["units"] = details
+	print details
+	#return {"units" : [[600, 300, 600, 300, True, 0, "resources/buildings/TownHall.png", [160,160], "Town Hall.", 1.1]]}
+	return config 
+	
+		
 class tdworld():
-	def __init__(self, game):
+	def __init__(self, game, path="resources/testlevel"):
+		'''
 		self.entities = [tdent(400, 400, 400, 400, 
 							   True, 0, sheet("resources/buildings/TownHall.png", [160,160]), 
 							   "Town Hall.", 1.1), 
@@ -17,7 +36,15 @@ class tdworld():
 							   "Wood.", 2.2), 
 						tdent(500, 270, 270, 270, 
 							   False, 0, sheet("resources/Gold.png", [80,80]), 
-							   "Gold.", 2.3)] 
+							   "Gold.", 2.3)] '''
+		self.cfg = loadCFG(path+"/tdworld.cfg")
+		self.entities = []
+		self.cfg["units"][0][6] = "resources/buildings/TownHall.png"
+		for i in range(len(self.cfg["units"])):
+			self.entities.append(tdent(int(self.cfg["units"][i][0]), int(self.cfg["units"][i][1]), int(self.cfg["units"][i][2]), int(self.cfg["units"][i][3]), 
+										bool(self.cfg["units"][i][4]), float(self.cfg["units"][i][5]), 
+								 sheet(self.cfg["units"][i][6], [int(self.cfg["units"][i][7]), int(self.cfg["units"][i][8])]),
+								 self.cfg["units"][i][9], float(self.cfg["units"][i][10])))
 		self.poplimit = 10.0
 		self.pop = 0.0
 		self.food = 100.0
@@ -40,7 +67,8 @@ class tdworld():
 		### self.building = False ###
 		self.selectedAlready = False
 		self.entities[0].buttons = [button("Spawn Worker", [125, 670], self.entities[0].addCommand, rtslib.common.buttonSets["hud"]),
-									button("Increase Pop", [235, 670], self.entities[0].addCommand, rtslib.common.buttonSets["hud"])] # one-time deal
+									button("Increase Pop", [235, 670], self.entities[0].addCommand, rtslib.common.buttonSets["hud"])] # one-time deal # WILL BE CONFIG-ED
+		self.levelPath = path 
 		
 	def update(self, events):
 		for event in events:
