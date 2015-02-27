@@ -23,6 +23,7 @@ class ssent():
 		if self.attack["style"]=="ranged" or self.attack["style"]=="melee":
 			self.attacktimer = self.attack["delay"]*60
 		self.offset = offset
+		self.effects = []
 		
 	def update(self, world, entities):
 		if self.health <= 0:
@@ -50,10 +51,18 @@ class ssent():
 			if self.dist < 0 or self.dist > self.path.length:
 				self.remove = True
 				
+			#Handle effects
+			for effect in self.effects:
+				if effect[2] != -1:
+					effect[2] -= 1
+					if effect[2] == 0:
+						if effect[0] == "slow":
+							self.speed /= effect[1]
+							self.effects.remove(effect)
+				
 			#Rewrite for multiple attacks!
 			#Do a ranged attack if we have one	
 			enemyInRange = False
-			
 			
 			if self.attack["style"]=="ranged": #{"style":"ranged", "power":10, "range":100, "rate":5}
 				for ent in entities:
@@ -64,8 +73,11 @@ class ssent():
 							if self.attacktimer <= 0:
 								self.attacktimer = self.attack["delay"]*60
 								props = {"arc":self.attack["arc"], "onhit":self.attack["onhit"],"multitarget":self.attack["multitarget"]}
-								if props["onhit"]=="damage":
+								if props["onhit"] == "damage":
 									props["damage"] = self.attack["damage"]
+								if props["onhit"] == "slow":
+									props["percent"] = self.attack["percent"]
+									props["time"] = self.attack["time"]
 								if props["multitarget"]:
 									props["spreadrange"] = self.attack["spreadrange"]
 								world.projectiles.append(projectile([self.pos[0], self.pos[1]-self.sheet.dim[1]], self.attack["speed"], rtslib.common.images[self.attack["image"]], ent, props))
@@ -112,3 +124,9 @@ class ssent():
 	def predictFuture(self, timeahead):
 		pos = self.path.calcPos(self.dist+(timeahead*self.speed))
 		return [pos[0]-self.offset[0], pos[1]-self.offset[1]]
+	
+	def applyEffect(self, effect):
+		if effect not in self.effects:
+			self.effects.append(effect)
+			if effect[0] == "slow":
+				self.speed*=effect[1]
