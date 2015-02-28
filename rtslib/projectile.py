@@ -43,11 +43,18 @@ class projectile():
 				if ent.id == self.target:
 					hits.append(ent)
 				elif self.properties["multitarget"]:			
-					if distance(self.pos[0], self.pos[1], ent.pos[0], ent.pos[1])<self.properties["spreadrange"]:
+					if distance(self.pos[0], self.pos[1], ent.pos[0], ent.pos[1])<self.properties["spreadrange"] and ent.team!=self.properties["team"]:
 						hits.append(ent)
-			for ent in hits:	
-				if self.properties["onhit"]=="damage":
+			for ent in hits:
+				if self.properties["onhit"] == "damage":
 					ent.health -= self.properties["damage"]
-				if self.properties["onhit"]=="slow":
-					ent.applyEffect(["slow", self.properties["percent"], self.properties["time"]])
+				if self.properties["onhit"] == "slow":
+					ent.applyEffect({"type":"slow", 
+									 "percent":self.properties["percent"],
+									 "time":self.properties["time"]})
+				if self.properties["onhit"] == "burn":
+					ent.applyEffect({"type":"burn",
+									 "damage":self.properties["damage"],
+									 "pause":self.properties["pause"],
+									 "hits":self.properties["hits"]})
 			self.remove = True

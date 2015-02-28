@@ -53,10 +53,10 @@ class tdworld():
 		self.selecting = False
 		### self.building = False ###
 		self.selectedAlready = False
-		'''
+		### 
 		self.entities[0].buttons = [button("Spawn Worker", [125, 670], self.entities[0].addCommand, rtslib.common.buttonSets["hud"]),
 									button("Increase Pop", [235, 670], self.entities[0].addCommand, rtslib.common.buttonSets["hud"])] # one-time deal # WILL BE CONFIG-ED
-		'''
+		###
 		#self.levelPath = path 
 		
 	def update(self, events):
