@@ -43,7 +43,7 @@ class projectile():
 				if ent.id == self.target:
 					hits.append(ent)
 				elif self.properties["multitarget"]:			
-					if distance(self.pos[0], self.pos[1], ent.pos[0], ent.pos[1])<self.properties["spreadrange"]:
+					if distance(self.pos[0], self.pos[1], ent.pos[0], ent.pos[1])<self.properties["spreadrange"] and ent.team!=self.properties["team"]:
 						hits.append(ent)
 			for ent in hits:
 				if self.properties["onhit"] == "damage":

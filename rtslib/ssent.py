@@ -81,7 +81,7 @@ class ssent():
 							self.attacktimer -= 1
 							if self.attacktimer <= 0:
 								self.attacktimer = self.attack["delay"]*60
-								props = {"arc":self.attack["arc"], "onhit":self.attack["onhit"],"multitarget":self.attack["multitarget"]}
+								props = {"team":self.team, "arc":self.attack["arc"], "onhit":self.attack["onhit"],"multitarget":self.attack["multitarget"]}
 								if props["onhit"] == "damage":
 									props["damage"] = self.attack["damage"]
 								if props["onhit"] == "slow":
