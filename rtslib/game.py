@@ -94,7 +94,10 @@ class game():
 	def clickHandler(self, button):
 		if self.paused == False:
 			if button == "menu":
-				self.paused = True
+				if not self.won:
+					self.paused = True
+				else:
+					self.goBack = True
 			if button == "switch":
 				self.worldFocus = not self.worldFocus
 		else:

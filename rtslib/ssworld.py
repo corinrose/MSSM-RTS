@@ -115,7 +115,7 @@ class ssworld():
 						unit.selected = True
 						self.selectThisClick = True
 			if event.type == pygame.MOUSEBUTTONUP:
-				if event.pos == self.clickpos and not self.selectThisClick:
+				if event.pos == self.clickpos and not self.selectThisClick and not self.pointInHUD(event.pos):
 					self.deselectAll()
 				self.selectThisClick = False
 			if event.type == pygame.KEYDOWN:
@@ -133,8 +133,9 @@ class ssworld():
 		for button in self.buttons:
 			button.update(events)
 		if pygame.mouse.get_pressed()[0]:
-			if not self.selectThisClick:
-				self.cpos=self.startpos-pygame.mouse.get_pos()[0]
+			if not self.pointInHUD(pygame.mouse.get_pos()):
+				if not self.selectThisClick:
+					self.cpos=self.startpos-pygame.mouse.get_pos()[0]
 		self.clampCamera()#Prevents camera from leaving the field
 		#Update entities
 		for ent in self.ssentities:
@@ -259,6 +260,12 @@ class ssworld():
 		if self.game.availableUnits[button]>0 and self.scriptstarted:
 			self.playerQueue.append(button)
 			self.game.availableUnits[button]-=1
+			
+	def pointInHUD(self, point):
+		if point[1]>650 or point[1]<48:
+			return True
+		else:
+			return False
 			
 	def deselectAll(self):
 		for unit in self.ssentities:
