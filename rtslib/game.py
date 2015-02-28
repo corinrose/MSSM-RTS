@@ -9,6 +9,8 @@ class game():
 		#Common UI Stuff
 		self.buttons = [rtslib.button("switch", [1000,670], self.clickHandler, rtslib.common.buttonSets["hud"], "resources/fonts/Deutsch.ttf", "Swap"),
 						rtslib.button("menu", [1125,670], self.clickHandler, rtslib.common.buttonSets["hud"], "resources/fonts/Deutsch.ttf", "Menu")]
+		#Pause menu things
+		self.pauseButtons = []
 		#Endgame things
 		self.gameOver = False
 		self.gameOverBack = pygame.surface.Surface([1280, 720]).convert_alpha()

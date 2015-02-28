@@ -1,5 +1,6 @@
 import pygame
 from rtslib.projectile import *
+from rtslib.base import *
 
 #TODO: Verify the offsets in collision things are working properly
 class ssent():
@@ -24,6 +25,7 @@ class ssent():
 			self.attacktimer = self.attack["delay"]*60
 		self.offset = offset
 		self.effects = []
+		self.selected = False
 		
 	def update(self, world, entities):
 		if self.health <= 0:
@@ -126,6 +128,9 @@ class ssent():
 	def distance(self, pos):
 		return math.sqrt(((pos[0]-self.pos[0]-self.offset[0])**2)+((pos[1]-self.pos[1]-self.offset[1])**2))
 		
+	def pointIn(self, point):
+		return checkWithinRect([self.pos[0]-(self.sheet.dim[0]/2)-self.offset[0], self.pos[1]-self.sheet.dim[1]-self.offset[1], self.sheet.dim[0], self.sheet.dim[1]], point)
+		
 	def draw(self, surface, cpos):
 		surface.blit(self.sheet.getImage(), [self.pos[0]-cpos-(self.sheet.dim[0]/2)-self.offset[0], self.pos[1]-self.sheet.dim[1]-self.offset[1]])
 		if self.health!=self.maxhealth:
@@ -136,6 +141,8 @@ class ssent():
 				pygame.draw.circle(surface, [255,0,0], [int(self.pos[0]-((self.sheet.dim[0])/2)-cpos-self.offset[0]), int(self.pos[1]-self.sheet.dim[1]-5-2-self.offset[1])], 10)
 			if effect["type"] == "slow":
 				pygame.draw.circle(surface, [0,255,0], [int(self.pos[0]-((self.sheet.dim[0])/2)-cpos-self.offset[0]), int(self.pos[1]-self.sheet.dim[1]-5-2-self.offset[1])], 10)
+		if self.selected:
+			pygame.draw.rect(surface, [255,255,0], [self.pos[0]-cpos-(self.sheet.dim[0]/2)-self.offset[0], self.pos[1]-self.sheet.dim[1]-self.offset[1], self.sheet.dim[0], self.sheet.dim[1]], 1) 
 			
 	def predictFuture(self, timeahead):
 		pos = self.path.calcPos(self.dist+(timeahead*self.speed))
