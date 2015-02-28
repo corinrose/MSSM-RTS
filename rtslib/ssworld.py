@@ -104,9 +104,9 @@ class ssworld():
 				self.startpos = event.pos[0]+self.cpos
 			if event.type == pygame.KEYDOWN:
 				#Camera movement
-				if event.key == pygame.K_d:
+				if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
 					self.cpos+=5
-				if event.key == pygame.K_a:
+				if event.key == pygame.K_a or event.key == pygame.K_LEFT:
 					self.cpos-=5
 				#Start script on pressing "s"
 				if event.key == pygame.K_s:
