@@ -60,6 +60,11 @@ class ssworld():
 		self.playerQueue = []
 		self.playerUnits = self.cfg["playerunits"]
 		
+		#Camera and selection things
+		self.startpos=0
+		self.clickpos=[0,0]
+		self.selectThisClick = False
+		
 		#Test Stuff
 		self.gates = self.cfg["gates"]
 		for gate in self.gates:
@@ -69,7 +74,7 @@ class ssworld():
 										self.path, False, gate["health"],
 										self.attacks[self.unitDefs[gate["type"]]["attack"]], self.unitDefs[gate["type"]]["frametime"], self.unitDefs[gate["type"]]["offset"], True)) #Hard-coded offset = bad!
 			self.cid += 1
-		self.startpos=0
+		
 		
 		#Add the king
 		self.king = self.cfg["king"]
@@ -102,11 +107,22 @@ class ssworld():
 		for event in events:	
 			if event.type == pygame.MOUSEBUTTONDOWN:
 				self.startpos = event.pos[0]+self.cpos
+				self.clickpos = event.pos
+				for unit in self.ssentities:
+					if unit.pointIn([pygame.mouse.get_pos()[0]+self.cpos, pygame.mouse.get_pos()[1]]):
+						hitEnt=True
+						self.deselectAll()
+						unit.selected = True
+						self.selectThisClick = True
+			if event.type == pygame.MOUSEBUTTONUP:
+				if event.pos == self.clickpos and not self.selectThisClick and not self.pointInHUD(event.pos):
+					self.deselectAll()
+				self.selectThisClick = False
 			if event.type == pygame.KEYDOWN:
 				#Camera movement
-				if event.key == pygame.K_d:
+				if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
 					self.cpos+=5
-				if event.key == pygame.K_a:
+				if event.key == pygame.K_a or event.key == pygame.K_LEFT:
 					self.cpos-=5
 				#Start script on pressing "s"
 				if event.key == pygame.K_s:
@@ -117,7 +133,9 @@ class ssworld():
 		for button in self.buttons:
 			button.update(events)
 		if pygame.mouse.get_pressed()[0]:
-			self.cpos=self.startpos-pygame.mouse.get_pos()[0]
+			if not self.pointInHUD(pygame.mouse.get_pos()):
+				if not self.selectThisClick:
+					self.cpos=self.startpos-pygame.mouse.get_pos()[0]
 		self.clampCamera()#Prevents camera from leaving the field
 		#Update entities
 		for ent in self.ssentities:
@@ -242,3 +260,13 @@ class ssworld():
 		if self.game.availableUnits[button]>0 and self.scriptstarted:
 			self.playerQueue.append(button)
 			self.game.availableUnits[button]-=1
+			
+	def pointInHUD(self, point):
+		if point[1]>650 or point[1]<48:
+			return True
+		else:
+			return False
+			
+	def deselectAll(self):
+		for unit in self.ssentities:
+			unit.selected = False
