@@ -41,6 +41,7 @@ class ssent():
 							hitThisFrame = True
 			else:
 				hitThisFrame = True
+				hitThisFrame = False
 
 			self.pos = self.path.calcPos(self.dist)
 			#Update spritesheet image
