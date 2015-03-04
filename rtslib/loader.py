@@ -163,7 +163,7 @@ def loadAttacks(fileName):
 					attack["hits"] = int(sl[11])
 				if sl[8] == "stun":
 					attack["onhit"] = "stun"
-					attack["time"] = float(sl[9])
+					attack["time"] = float(sl[9])*60
 			attacks[sl[0]] = attack
 	return attacks
 	
