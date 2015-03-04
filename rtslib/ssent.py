@@ -41,7 +41,17 @@ class ssent():
 							hitThisFrame = True
 			else:
 				hitThisFrame = True
+			if not self.stunned:
 				hitThisFrame = False
+				if self.attacktimer>0:
+					self.dist+=self.speed
+					for ent in entities:
+						if abs(self.dist-ent.dist) < self.width+ent.width and self.id!=ent.id:
+							if not (self.team == ent.team and ent.teamPassthrough):
+								self.dist-=self.speed
+								hitThisFrame = True
+				else:
+					hitThisFrame = True
 
 			self.pos = self.path.calcPos(self.dist)
 			#Update spritesheet image
@@ -155,4 +165,4 @@ class ssent():
 			if effect["type"] == "slow":
 				self.speed*=effect["percent"]
 			if effect["type"] == "burn":
-				effect["time"] = effect["pause"]
+				effect["time"] = effect["pause"]				effect["time"] = effect["pause"]
