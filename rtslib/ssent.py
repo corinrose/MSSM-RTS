@@ -83,7 +83,7 @@ class ssent():
 								self.effects.remove(effect)
 							else:
 								effect["time"] = effect["pause"]
-						if effect == "stun":
+						if effect["type"] == "stun":
 							self.stunned = False
 							self.effects.remove(effect)
 				
@@ -169,7 +169,10 @@ class ssent():
 		return [pos[0]-self.offset[0], pos[1]-self.offset[1]]
 	
 	def applyEffect(self, effect):
-		if effect not in self.effects:
+		etypelist = []
+		for effect in self.effects:
+			etypelist.append(effect["type"])
+		if effect["type"] not in etypelist:
 			self.effects.append(effect)
 			if effect["type"] == "slow":
 				self.speed*=effect["percent"]
