@@ -1,4 +1,4 @@
-import pygame
+import pygame, random
 from rtslib.projectile import *
 from rtslib.base import *
 
@@ -13,6 +13,7 @@ class ssent():
 		self.sheet = sheet
 		self.path = path
 		self.pos = self.path.calcPos(self.dist)
+		self.scatter = random.randint(-5, 5)
 		self.remove = False
 		self.sheet.setFlipped(self.speed<0)
 		self.counter = 0
@@ -33,17 +34,6 @@ class ssent():
 		if self.health <= 0:
 			self.remove = True
 		else:
-			if not self.stunned:
-				hitThisFrame = False
-				if self.attacktimer>20:
-					self.dist+=self.speed
-					for ent in entities:
-						if abs(self.dist-ent.dist) < self.width+ent.width and self.id!=ent.id:
-							if not (self.team == ent.team and ent.teamPassthrough):
-								self.dist-=self.speed
-								hitThisFrame = True
-				else:
-					hitThisFrame = True
 			if not self.stunned:
 				hitThisFrame = False
 				if self.attacktimer>0:
@@ -109,9 +99,11 @@ class ssent():
 										props["damage"] = self.attack["damage"]
 										props["pause"] = self.attack["pause"]
 										props["hits"] = self.attack["hits"]
+									if props["onhit"] == "stun":
+										props["time"] = self.attack["time"]
 									if props["multitarget"]:
 										props["spreadrange"] = self.attack["spreadrange"]
-									world.projectiles.append(projectile([self.pos[0], self.pos[1]-self.sheet.dim[1]], self.attack["speed"], rtslib.common.images[self.attack["image"]], ent, props))
+									world.projectiles.append(projectile([self.pos[0], self.pos[1]-self.sheet.dim[1]-self.scatter], self.attack["speed"], rtslib.common.images[self.attack["image"]], ent, props))
 									break
 								else:
 									break
@@ -144,29 +136,29 @@ class ssent():
 		return abs(self.dist - dist)
 		
 	def distance(self, pos):
-		return math.sqrt(((pos[0]-self.pos[0]-self.offset[0])**2)+((pos[1]-self.pos[1]-self.offset[1])**2))
+		return math.sqrt(((pos[0]-self.pos[0]-self.offset[0])**2)+((pos[1]-self.pos[1]-self.offset[1]-self.scatter)**2))
 		
 	def pointIn(self, point):
-		return checkWithinRect([self.pos[0]-(self.sheet.dim[0]/2)-self.offset[0], self.pos[1]-self.sheet.dim[1]-self.offset[1], self.sheet.dim[0], self.sheet.dim[1]], point)
+		return checkWithinRect([self.pos[0]-(self.sheet.dim[0]/2)-self.offset[0], self.pos[1]-self.sheet.dim[1]-self.offset[1]-self.scatter, self.sheet.dim[0], self.sheet.dim[1]], point)
 		
 	def draw(self, surface, cpos):
-		surface.blit(self.sheet.getImage(), [self.pos[0]-cpos-(self.sheet.dim[0]/2)-self.offset[0], self.pos[1]-self.sheet.dim[1]-self.offset[1]])
+		surface.blit(self.sheet.getImage(), [self.pos[0]-cpos-(self.sheet.dim[0]/2)-self.offset[0], self.pos[1]-self.sheet.dim[1]-self.offset[1]-self.scatter])
 		if self.health!=self.maxhealth:
-			pygame.draw.rect(surface, [255,0,0], [self.pos[0]-((self.sheet.dim[0])/2)-cpos-self.offset[0], self.pos[1]-self.sheet.dim[1]-5-2-self.offset[1], self.sheet.dim[0], 5], 0) 
-			pygame.draw.rect(surface, [0,255,0], [self.pos[0]-((self.sheet.dim[0])/2)-cpos-self.offset[0], self.pos[1]-self.sheet.dim[1]-5-2-self.offset[1], self.sheet.dim[0]*(self.health/self.maxhealth), 5], 0) 
+			pygame.draw.rect(surface, [255,0,0], [self.pos[0]-((self.sheet.dim[0])/2)-cpos-self.offset[0], self.pos[1]-self.sheet.dim[1]-5-2-self.offset[1]-self.scatter, self.sheet.dim[0], 5], 0) 
+			pygame.draw.rect(surface, [0,255,0], [self.pos[0]-((self.sheet.dim[0])/2)-cpos-self.offset[0], self.pos[1]-self.sheet.dim[1]-5-2-self.offset[1]-self.scatter, self.sheet.dim[0]*(self.health/self.maxhealth), 5], 0) 
 		for effect in self.effects:
 			if effect["type"] == "burn":
-				pygame.draw.circle(surface, [255,0,0], [int(self.pos[0]-((self.sheet.dim[0])/2)-cpos-self.offset[0]), int(self.pos[1]-self.sheet.dim[1]-5-2-self.offset[1])], 10)
+				pygame.draw.circle(surface, [255,0,0], [int(self.pos[0]-((self.sheet.dim[0])/2)-cpos-self.offset[0]), int(self.pos[1]-self.sheet.dim[1]-5-2-self.offset[1]-self.scatter)], 10)
 			if effect["type"] == "slow":
-				pygame.draw.circle(surface, [0,255,0], [int(self.pos[0]-((self.sheet.dim[0])/2)-cpos-self.offset[0]), int(self.pos[1]-self.sheet.dim[1]-5-2-self.offset[1])], 10)
+				pygame.draw.circle(surface, [0,255,0], [int(self.pos[0]-((self.sheet.dim[0])/2)-cpos-self.offset[0]), int(self.pos[1]-self.sheet.dim[1]-5-2-self.offset[1]-self.scatter)], 10)
 			if effect["type"] == "stun":
-				pygame.draw.circle(surface, [0,0,255], [int(self.pos[0]-((self.sheet.dim[0])/2)-cpos-self.offset[0]), int(self.pos[1]-self.sheet.dim[1]-5-2-self.offset[1])], 10)
+				pygame.draw.circle(surface, [0,0,255], [int(self.pos[0]-((self.sheet.dim[0])/2)-cpos-self.offset[0]), int(self.pos[1]-self.sheet.dim[1]-5-2-self.offset[1]-self.scatter)], 10)
 		if self.selected:
-			pygame.draw.rect(surface, [255,255,0], [self.pos[0]-cpos-(self.sheet.dim[0]/2)-self.offset[0], self.pos[1]-self.sheet.dim[1]-self.offset[1], self.sheet.dim[0], self.sheet.dim[1]], 1) 
+			pygame.draw.rect(surface, [255,255,0], [self.pos[0]-cpos-(self.sheet.dim[0]/2)-self.offset[0], self.pos[1]-self.sheet.dim[1]-self.offset[1]-self.scatter, self.sheet.dim[0], self.sheet.dim[1]], 1) 
 			
 	def predictFuture(self, timeahead):
 		pos = self.path.calcPos(self.dist+(timeahead*self.speed))
-		return [pos[0]-self.offset[0], pos[1]-self.offset[1]]
+		return [pos[0]-self.offset[0], pos[1]-self.offset[1]-self.scatter]
 	
 	def applyEffect(self, effect):
 		etypelist = []
