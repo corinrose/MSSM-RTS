@@ -152,6 +152,8 @@ class ssent():
 				pygame.draw.circle(surface, [255,0,0], [int(self.pos[0]-((self.sheet.dim[0])/2)-cpos-self.offset[0]), int(self.pos[1]-self.sheet.dim[1]-5-2-self.offset[1])], 10)
 			if effect["type"] == "slow":
 				pygame.draw.circle(surface, [0,255,0], [int(self.pos[0]-((self.sheet.dim[0])/2)-cpos-self.offset[0]), int(self.pos[1]-self.sheet.dim[1]-5-2-self.offset[1])], 10)
+			if effect["type"] == "stun":
+				pygame.draw.circle(surface, [0,0,255], [int(self.pos[0]-((self.sheet.dim[0])/2)-cpos-self.offset[0]), int(self.pos[1]-self.sheet.dim[1]-5-2-self.offset[1])], 10)
 		if self.selected:
 			pygame.draw.rect(surface, [255,255,0], [self.pos[0]-cpos-(self.sheet.dim[0]/2)-self.offset[0], self.pos[1]-self.sheet.dim[1]-self.offset[1], self.sheet.dim[0], self.sheet.dim[1]], 1) 
 			
