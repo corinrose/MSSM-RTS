@@ -29,7 +29,7 @@ class menu():
 							    rtslib.button("fullscreen", [480,200], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Fullscreen: "+("On"*self.settings["fullscreen"])+("Off"*(not self.settings["fullscreen"])))]
 
 		self.applySettings = False
-		
+		self.goBackToGame = False
 		self.save = None
 		self.saveData = []
 	
@@ -94,7 +94,11 @@ class menu():
 				self.applySettings = True
 				
 			if button == "back":
-				self.state = "main"
+				if self.goBackToGame:
+					self.goBackToGame = False
+					self.state = "backtogame"
+				else:
+					self.state = "main"
 		
 	def update(self, events):
 		out = {}
@@ -119,6 +123,9 @@ class menu():
 		if self.state[0:4] == "play":
 			out["state"] = "game"
 			out["newgame"] = self.state[5:]
+			self.state = "levelselect"
+		if self.state == "backtogame":		
+			out["state"] = "game"
 			self.state = "levelselect"
 		if self.applySettings:
 			out["applysettings"] = True
