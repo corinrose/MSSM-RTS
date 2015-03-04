@@ -8,6 +8,7 @@ class ssent():
 		self.id = id
 		self.dist = dist
 		self.speed = speed
+		self.originalSpeed = speed
 		self.width = width
 		self.sheet = sheet
 		self.path = path
@@ -25,30 +26,33 @@ class ssent():
 			self.attacktimer = self.attack["delay"]*60
 		self.offset = offset
 		self.effects = []
+		self.stunned = False
 		self.selected = False
 		
 	def update(self, world, entities):
 		if self.health <= 0:
 			self.remove = True
 		else:
-			hitThisFrame = False
-			if self.attacktimer>20:
-				self.dist+=self.speed
-				for ent in entities:
-					if abs(self.dist-ent.dist) < self.width+ent.width and self.id!=ent.id:
-						if not (self.team == ent.team and ent.teamPassthrough):
-							self.dist-=self.speed
-							hitThisFrame = True
-			else:
-				hitThisFrame = True
+			if not self.stunned:
+				hitThisFrame = False
+				if self.attacktimer>20:
+					self.dist+=self.speed
+					for ent in entities:
+						if abs(self.dist-ent.dist) < self.width+ent.width and self.id!=ent.id:
+							if not (self.team == ent.team and ent.teamPassthrough):
+								self.dist-=self.speed
+								hitThisFrame = True
+				else:
+					hitThisFrame = True
 
 			self.pos = self.path.calcPos(self.dist)
 			#Update spritesheet image
-			if not hitThisFrame:
-				self.counter+=1
-			if self.counter == self.frametime:
-				self.sheet.nextImage()
-				self.counter = 0
+			if not self.stunned:
+				if not hitThisFrame:
+					self.counter+=1
+				if self.counter == self.frametime:
+					self.sheet.nextImage()
+					self.counter = 0
 			#Die if at the ends of the path
 			if self.dist < 0 or self.dist > self.path.length:
 				self.remove = True
@@ -59,7 +63,7 @@ class ssent():
 					effect["time"] -= 1
 					if effect["time"] == 0:
 						if effect["type"] == "slow":
-							self.speed /= effect["percent"]
+							self.speed = self.originalSpeed
 							self.effects.remove(effect)
 						if effect["type"] == "burn":
 							self.health -= effect["damage"]
@@ -68,59 +72,64 @@ class ssent():
 								self.effects.remove(effect)
 							else:
 								effect["time"] = effect["pause"]
+						if effect == "stun":
+							self.stunned = False
+							self.effects.remove(effect)
 				
 			#Rewrite for multiple attacks!
 			#Do a ranged attack if we have one	
 			enemyInRange = False
-			
-			if self.attack["style"]=="ranged": #{"style":"ranged", "power":10, "range":100, "rate":5}
-				for ent in entities:
-					if ent.team != self.team:
-						if self.distance(ent.pos) < self.attack["range"]:
-							enemyInRange = True
-							self.attacktimer -= 1
-							if self.attacktimer <= 0:
-								self.attacktimer = self.attack["delay"]*60
-								props = {"team":self.team, "arc":self.attack["arc"], "onhit":self.attack["onhit"],"multitarget":self.attack["multitarget"]}
-								if props["onhit"] == "damage":
-									props["damage"] = self.attack["damage"]
-								if props["onhit"] == "slow":
-									props["percent"] = self.attack["percent"]
-									props["time"] = self.attack["time"]
-								if props["onhit"] == "burn":
-									props["damage"] = self.attack["damage"]
-									props["pause"] = self.attack["pause"]
-									props["hits"] = self.attack["hits"]
-								if props["multitarget"]:
-									props["spreadrange"] = self.attack["spreadrange"]
-								world.projectiles.append(projectile([self.pos[0], self.pos[1]-self.sheet.dim[1]], self.attack["speed"], rtslib.common.images[self.attack["image"]], ent, props))
-								break
-							else:
-								break
-								
-			#If any enemy is in melee range, count down towards the strike
-			if self.attack["style"]=="melee":
-				for ent in entities:
-					if ent.team != self.team:
-						if self.pathDistance(ent.dist) < self.attack["range"]+self.width+ent.width:
-							self.attacktimer -= 1
-							enemyInRange = True
-							break #Found one, we're done here
-			#Do a melee attack if we have one
-			if self.attack["style"]=="melee":
-				attacked = False #This allows it to loop through all of the enemies before resetting the attack timer so an entity can hit more than one enemy
-				if self.attacktimer <= 0:
+			if not self.stunned:
+				if self.attack["style"]=="ranged": #{"style":"ranged", "power":10, "range":100, "rate":5}
+					for ent in entities:
+						if ent.team != self.team:
+							if self.distance(ent.pos) < self.attack["range"]:
+								enemyInRange = True
+								self.attacktimer -= 1
+								if self.attacktimer <= 0:
+									self.attacktimer = self.attack["delay"]*60
+									props = {"team":self.team, "arc":self.attack["arc"], "onhit":self.attack["onhit"],"multitarget":self.attack["multitarget"]}
+									if props["onhit"] == "damage":
+										props["damage"] = self.attack["damage"]
+									if props["onhit"] == "slow":
+										props["percent"] = self.attack["percent"]
+										props["time"] = self.attack["time"]
+									if props["onhit"] == "stun":
+										props["time"] = self.attack["time"]
+									if props["onhit"] == "burn":
+										props["damage"] = self.attack["damage"]
+										props["pause"] = self.attack["pause"]
+										props["hits"] = self.attack["hits"]
+									if props["multitarget"]:
+										props["spreadrange"] = self.attack["spreadrange"]
+									world.projectiles.append(projectile([self.pos[0], self.pos[1]-self.sheet.dim[1]], self.attack["speed"], rtslib.common.images[self.attack["image"]], ent, props))
+									break
+								else:
+									break
+									
+				#If any enemy is in melee range, count down towards the strike
+				if self.attack["style"]=="melee":
 					for ent in entities:
 						if ent.team != self.team:
 							if self.pathDistance(ent.dist) < self.attack["range"]+self.width+ent.width:
-								attacked = True
-								ent.health-=self.attack["damage"]
-				if attacked:
+								self.attacktimer -= 1
+								enemyInRange = True
+								break #Found one, we're done here
+				#Do a melee attack if we have one
+				if self.attack["style"]=="melee":
+					attacked = False #This allows it to loop through all of the enemies before resetting the attack timer so an entity can hit more than one enemy
+					if self.attacktimer <= 0:
+						for ent in entities:
+							if ent.team != self.team:
+								if self.pathDistance(ent.dist) < self.attack["range"]+self.width+ent.width:
+									attacked = True
+									ent.health-=self.attack["damage"]
+					if attacked:
+						self.attacktimer = self.attack["delay"]*60
+						
+				#If there is no enemy in range, reset the attack timer
+				if not enemyInRange:
 					self.attacktimer = self.attack["delay"]*60
-					
-			#If there is no enemy in range, reset the attack timer
-			if not enemyInRange:
-				self.attacktimer = self.attack["delay"]*60
 		
 	def pathDistance(self, dist):
 		return abs(self.dist - dist)
@@ -141,6 +150,8 @@ class ssent():
 				pygame.draw.circle(surface, [255,0,0], [int(self.pos[0]-((self.sheet.dim[0])/2)-cpos-self.offset[0]), int(self.pos[1]-self.sheet.dim[1]-5-2-self.offset[1])], 10)
 			if effect["type"] == "slow":
 				pygame.draw.circle(surface, [0,255,0], [int(self.pos[0]-((self.sheet.dim[0])/2)-cpos-self.offset[0]), int(self.pos[1]-self.sheet.dim[1]-5-2-self.offset[1])], 10)
+			if effect["type"] == "stun":
+				pygame.draw.circle(surface, [0,0,255], [int(self.pos[0]-((self.sheet.dim[0])/2)-cpos-self.offset[0]), int(self.pos[1]-self.sheet.dim[1]-5-2-self.offset[1])], 10)
 		if self.selected:
 			pygame.draw.rect(surface, [255,255,0], [self.pos[0]-cpos-(self.sheet.dim[0]/2)-self.offset[0], self.pos[1]-self.sheet.dim[1]-self.offset[1], self.sheet.dim[0], self.sheet.dim[1]], 1) 
 			
@@ -155,3 +166,5 @@ class ssent():
 				self.speed*=effect["percent"]
 			if effect["type"] == "burn":
 				effect["time"] = effect["pause"]
+			if effect["type"] == "stun":
+				self.stunned = True
