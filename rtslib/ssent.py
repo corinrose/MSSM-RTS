@@ -165,5 +165,4 @@ class ssent():
 			if effect["type"] == "slow":
 				self.speed*=effect["percent"]
 			if effect["type"] == "burn":
-				effect["time"] = effect["pause"]				effect["time"] = effect["pause"]
 				effect["time"] = effect["pause"]
