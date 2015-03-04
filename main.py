@@ -34,20 +34,16 @@ while True:
 	out = {}
 	if state == "menu":
 		out = Menu.update(events)
-		Menu.draw(screen)
 	elif state == "game":
 		out = Game.update(events)
-		Game.draw(screen)
 	
 	if "newgame" in out:
-		print "Resetting game, loading " + out["newgame"]
 		Game = rtslib.game(out["newgame"])
 		
 	if "unlocks" in out:
 		Menu.unlock(out["unlocks"])
 	
 	if "state" in out:
-		print "Setting state to "+out["state"]
 		state = out["state"]
 		
 	if "applysettings" in out:
@@ -57,8 +53,17 @@ while True:
 	if "title" in out:
 		pygame.display.set_caption(out["title"])
 		
+	if "backtogame" in out:
+		Menu.state = "settings"
+		Menu.goBackToGame = True
+		
 	if "exit" in out:
 		sys.exit()
 
+	if state == "menu":
+		Menu.draw(screen)
+	elif state == "game":
+		Game.draw(screen)		
+		
 	clock.tick(60) # 60 frames per second???
 	pygame.display.flip()
