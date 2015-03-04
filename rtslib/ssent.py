@@ -32,7 +32,7 @@ class ssent():
 			self.remove = True
 		else:
 			hitThisFrame = False
-			if self.attacktimer>20:
+			if self.attacktimer>0:
 				self.dist+=self.speed
 				for ent in entities:
 					if abs(self.dist-ent.dist) < self.width+ent.width and self.id!=ent.id:
