@@ -32,6 +32,7 @@ class tdworld():
 										bool(self.cfg["units"][i][4]), float(self.cfg["units"][i][5]), 
 								 sheet(self.cfg["units"][i][6], [int(self.cfg["units"][i][7]), int(self.cfg["units"][i][8])]),
 								 self.cfg["units"][i][9], float(self.cfg["units"][i][10])))
+		self.maxpoplimit = 100.0
 		self.poplimit = 10.0
 		self.pop = 0.0
 		self.food = 100.0
