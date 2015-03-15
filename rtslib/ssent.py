@@ -23,7 +23,7 @@ class ssent():
 		self.attack = attack
 		self.frametime = frametime
 		self.teamPassthrough = teamPassthrough
-		if self.attack["style"]=="ranged" or self.attack["style"]=="melee":
+		if self.attack["style"]=="ranged" or self.attack["style"]=="melee" or self.attack["style"]=="suicide":
 			self.attacktimer = self.attack["delay"]*60
 		self.offset = offset
 		self.effects = []
@@ -116,8 +116,7 @@ class ssent():
 								self.attacktimer -= 1
 								enemyInRange = True
 								break #Found one, we're done here
-				#Do a melee attack if we have one
-				if self.attack["style"]=="melee":
+					#Do a melee attack if we have one
 					attacked = False #This allows it to loop through all of the enemies before resetting the attack timer so an entity can hit more than one enemy
 					if self.attacktimer <= 0:
 						for ent in entities:
@@ -127,7 +126,21 @@ class ssent():
 									ent.health-=self.attack["damage"]
 					if attacked:
 						self.attacktimer = self.attack["delay"]*60
-					
+				
+				#If any enemy is in the suicide trigger range, do that
+				if self.attack["style"] == "suicide":
+					for ent in entities:
+						if ent.team != self.team:
+							if self.pathDistance(ent.dist) < self.attack["triggerrange"]+self.width+ent.width:
+								self.attacktimer -= 1
+								enemyInRange = True
+								break #Found one, we're done here
+					if self.attackTimer <= 0:
+						for ent in entities:
+							if ent.team != self.team:
+								if self.pathDistance(ent.dist) < self.attack["range"]+self.width+ent.width:
+									ent.health-=self.attack["damage"]
+						self.remove = True
 				#If there is no enemy in range, reset the attack timer
 				if not enemyInRange:
 					self.attacktimer = self.attack["delay"]*60
