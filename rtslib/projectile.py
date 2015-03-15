@@ -57,4 +57,7 @@ class projectile():
 									 "damage":self.properties["damage"],
 									 "pause":self.properties["pause"],
 									 "hits":self.properties["hits"]})
+				if self.properties["onhit"] == "stun":
+					ent.applyEffect({"type":"stun", 
+									 "time":self.properties["time"]})
 			self.remove = True
