@@ -159,15 +159,17 @@ class tdent():
 		self.newCommands.append(command)
 		
 	def checkCost(self, costList, world): # 0 = food, 1 = wood, 2 = gold, 3 = pop 
-		if world.food >= costList[0] and world.wood >= costList[1] and world.gold >= costList[2] and world.pop + costList[3] <= world.poplimit:
-			world.food -= costList[0]
-			world.wood -= costList[1]
-			world.gold -= costList[2]
-			world.pop += costList[3]
+		if world.food >= costList[0] and world.wood >= costList[1] and world.gold >= costList[2] and world.pop + costList[3] <= world.poplimit and world.poplimit + costList[3] <= world.maxpoplimit:
 			return True
 		else:
 			rtslib.common.sounds["resources/sounds/buzzer.wav"].play()
 			return False # play sound:"you require more resources" 
+	
+	def useCost(self, costList, world):
+		world.food -= costList[0]
+		world.wood -= costList[1]
+		world.gold -= costList[2]
+		world.pop += costList[3]
 		
 	def checkSize(self, tdent, world): 
 		for ent in world.entities:
@@ -185,6 +187,7 @@ class tdent():
 			
 	def addResource(self, world, resourceList, costList):
 		if self.checkCost(costList, world):
+			self.useCost(costList, world)
 			world.food += resourceList[0]
 			world.wood += resourceList[1]
 			world.gold += resourceList[2]
@@ -207,6 +210,7 @@ class tdent():
 		if self.timer != 0:
 			if tdent.speed > 0 or self.checkSize(tdent, world):
 				if self.checkCost(costList, world):
+					self.useCost(costList, world)
 					self.command.append([eventKey, costList[4]]) # 4 = time
 		elif self.timer == 0:
 			if self.speed != 0:
