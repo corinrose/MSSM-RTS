@@ -176,12 +176,14 @@ class ssent():
 		
 	#Method called to stop a unit on the path but still have it fight	
 	def stop(self):
-		self.stopped = True
-		self.teamPassthrough = True
+		if not self.teamPassthrough:
+			self.stopped = True
+			self.teamPassthrough = True
 	#Method called when a unit should start walking again
 	def start(self):
-		self.stopped = False
-		self.teamPassthrough = False
+		if self.stopped:
+			self.stopped = False
+			self.teamPassthrough = False
 	
 	def applyEffect(self, effect):
 		etypelist = []
