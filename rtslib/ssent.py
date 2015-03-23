@@ -29,6 +29,7 @@ class ssent():
 		self.effects = []
 		self.stunned = False
 		self.selected = False
+		self.stopped = False
 		
 	def update(self, world, entities):
 		if self.health <= 0:
@@ -37,11 +38,11 @@ class ssent():
 			if not self.stunned:
 				hitThisFrame = False
 				if self.attacktimer>0:
-					self.dist+=self.speed
+					self.dist+=self.speed*(not self.stopped)
 					for ent in entities:
 						if abs(self.dist-ent.dist) < self.width+ent.width and self.id!=ent.id:
 							if not (self.team == ent.team and ent.teamPassthrough):
-								self.dist-=self.speed
+								self.dist-=self.speed*(not self.stopped)
 								hitThisFrame = True
 				else:
 					hitThisFrame = True
@@ -170,8 +171,17 @@ class ssent():
 			pygame.draw.rect(surface, [255,255,0], [self.pos[0]-cpos-(self.sheet.dim[0]/2)-self.offset[0], self.pos[1]-self.sheet.dim[1]-self.offset[1]-self.scatter, self.sheet.dim[0], self.sheet.dim[1]], 1) 
 			
 	def predictFuture(self, timeahead):
-		pos = self.path.calcPos(self.dist+(timeahead*self.speed))
+		pos = self.path.calcPos(self.dist+(timeahead*self.speed*(not self.stopped)))
 		return [pos[0]-self.offset[0], pos[1]-self.offset[1]-self.scatter]
+		
+	#Method called to stop a unit on the path but still have it fight	
+	def stop(self):
+		self.stopped = True
+		self.teamPassthrough = True
+	#Method called when a unit should start walking again
+	def start(self):
+		self.stopped = False
+		self.teamPassthrough = False
 	
 	def applyEffect(self, effect):
 		etypelist = []
