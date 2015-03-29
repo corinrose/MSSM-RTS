@@ -8,7 +8,7 @@ import rtslib # redundancy???
 def formatSpaces(desiredLength, string): # returns some spaces + a string
 		return " "*(desiredLength - len(string)) + string
 		
-def loadCFG(file): ########################################################################## ADD BUTTONS
+def loadCFG(file):
 	config = {}
 	f = open(file, "r")
 	lines = f.read().split("\n")
@@ -96,13 +96,7 @@ class tdworld():
 			for ent2 in self.entities: 
 				if ent.type == 0 and round(ent2.type) == 2: # handles resource gathering
 					if ent2.rectangularCollision(ent.pos, [ent.pos[0] + ent.sheet.dim[0], ent.pos[1] + ent.sheet.dim[1]]):
-						if ent2.type != 2.2:
-							ent2.action(self, 1/60.0) # default gather speed per resource per worker 
-						else:
-							for ent3 in self.entities: # Horrendously Inefficient (for wood hut) ###########################################################################
-								if ent3.type == 2.21 and \
-								   (ent2.pos[0] - ent3.pos[0])**2 + (ent2.pos[1] - ent3.pos[1])**2 < 360**2: # radius of gathering
-									ent2.action(self, 1/60.0)
+						ent2.action(self, "") 
 				if (ent.pos[0] - ent2.pos[0])**2 + (ent.pos[1] - ent2.pos[1])**2 > 0 and \
 				      (ent.pos[0] - ent2.pos[0])**2 + (ent.pos[1] - ent2.pos[1])**2 < 20**2: # built-in proximity limit  # handles collision
 					tmp0 = ent.pos[0]
