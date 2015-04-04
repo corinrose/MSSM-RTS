@@ -10,8 +10,8 @@ random.seed()
 def distance(point1, point2):
 	return ((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)**(0.5)
 
-def center(tdent):
-	return [tdent.pos[0] + tdent.sheet.dim[0]/2, tdent.pos[1] + tdent.sheet.dim[1]/2]
+def center(self):
+	return [self.pos[0] + self.sheet.dim[0]/2, self.pos[1] + self.sheet.dim[1]/2]
 		
 def formatSpaces(desiredLength, string): # returns some spaces + a string
 	return " "*(desiredLength - len(string)) + string
