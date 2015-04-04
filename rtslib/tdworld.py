@@ -7,8 +7,14 @@ import rtslib # redundancy???
 import random
 random.seed()
 
+def distance(point1, point2):
+	return ((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)**(0.5)
+
+def center(tdent):
+	return [tdent.pos[0] + tdent.sheet.dim[0]/2, tdent.pos[1] + tdent.sheet.dim[1]/2]
+		
 def formatSpaces(desiredLength, string): # returns some spaces + a string
-		return " "*(desiredLength - len(string)) + string
+	return " "*(desiredLength - len(string)) + string
 		
 def loadCFG(file): ########################################################################## ADD BUTTONS
 	config = {}
@@ -54,8 +60,10 @@ class tdworld():
 				x = random.randint(1, 1280-int(self.cfg["naturals"][i][5]))
 				y = random.randint(1, 720-int(self.cfg["naturals"][i][6]))
 				for j in range(0, len(self.entities), 1):
-					## use distance, not sprite collision
-					if self.entities[j].rectangularCollision([x,y], [x + int(self.cfg["naturals"][i][5]), y + int(self.cfg["naturals"][i][6])]):
+					########
+					#if distance(center(self.entities[j]), [x + int(self.cfg["naturals"][i][5])/2, y + int(self.cfg["naturals"][i][6])/2]) < 400:#int(self.cfg["naturals"][i][1]):
+					if (self.entities[j].pos[0]-x)**2 + (self.entities[j].pos[1]-y)**2 < 400**2:#int(self.cfg["naturals"][i][1]):
+						print (self.entities[j].pos[0]-x)**2 + (self.entities[j].pos[1]-y)**2
 						x = random.randint(1, 1280-int(self.cfg["naturals"][i][5]))
 						y = random.randint(1, 720-int(self.cfg["naturals"][i][6]))
 						j = -1

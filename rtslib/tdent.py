@@ -76,7 +76,7 @@ class tdent():
 			self.pos[0], self.pos[1] = self.des[0], self.des[1]
 			if self.speed != 0:
 				self.sheetCounter = 0
-			
+	
 	def drawSelectionMarker(self, surface): # RED
 		pygame.draw.polygon(surface, (255, 0, 0), [self.pos,
 									  [self.pos[0] + self.sheet.dim[0], self.pos[1]],
