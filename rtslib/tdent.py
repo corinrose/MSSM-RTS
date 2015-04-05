@@ -115,7 +115,7 @@ class tdent():
 			elif eventKey == "Spawn Wood Hut":
 				self.spawn(world, eventKey, [0, 20, 0, 0, 3*60], 
 						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1],
-								False, 0, sheet("resources/buildings/Woodhut.png", [80, 80]),
+								False, 0, sheet("resources/buildings/WoodHut.png", [80, 80]),
 								"Wood Hut.", 2.2))
 			elif eventKey == "Spawn Church":
 				self.spawn(world, eventKey, [0, 20, 0, 0, 3*60], 

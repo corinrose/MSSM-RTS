@@ -27,9 +27,6 @@ while True:
 	for event in events:
 		if event.type == pygame.QUIT:
 			sys.exit()
-		if event.type == pygame.KEYUP:
-			if event.key == pygame.K_ESCAPE:
-				sys.exit()
 
 	out = {}
 	if state == "menu":

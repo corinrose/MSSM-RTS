@@ -55,12 +55,14 @@ class game():
 		
 	def update(self, events):
 		out = {}
-		if not self.paused:
-			for event in events:
-				if event.type == pygame.KEYUP:
-					if event.key == pygame.K_SPACE:
+		for event in events:
+			if event.type == pygame.KEYUP:
+				if event.key == pygame.K_SPACE:
+					if not self.paused:
 						self.worldFocus = not self.worldFocus
-			
+				if event.key == pygame.K_ESCAPE:
+					self.paused = not self.paused
+		if not self.paused:
 			for button in self.buttons:
 				button.update(events)
 				
