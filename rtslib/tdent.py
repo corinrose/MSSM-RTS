@@ -43,7 +43,7 @@ class tdent():
 		if self.isSelected:
 			for i in range(0, len(self.buttons), 1):
 				self.buttons[i].update(events)
-		if len(self.command) == 0 or (len(self.command) > 0 and self.command[0][0] not in ["Spawn Mill", "Spawn Barracks"]): # can't queue buildings
+		if len(self.command) == 0 or (len(self.command) > 0 and self.command[0][0] not in ["Spawn Mill", "Spawn Barracks", "Spawn Wood Hut"]): # can't queue buildings
 			for command in self.newCommands:
 					self.action(world, command)
 		self.newCommands = []
@@ -76,7 +76,7 @@ class tdent():
 			self.pos[0], self.pos[1] = self.des[0], self.des[1]
 			if self.speed != 0:
 				self.sheetCounter = 0
-			
+	
 	def drawSelectionMarker(self, surface): # RED
 		pygame.draw.polygon(surface, (255, 0, 0), [self.pos,
 									  [self.pos[0] + self.sheet.dim[0], self.pos[1]],
@@ -98,7 +98,7 @@ class tdent():
 	def drawDestinationMarker(self, surface): # RED
 		pygame.draw.circle(surface, (255, 0, 0), self.des, 6, 2)
 
-	def action(self, world, eventKey): ########################################################################## ADD BUTTONS
+	def action(self, world, eventKey): 
 		if self.type == 0: # worker
 			if eventKey == "Spawn Barracks":
 				self.spawn(world, eventKey, [0, 20, 0, 0, 3*60], 
@@ -112,12 +112,28 @@ class tdent():
 						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1],
 								False, 0, sheet("resources/buildings/Food.png", [160, 160]),
 								"Mill.", 2.1))
+			elif eventKey == "Spawn Wood Hut":
+				self.spawn(world, eventKey, [0, 20, 0, 0, 3*60], 
+						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1],
+								False, 0, sheet("resources/buildings/WoodHut.png", [80, 80]),
+								"Wood Hut.", 2.2))
+			elif eventKey == "Spawn Church":
+				self.spawn(world, eventKey, [0, 20, 0, 0, 3*60], 
+						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1],
+								False, 0, sheet("resources/buildings/Church.png", [160, 160]),
+								"Church.", 1.3), [["Spawn Brother Clint", [125,670]]])
+			elif eventKey == "Spawn Smithy":
+				self.spawn(world, eventKey, [0, 20, 0, 0, 3*60], 
+						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1],
+								False, 0, sheet("resources/buildings/Smithy.png", [160, 160]),
+								"Smithy.", 1.4))
 		elif self.type == 1.1: # town hall
 			if eventKey == "Spawn Worker":
 				self.spawn(world, eventKey, [10, 0, 0, 1, 1*60], 
 						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1],
 								False, 1.0, sheet("resources/player/worker.png", [40, 40]),
-								"Worker.", 0), [["Spawn Barracks", [125, 670]], ["Spawn Mill", [235, 670]]])
+								"Worker.", 0), [["Spawn Barracks", [125, 670]], ["Spawn Mill", [235, 670]], ["Spawn Wood Hut", [345, 670]],
+												["Spawn Church", [455, 670]], ["Spawn Smithy", [565, 670]]])
 			elif eventKey == "Increase Pop":
 				self.addResource(world, [0, 0,0, 10], [0,0,20,0])
 				self.addResource(world, [0, 0,0, 10], [0,0,20,0])
@@ -137,14 +153,17 @@ class tdent():
 						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1],
 								 False, 1.0, sheet("resources/player/BattleAxer.png", [40, 40]),
 								"Crossbowman. Move to gate to transfer to battle.", 3.13))
+		elif self.type == 1.3: # Church
+			return
+		elif self.type == 1.4: # Smithy
+			return 
 		elif int(self.type) == 2:
-			if eventKey == "":
-				if self.type == 2.1:  # 2.1 is food
-					self.addResource(world, [1/60.0, 0,0,0], [0,0,0,0])
-				elif self.type == 2.2: # 2.2 is wood
-					self.addResource(world, [0, 1/60.0,0,0], [0,0,0,0])
-				elif self.type == 2.3: # 2.3 is gold
-					self.addResource(world, [0, 0,1/60.0,0], [0,0,0,0])
+			if self.type == 2.1:  # 2.1 is food (mill)
+				self.addResource(world, [eventKey, 0,0,0], [0,0,0,0])
+			elif self.type == 2.2: # 2.2 is wood hut, 2.21 is forest
+				self.addResource(world, [0, eventKey,0,0], [0,0,0,0])
+			elif self.type == 2.3: # 2.3 is gold
+				self.addResource(world, [0, 0, eventKey,0], [0,0,0,0])
 		elif int(self.type) == 3:
 			if eventKey == "":
 				self.transfer(world)
@@ -159,7 +178,7 @@ class tdent():
 		self.newCommands.append(command)
 		
 	def checkCost(self, costList, world): # 0 = food, 1 = wood, 2 = gold, 3 = pop 
-		if world.food >= costList[0] and world.wood >= costList[1] and world.gold >= costList[2] and world.pop + costList[3] <= world.poplimit and world.poplimit + costList[3] <= world.maxpoplimit:
+		if world.food >= costList[0] and world.wood >= costList[1] and world.gold >= costList[2] and world.poplimit + costList[3] <= world.maxpoplimit:
 			return True
 		else:
 			rtslib.common.sounds["resources/sounds/buzzer.wav"].play()

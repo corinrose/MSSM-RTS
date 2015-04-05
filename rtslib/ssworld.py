@@ -24,7 +24,7 @@ class ssworld():
 						button("battleaxe", [235,670], self.spawnButtonClick, rtslib.common.buttonSets["hud"]),
 						]
 		
-		self.selectButtons = [button("stop", [15,2], self.spawnButtonClick, rtslib.common.buttonSets["hud"], "resources/fonts/Deutsch.ttf", "Stop")]
+		self.selectButtons = [button("stop", [15,2], self.selectButtonClick, rtslib.common.buttonSets["hud"], "resources/fonts/Deutsch.ttf", "Stop")]
 		
 		self.numberfont = pygame.font.Font("resources/fonts/Deutsch.ttf", 36)
 		#Basic Properties
@@ -142,6 +142,10 @@ class ssworld():
 			if not self.pointInHUD(pygame.mouse.get_pos()):
 				if not self.selectThisClick:
 					self.cpos=self.startpos-pygame.mouse.get_pos()[0]
+		for ent in self.ssentities:
+			if ent.selected and ent.team == True: #Update the select buttons if you have a friendly unit selected
+				for button in self.selectButtons:
+					button.update(events)
 		self.clampCamera()#Prevents camera from leaving the field
 		#Update entities
 		for ent in self.ssentities:
@@ -271,6 +275,16 @@ class ssworld():
 		if self.game.availableUnits[button]>0 and self.scriptstarted:
 			self.playerQueue.append(button)
 			self.game.availableUnits[button]-=1
+			
+	def selectButtonClick(self, button):
+		if button == "stop":
+			print "stop"
+			for ent in self.ssentities:
+				if ent.selected and ent.team == True:
+					if ent.stopped:
+						ent.start()
+					else:
+						ent.stop()
 			
 	def pointInHUD(self, point):
 		if point[1]>650 or point[1]<48:

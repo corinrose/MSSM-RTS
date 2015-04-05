@@ -23,12 +23,13 @@ class ssent():
 		self.attack = attack
 		self.frametime = frametime
 		self.teamPassthrough = teamPassthrough
-		if self.attack["style"]=="ranged" or self.attack["style"]=="melee":
+		if self.attack["style"]=="ranged" or self.attack["style"]=="melee" or self.attack["style"]=="suicide":
 			self.attacktimer = self.attack["delay"]*60
 		self.offset = offset
 		self.effects = []
 		self.stunned = False
 		self.selected = False
+		self.stopped = False
 		
 	def update(self, world, entities):
 		if self.health <= 0:
@@ -37,11 +38,11 @@ class ssent():
 			if not self.stunned:
 				hitThisFrame = False
 				if self.attacktimer>0:
-					self.dist+=self.speed
+					self.dist+=self.speed*(not self.stopped)
 					for ent in entities:
 						if abs(self.dist-ent.dist) < self.width+ent.width and self.id!=ent.id:
 							if not (self.team == ent.team and ent.teamPassthrough):
-								self.dist-=self.speed
+								self.dist-=self.speed*(not self.stopped)
 								hitThisFrame = True
 				else:
 					hitThisFrame = True
@@ -116,8 +117,7 @@ class ssent():
 								self.attacktimer -= 1
 								enemyInRange = True
 								break #Found one, we're done here
-				#Do a melee attack if we have one
-				if self.attack["style"]=="melee":
+					#Do a melee attack if we have one
 					attacked = False #This allows it to loop through all of the enemies before resetting the attack timer so an entity can hit more than one enemy
 					if self.attacktimer <= 0:
 						for ent in entities:
@@ -127,7 +127,21 @@ class ssent():
 									ent.health-=self.attack["damage"]
 					if attacked:
 						self.attacktimer = self.attack["delay"]*60
-					
+				
+				#If any enemy is in the suicide trigger range, do that
+				if self.attack["style"] == "suicide":
+					for ent in entities:
+						if ent.team != self.team:
+							if self.pathDistance(ent.dist) < self.attack["triggerrange"]+self.width+ent.width:
+								self.attacktimer -= 1
+								enemyInRange = True
+								break #Found one, we're done here
+					if self.attackTimer <= 0:
+						for ent in entities:
+							if ent.team != self.team:
+								if self.pathDistance(ent.dist) < self.attack["range"]+self.width+ent.width:
+									ent.health-=self.attack["damage"]
+						self.remove = True
 				#If there is no enemy in range, reset the attack timer
 				if not enemyInRange:
 					self.attacktimer = self.attack["delay"]*60
@@ -157,8 +171,19 @@ class ssent():
 			pygame.draw.rect(surface, [255,255,0], [self.pos[0]-cpos-(self.sheet.dim[0]/2)-self.offset[0], self.pos[1]-self.sheet.dim[1]-self.offset[1]-self.scatter, self.sheet.dim[0], self.sheet.dim[1]], 1) 
 			
 	def predictFuture(self, timeahead):
-		pos = self.path.calcPos(self.dist+(timeahead*self.speed))
+		pos = self.path.calcPos(self.dist+(timeahead*self.speed*(not self.stopped)))
 		return [pos[0]-self.offset[0], pos[1]-self.offset[1]-self.scatter]
+		
+	#Method called to stop a unit on the path but still have it fight	
+	def stop(self):
+		if not self.teamPassthrough:
+			self.stopped = True
+			self.teamPassthrough = True
+	#Method called when a unit should start walking again
+	def start(self):
+		if self.stopped:
+			self.stopped = False
+			self.teamPassthrough = False
 	
 	def applyEffect(self, effect):
 		etypelist = []

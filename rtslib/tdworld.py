@@ -4,22 +4,45 @@ from rtslib.sheet import *
 from rtslib.button import *
 from rtslib.common import *
 import rtslib # redundancy???
+import random
+random.seed()
 
-def formatSpaces(desiredLength, string): # returns some spaces + a string
-		return " "*(desiredLength - len(string)) + string
+def distance(point1, point2):
+	return ((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)**(0.5)
+
+def center(self):
+	return [self.pos[0] + self.sheet.dim[0]/2, self.pos[1] + self.sheet.dim[1]/2]
 		
-def loadCFG(file):
+def formatSpaces(desiredLength, string): # returns some spaces + a string
+	return " "*(desiredLength - len(string)) + string
+		
+def loadCFG(file): ########################################################################## ADD BUTTONS
 	config = {}
 	f = open(file, "r")
 	lines = f.read().split("\n")
 	f.close()
-	# Comments
+	
+	Rstart = lines.index("<resources>")
+	Rend = lines.index("</resources>")
+	details = []
+	for i in range(Rstart+1, Rend, 1):
+		details.append(lines[i].split(" "))
+	config["resources"] = details
+	
+	Nstart = lines.index("<naturals>")
+	Nend = lines.index("</naturals>")
+	details = []
+	for i in range(Nstart+1, Nend, 1):
+		details.append(lines[i].split(" "))
+	config["naturals"] = details
+	
 	Ustart = lines.index("<units>")
 	Uend = lines.index("</units>")
 	details = []
 	for i in range(Ustart+1, Uend, 1):
 		details.append(lines[i].split(" "))
 	config["units"] = details
+	
 	return config 
 	
 		
@@ -32,12 +55,29 @@ class tdworld():
 										bool(self.cfg["units"][i][4]), float(self.cfg["units"][i][5]), 
 								 sheet(self.cfg["units"][i][6], [int(self.cfg["units"][i][7]), int(self.cfg["units"][i][8])]),
 								 self.cfg["units"][i][9], float(self.cfg["units"][i][10])))
-		self.maxpoplimit = 100.0
-		self.poplimit = 10.0
-		self.pop = 0.0
-		self.food = 100.0
-		self.wood = 50.0
-		self.gold = 0.0
+		for i in range(len(self.cfg["naturals"])):
+			for k in range(int(self.cfg["naturals"][i][0])):
+				x = random.randint(1, 1280-int(self.cfg["naturals"][i][5]))
+				y = random.randint(1, 720-int(self.cfg["naturals"][i][6]))
+				for j in range(0, len(self.entities), 1):
+					########
+					#if distance(center(self.entities[j]), [x + int(self.cfg["naturals"][i][5])/2, y + int(self.cfg["naturals"][i][6])/2]) < 400:#int(self.cfg["naturals"][i][1]):
+					#if (self.entities[j].pos[0]-x)**2 + (self.entities[j].pos[1]-y)**2 < 400**2:#int(self.cfg["naturals"][i][1]):\
+					if self.entities[j].rectangularCollision([x,y],[x+int(self.cfg["naturals"][i][5]),y+int(self.cfg["naturals"][i][6])]):
+						print (self.entities[j].pos[0]-x)**2 + (self.entities[j].pos[1]-y)**2
+						x = random.randint(1, 1280-int(self.cfg["naturals"][i][5]))
+						y = random.randint(1, 720-int(self.cfg["naturals"][i][6]))
+						j = -1
+				self.entities.append(tdent(x, y, x, y, 
+										bool(self.cfg["naturals"][i][2]), float(self.cfg["naturals"][i][3]), 
+									 sheet(self.cfg["naturals"][i][4], [int(self.cfg["naturals"][i][5]), int(self.cfg["naturals"][i][6])]),
+									 self.cfg["naturals"][i][7], float(self.cfg["naturals"][i][8])))
+		self.food = float(self.cfg["resources"][0][0])
+		self.wood = float(self.cfg["resources"][1][0])
+		self.gold = float(self.cfg["resources"][2][0])
+		self.poplimit = int(self.cfg["resources"][3][0])
+		self.maxpoplimit = int(self.cfg["resources"][4][0])
+		self.pop = 0
 		self.topBarText = pygame.font.Font("resources/fonts/Deutsch.ttf", 14) # text for top bar
 		self.UIelements = [[rtslib.common.images["resources/ui/GameBottomBar.png"], (0, 650)], 
 						   [rtslib.common.images["resources/ui/GameTopBar.png"], (0,0)], 
@@ -96,7 +136,13 @@ class tdworld():
 			for ent2 in self.entities: 
 				if ent.type == 0 and round(ent2.type) == 2: # handles resource gathering
 					if ent2.rectangularCollision(ent.pos, [ent.pos[0] + ent.sheet.dim[0], ent.pos[1] + ent.sheet.dim[1]]):
-						ent2.action(self, "") 
+						if ent2.type != 2.2:
+							ent2.action(self, 1/60.0) # default gather speed per resource per worker 
+						else:
+							for ent3 in self.entities: # Horrendously Inefficient (for wood hut) ###########################################################################
+								if ent3.type == 2.21 and \
+								   (ent2.pos[0] - ent3.pos[0])**2 + (ent2.pos[1] - ent3.pos[1])**2 < 360**2: # radius of gathering
+									ent2.action(self, 1/60.0)
 				if (ent.pos[0] - ent2.pos[0])**2 + (ent.pos[1] - ent2.pos[1])**2 > 0 and \
 				      (ent.pos[0] - ent2.pos[0])**2 + (ent.pos[1] - ent2.pos[1])**2 < 20**2: # built-in proximity limit  # handles collision
 					tmp0 = ent.pos[0]
