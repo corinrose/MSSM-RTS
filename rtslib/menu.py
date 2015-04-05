@@ -10,10 +10,10 @@ class menu():
 		self.settingsbg = rtslib.common.images["resources/menubg/settings.png"]
 		self.creditsbg = rtslib.common.images["resources/menubg/credits.png"]
 		
-		self.mainbuttons = [rtslib.button("play", [100,325], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Play"),
-							rtslib.button("settings", [100,405], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Settings"),
-							rtslib.button("credits", [100,485], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Credits"),
-							rtslib.button("exit", [100,565], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Exit")]
+		self.mainbuttons = [rtslib.button("play", [305,500], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Play"),
+							rtslib.button("settings", [305,600], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Settings"),
+							rtslib.button("credits", [665,500], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Credits"),
+							rtslib.button("exit", [665,600], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Exit")]
 							
 		self.fileselectbuttons = [rtslib.button("saves/1.sav", [60,250], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "File 1"),
 								  rtslib.button("saves/2.sav", [480,250], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "File 2"),
@@ -29,7 +29,7 @@ class menu():
 							    rtslib.button("fullscreen", [480,200], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Fullscreen: "+("On"*self.settings["fullscreen"])+("Off"*(not self.settings["fullscreen"])))]
 
 		self.applySettings = False
-		
+		self.goBackToGame = False
 		self.save = None
 		self.saveData = []
 	
@@ -94,7 +94,11 @@ class menu():
 				self.applySettings = True
 				
 			if button == "back":
-				self.state = "main"
+				if self.goBackToGame:
+					self.goBackToGame = False
+					self.state = "backtogame"
+				else:
+					self.state = "main"
 		
 	def update(self, events):
 		out = {}
@@ -119,6 +123,9 @@ class menu():
 		if self.state[0:4] == "play":
 			out["state"] = "game"
 			out["newgame"] = self.state[5:]
+			self.state = "levelselect"
+		if self.state == "backtogame":		
+			out["state"] = "game"
 			self.state = "levelselect"
 		if self.applySettings:
 			out["applysettings"] = True

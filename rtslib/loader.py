@@ -140,6 +140,12 @@ def loadAttacks(fileName):
 				attack["damage"] = float(sl[4])
 				attack["power"] = ((1/attack["delay"])*attack["damage"])/60 #Later on I won't need this property when I make attacks discrete events
 				
+			if sl[1] == "suicide":
+				attack["style"] = "suicide"
+				attack["triggerrange"] = float(sl[2])
+				attack["range"] = float(sl[3])
+				attack["damage"] = float(sl[4])
+				
 			if sl[1] == "ranged":
 				attack["style"] = "ranged"
 				attack["delay"] = float(sl[2])
@@ -161,6 +167,9 @@ def loadAttacks(fileName):
 					attack["damage"] = float(sl[9])
 					attack["pause"] = float(sl[10])*60
 					attack["hits"] = int(sl[11])
+				if sl[8] == "stun":
+					attack["onhit"] = "stun"
+					attack["time"] = float(sl[9])*60
 			attacks[sl[0]] = attack
 	return attacks
 	

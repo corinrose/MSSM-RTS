@@ -23,6 +23,9 @@ class ssworld():
 						button("crossbow", [125,670], self.spawnButtonClick, rtslib.common.buttonSets["hud"]),
 						button("battleaxe", [235,670], self.spawnButtonClick, rtslib.common.buttonSets["hud"]),
 						]
+		
+		self.selectButtons = [button("stop", [15,2], self.selectButtonClick, rtslib.common.buttonSets["hud"], "resources/fonts/Deutsch.ttf", "Stop")]
+		
 		self.numberfont = pygame.font.Font("resources/fonts/Deutsch.ttf", 36)
 		#Basic Properties
 		self.game = game
@@ -129,6 +132,9 @@ class ssworld():
 					if not self.scriptstarted:
 						self.scriptstarted = True
 						self.nextOperation()
+				#Cheat button!
+				if event.key == pygame.K_g:
+					self.game.availableUnits={"knight":50, "crossbow":50, "battleaxe":50}
 		#Update Buttons
 		for button in self.buttons:
 			button.update(events)
@@ -136,6 +142,10 @@ class ssworld():
 			if not self.pointInHUD(pygame.mouse.get_pos()):
 				if not self.selectThisClick:
 					self.cpos=self.startpos-pygame.mouse.get_pos()[0]
+		for ent in self.ssentities:
+			if ent.selected and ent.team == True: #Update the select buttons if you have a friendly unit selected
+				for button in self.selectButtons:
+					button.update(events)
 		self.clampCamera()#Prevents camera from leaving the field
 		#Update entities
 		for ent in self.ssentities:
@@ -255,11 +265,26 @@ class ssworld():
 		if not self.scriptstarted:
 			pygame.draw.rect(surface, [255,0,0], [440, 7, 400, 25], 0)
 			pygame.draw.rect(surface, [255,255,0], [440, 7, 400*(float(self.startIn)/self.scriptStartTime), 25], 0)
+		#Selected unit buttons
+		for ent in self.ssentities:
+			if ent.selected and ent.team == True:
+				for button in self.selectButtons:
+					button.draw(surface)
 			
 	def spawnButtonClick(self, button):
 		if self.game.availableUnits[button]>0 and self.scriptstarted:
 			self.playerQueue.append(button)
 			self.game.availableUnits[button]-=1
+			
+	def selectButtonClick(self, button):
+		if button == "stop":
+			print "stop"
+			for ent in self.ssentities:
+				if ent.selected and ent.team == True:
+					if ent.stopped:
+						ent.start()
+					else:
+						ent.stop()
 			
 	def pointInHUD(self, point):
 		if point[1]>650 or point[1]<48:

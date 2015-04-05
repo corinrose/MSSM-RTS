@@ -14,6 +14,7 @@ class game():
 		self.pauseback = pygame.surface.Surface([1280,720]).convert_alpha() #this is temporary
 		self.pauseback.fill([100, 100, 100, 100])
 		self.pauseButtons = [rtslib.button("menu", [480,200], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Main Menu"),
+							 rtslib.button("settings", [480,275], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Settings"),
 							 rtslib.button("back", [480,350], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Back")]
 		#Endgame things
 		self.gameOver = False
@@ -22,6 +23,7 @@ class game():
 		self.gameOverFade = 0
 		self.gameOverButtons = [rtslib.button("menu", [650,300], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Menu")]
 		self.goBack = False #TODO: This is bad
+		self.gotoSettings = False #TODO: This is also bad
 		self.won = False
 		self.gameWonButtons = [rtslib.button("menu", [650,300], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Menu")]
 		
@@ -53,12 +55,14 @@ class game():
 		
 	def update(self, events):
 		out = {}
-		if not self.paused:
-			for event in events:
-				if event.type == pygame.KEYUP:
-					if event.key == pygame.K_SPACE:
+		for event in events:
+			if event.type == pygame.KEYUP:
+				if event.key == pygame.K_SPACE:
+					if not self.paused:
 						self.worldFocus = not self.worldFocus
-			
+				if event.key == pygame.K_ESCAPE:
+					self.paused = not self.paused
+		if not self.paused:
 			for button in self.buttons:
 				button.update(events)
 				
@@ -89,6 +93,11 @@ class game():
 			out["state"] = "menu"
 			if self.won:
 				out["unlocks"] = self.ssworld.cfg["unlocks"] #TODO: NO. Just no.
+			out["menuscreen"] = "levelselect"
+		if self.gotoSettings:
+			out["state"] = "menu"
+			out["backtogame"] = True
+			self.gotoSettings = False
 		return out
 		
 	def clickHandler(self, button):
@@ -103,5 +112,7 @@ class game():
 		else:
 			if button == "menu":
 				self.goBack = True
+			if button == "settings":
+				self.gotoSettings = True
 			if button == "back":
 				self.paused = False
