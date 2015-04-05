@@ -10,10 +10,10 @@ class menu():
 		self.settingsbg = rtslib.common.images["resources/menubg/settings.png"]
 		self.creditsbg = rtslib.common.images["resources/menubg/credits.png"]
 		
-		self.mainbuttons = [rtslib.button("play", [100,325], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Play"),
-							rtslib.button("settings", [100,405], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Settings"),
-							rtslib.button("credits", [100,485], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Credits"),
-							rtslib.button("exit", [100,565], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Exit")]
+		self.mainbuttons = [rtslib.button("play", [305,500], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Play"),
+							rtslib.button("settings", [305,600], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Settings"),
+							rtslib.button("credits", [665,500], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Credits"),
+							rtslib.button("exit", [665,600], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "Exit")]
 							
 		self.fileselectbuttons = [rtslib.button("saves/1.sav", [60,250], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "File 1"),
 								  rtslib.button("saves/2.sav", [480,250], self.clickHandler, rtslib.common.buttonSets["large"], "resources/fonts/Deutsch.ttf", "File 2"),
