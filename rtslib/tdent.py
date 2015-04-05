@@ -115,14 +115,25 @@ class tdent():
 			elif eventKey == "Spawn Wood Hut":
 				self.spawn(world, eventKey, [0, 20, 0, 0, 3*60], 
 						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1],
-								False, 0, sheet("resources/buildings/WoodHut.png", [160, 160]),
+								False, 0, sheet("resources/buildings/Woodhut.png", [80, 80]),
 								"Wood Hut.", 2.2))
+			elif eventKey == "Spawn Church":
+				self.spawn(world, eventKey, [0, 20, 0, 0, 3*60], 
+						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1],
+								False, 0, sheet("resources/buildings/Church.png", [160, 160]),
+								"Church.", 1.3), [["Spawn Brother Clint", [125,670]]])
+			elif eventKey == "Spawn Smithy":
+				self.spawn(world, eventKey, [0, 20, 0, 0, 3*60], 
+						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1],
+								False, 0, sheet("resources/buildings/Smithy.png", [160, 160]),
+								"Smithy.", 1.4))
 		elif self.type == 1.1: # town hall
 			if eventKey == "Spawn Worker":
 				self.spawn(world, eventKey, [10, 0, 0, 1, 1*60], 
 						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1],
 								False, 1.0, sheet("resources/player/worker.png", [40, 40]),
-								"Worker.", 0), [["Spawn Barracks", [125, 670]], ["Spawn Mill", [235, 670]], ["Spawn Wood Hut", [345, 670]]])
+								"Worker.", 0), [["Spawn Barracks", [125, 670]], ["Spawn Mill", [235, 670]], ["Spawn Wood Hut", [345, 670]],
+												["Spawn Church", [455, 670]], ["Spawn Smithy", [565, 670]]])
 			elif eventKey == "Increase Pop":
 				self.addResource(world, [0, 0,0, 10], [0,0,20,0])
 				self.addResource(world, [0, 0,0, 10], [0,0,20,0])
@@ -142,10 +153,14 @@ class tdent():
 						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1],
 								 False, 1.0, sheet("resources/player/BattleAxer.png", [40, 40]),
 								"Crossbowman. Move to gate to transfer to battle.", 3.13))
+		elif self.type == 1.3: # Church
+			return
+		elif self.type == 1.4: # Smithy
+			return 
 		elif int(self.type) == 2:
-			if self.type == 2.1:  # 2.1 is food
+			if self.type == 2.1:  # 2.1 is food (mill)
 				self.addResource(world, [eventKey, 0,0,0], [0,0,0,0])
-			elif self.type == 2.2: # 2.2 is wood
+			elif self.type == 2.2: # 2.2 is wood hut, 2.21 is forest
 				self.addResource(world, [0, eventKey,0,0], [0,0,0,0])
 			elif self.type == 2.3: # 2.3 is gold
 				self.addResource(world, [0, 0, eventKey,0], [0,0,0,0])
