@@ -5,7 +5,7 @@ class game():
 		self.ssworld = rtslib.ssworld(self, level)
 		self.tdworld = rtslib.tdworld(self, level)
 		self.worldFocus = 1
-		self.availableUnits={"knight":5, "crossbow":5, "battleaxe":5, "brother clint":0}
+		self.availableUnits={"knight":5, "crossbow":5, "battleaxe":5, "brother clint":5}
 		#Common UI Stuff
 		self.buttons = [rtslib.button("switch", [1000,670], self.clickHandler, rtslib.common.buttonSets["hud"], "resources/fonts/Deutsch.ttf", "Swap"),
 						rtslib.button("menu", [1125,670], self.clickHandler, rtslib.common.buttonSets["hud"], "resources/fonts/Deutsch.ttf", "Menu")]

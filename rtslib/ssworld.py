@@ -16,12 +16,13 @@ class ssworld():
 		self.bottombar = rtslib.common.images["resources/ui/GameBottomBar.png"]
 		self.topbar = rtslib.common.images["resources/ui/GameTopBar.png"]
 		self.unitImages = [rtslib.common.images["resources/player/Knight.png"], rtslib.common.images["resources/player/Crossbowman.png"],
-						   rtslib.common.images["resources/player/BattleAxer.png"]]
-		self.unitNumbers = ["knight", "crossbow", "battleaxe"]
+						   rtslib.common.images["resources/player/BattleAxer.png"], rtslib.common.images["resources/player/BrotherClint.png"]]
+		self.unitNumbers = ["knight", "crossbow", "battleaxe", "brother clint"]
 
 		self.buttons = [button("knight", [15,670], self.spawnButtonClick, rtslib.common.buttonSets["hud"]),
 						button("crossbow", [125,670], self.spawnButtonClick, rtslib.common.buttonSets["hud"]),
 						button("battleaxe", [235,670], self.spawnButtonClick, rtslib.common.buttonSets["hud"]),
+						button("monk", [345,670], self.spawnButtonClick, rtslib.common.buttonSets["hud"])
 						]
 		
 		self.selectButtons = [button("stop", [15,2], self.selectButtonClick, rtslib.common.buttonSets["hud"], "resources/fonts/Deutsch.ttf", "Stop")]
@@ -134,7 +135,7 @@ class ssworld():
 						self.nextOperation()
 				#Cheat button!
 				if event.key == pygame.K_g:
-					self.game.availableUnits={"knight":50, "crossbow":50, "battleaxe":50}
+					self.game.availableUnits={"knight":50, "crossbow":50, "battleaxe":50, "monk":50}
 		#Update Buttons
 		for button in self.buttons:
 			button.update(events)
