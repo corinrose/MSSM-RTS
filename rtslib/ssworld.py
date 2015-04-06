@@ -17,7 +17,7 @@ class ssworld():
 		self.topbar = rtslib.common.images["resources/ui/GameTopBar.png"]
 		self.unitImages = [rtslib.common.images["resources/player/Knight.png"], rtslib.common.images["resources/player/Crossbowman.png"],
 						   rtslib.common.images["resources/player/BattleAxer.png"], rtslib.common.images["resources/player/BrotherClint.png"]]
-		self.unitNumbers = ["knight", "crossbow", "battleaxe", "brother clint"]
+		self.unitNumbers = ["knight", "crossbow", "battleaxe", "monk"]
 
 		self.buttons = [button("knight", [15,670], self.spawnButtonClick, rtslib.common.buttonSets["hud"]),
 						button("crossbow", [125,670], self.spawnButtonClick, rtslib.common.buttonSets["hud"]),

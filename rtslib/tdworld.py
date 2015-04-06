@@ -90,7 +90,7 @@ class tdworld():
 						   [rtslib.common.images["resources/ui/gold.png"], (305, 8)]
 						   ] # defined in update
 		self.background = rtslib.common.images["resources/GameGrass.png"]
-		self.unitDictionary = {3.11:"knight", 3.12:"crossbow", 3.13:"battleaxe", 3.21:"brother clint"} # will eventually be a config thing
+		self.unitDictionary = {3.11:"knight", 3.12:"crossbow", 3.13:"battleaxe", 3.21:"monk"} # will eventually be a config thing
 		self.game = game 
 		self.selectionCoordinates = [[0,0], [0,0]]
 		self.selecting = False
