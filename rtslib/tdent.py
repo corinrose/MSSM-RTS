@@ -154,7 +154,11 @@ class tdent():
 								 False, 1.0, sheet("resources/player/BattleAxer.png", [40, 40]),
 								"Crossbowman. Move to gate to transfer to battle.", 3.13))
 		elif self.type == 1.3: # Church
-			return
+			if eventKey == "Spawn Brother Clint":
+				self.spawn(world, eventKey, [10, 10, 0, 1, 1*60], 
+						   tdent(self.pos[0], self.pos[1], self.des[0], self.des[1],
+								 False, 1.0, sheet("resources/player/BrotherClint.png", [40, 40]),
+								"Brother Clint. Move to gate to transfer to battle.", 3.21))
 		elif self.type == 1.4: # Smithy
 			return 
 		elif int(self.type) == 2:
