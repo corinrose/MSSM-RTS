@@ -59,15 +59,17 @@ class tdworld():
 			for k in range(int(self.cfg["naturals"][i][0])):
 				x = random.randint(1, 1280-int(self.cfg["naturals"][i][5]))
 				y = random.randint(1, 720-int(self.cfg["naturals"][i][6]))
-				for j in range(0, len(self.entities), 1):
+				j = 0
+				while j < len(self.entities):
 					########
-					#if distance(center(self.entities[j]), [x + int(self.cfg["naturals"][i][5])/2, y + int(self.cfg["naturals"][i][6])/2]) < 400:#int(self.cfg["naturals"][i][1]):
-					#if (self.entities[j].pos[0]-x)**2 + (self.entities[j].pos[1]-y)**2 < 400**2:#int(self.cfg["naturals"][i][1]):\
-					if self.entities[j].rectangularCollision([x,y],[x+int(self.cfg["naturals"][i][5]),y+int(self.cfg["naturals"][i][6])]):
-						print (self.entities[j].pos[0]-x)**2 + (self.entities[j].pos[1]-y)**2
+					while distance(center(self.entities[j]), [x + int(self.cfg["naturals"][i][5])/2, y + int(self.cfg["naturals"][i][6])/2]) < 400:#int(self.cfg["naturals"][i][1]):
+					#while (self.entities[j].pos[0]-x)**2 + (self.entities[j].pos[1]-y)**2 < 400**2:#int(self.cfg["naturals"][i][1]):
+					#while self.entities[j].rectangularCollision([x,y],[x+int(self.cfg["naturals"][i][5]),y+int(self.cfg["naturals"][i][6])]):
+						#print (self.entities[j].pos[0]-x)**2 + (self.entities[j].pos[1]-y)**2
 						x = random.randint(1, 1280-int(self.cfg["naturals"][i][5]))
 						y = random.randint(1, 720-int(self.cfg["naturals"][i][6]))
 						j = -1
+					j += 1
 				self.entities.append(tdent(x, y, x, y, 
 										bool(self.cfg["naturals"][i][2]), float(self.cfg["naturals"][i][3]), 
 									 sheet(self.cfg["naturals"][i][4], [int(self.cfg["naturals"][i][5]), int(self.cfg["naturals"][i][6])]),
