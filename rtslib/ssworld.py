@@ -139,7 +139,7 @@ class ssworld():
 		#Update Buttons
 		for button in self.buttons:
 			button.update(events)
-		if pygame.mouse.get_pressed()[0]:
+		if pygame.mouse.get_pressed()[0] and self.game.worldFocus==1:
 			if not self.pointInHUD(pygame.mouse.get_pos()):
 				if not self.selectThisClick:
 					self.cpos=self.startpos-pygame.mouse.get_pos()[0]
