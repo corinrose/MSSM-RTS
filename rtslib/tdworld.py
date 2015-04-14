@@ -57,8 +57,8 @@ class tdworld():
 								 self.cfg["units"][i][9], float(self.cfg["units"][i][10])))
 		for i in range(len(self.cfg["naturals"])):
 			for k in range(int(self.cfg["naturals"][i][0])):
-				x = random.randint(1, 1280-int(self.cfg["naturals"][i][5]))
-				y = random.randint(1, 720-int(self.cfg["naturals"][i][6]))
+				x = random.randint(0, 1280-int(self.cfg["naturals"][i][5]))
+				y = random.randint(48, 720-70-int(self.cfg["naturals"][i][6]))
 				j = 0
 				while j < len(self.entities):
 					########
@@ -66,8 +66,8 @@ class tdworld():
 					#while (self.entities[j].pos[0]-x)**2 + (self.entities[j].pos[1]-y)**2 < 400**2:#int(self.cfg["naturals"][i][1]):
 					#while self.entities[j].rectangularCollision([x,y],[x+int(self.cfg["naturals"][i][5]),y+int(self.cfg["naturals"][i][6])]):
 						#print (self.entities[j].pos[0]-x)**2 + (self.entities[j].pos[1]-y)**2
-						x = random.randint(1, 1280-int(self.cfg["naturals"][i][5]))
-						y = random.randint(1, 720-int(self.cfg["naturals"][i][6]))
+						x = random.randint(0, 1280-int(self.cfg["naturals"][i][5]))
+						y = random.randint(48, 720-70-int(self.cfg["naturals"][i][6]))
 						j = -1
 					j += 1
 				self.entities.append(tdent(x, y, x, y, 
