@@ -23,7 +23,7 @@ class ssent():
 		self.attack = attack
 		self.frametime = frametime
 		self.teamPassthrough = teamPassthrough
-		if self.attack["style"]=="ranged" or self.attack["style"]=="melee" or self.attack["style"]=="suicide":
+		if self.attack["style"] in ("ranged","melee","suicide","heal"):
 			self.attacktimer = self.attack["delay"]*60
 		self.offset = offset
 		self.effects = []
@@ -142,6 +142,20 @@ class ssent():
 								if self.pathDistance(ent.dist) < self.attack["range"]+self.width+ent.width:
 									ent.health-=self.attack["damage"]
 						self.remove = True
+				if self.attack["style"] == "heal":
+					for ent in entities:
+						if ent.team == self.team:
+							if self.pathDistance(ent.dist) < self.attack["range"]+self.width+ent.width:
+								self.attacktimer -= 1
+								enemyInRange = True
+								break #Found one, we're done here
+					if self.attackTimer <= 0:
+						for ent in entities:
+							if ent.team == self.team:
+								if self.pathDistance(ent.dist) < self.attack["range"]+self.width+ent.width:
+									ent.health += self.attack["health"]
+									ent.health = base.clamp(ent.health, 0, ent.maxhealth)
+									self.attackTimer = self.attack["delay"]*60
 				#If there is no enemy in range, reset the attack timer
 				if not enemyInRange:
 					self.attacktimer = self.attack["delay"]*60

@@ -146,6 +146,12 @@ def loadAttacks(fileName):
 				attack["range"] = float(sl[3])
 				attack["damage"] = float(sl[4])
 				
+			if sl[1] == "heal":
+				attack["style"] = "heal"
+				attack["range"] = float(sl[2])
+				attack["delay"] = float(sl[3])
+				attack["health"] = float(sl[4])
+				
 			if sl[1] == "ranged":
 				attack["style"] = "ranged"
 				attack["delay"] = float(sl[2])
