@@ -155,7 +155,7 @@ class ssent():
 								if self.pathDistance(ent.dist) < self.attack["range"]+self.width+ent.width:
 									ent.health += self.attack["health"]
 									ent.health = base.clamp(ent.health, 0, ent.maxhealth)
-									self.attackTimer = self.attack["delay"]*60
+									self.attacktimer = self.attack["delay"]*60
 				#If there is no enemy in range, reset the attack timer
 				if not enemyInRange:
 					self.attacktimer = self.attack["delay"]*60
