@@ -62,14 +62,19 @@ class tdworld():
 				j = 0
 				while j < len(self.entities):
 					########
-					while distance(center(self.entities[j]), [x + int(self.cfg["naturals"][i][5])/2, y + int(self.cfg["naturals"][i][6])/2]) < 400:#int(self.cfg["naturals"][i][1]):
+					tries = 0
+					while distance(center(self.entities[j]), [x + int(self.cfg["naturals"][i][5])/2, y + int(self.cfg["naturals"][i][6])/2]) < int(self.cfg["naturals"][i][1]):
 					#while (self.entities[j].pos[0]-x)**2 + (self.entities[j].pos[1]-y)**2 < 400**2:#int(self.cfg["naturals"][i][1]):
 					#while self.entities[j].rectangularCollision([x,y],[x+int(self.cfg["naturals"][i][5]),y+int(self.cfg["naturals"][i][6])]):
 						#print (self.entities[j].pos[0]-x)**2 + (self.entities[j].pos[1]-y)**2
 						x = random.randint(0, 1280-int(self.cfg["naturals"][i][5]))
 						y = random.randint(48, 720-70-int(self.cfg["naturals"][i][6]))
 						j = -1
+						tries += 1
+						if tries > 30: # 30 attempts max on any given entity for proper placement
+							sys.exit() # quits the game instead of crashes
 					j += 1
+						
 				self.entities.append(tdent(x, y, x, y, 
 										bool(self.cfg["naturals"][i][2]), float(self.cfg["naturals"][i][3]), 
 									 sheet(self.cfg["naturals"][i][4], [int(self.cfg["naturals"][i][5]), int(self.cfg["naturals"][i][6])]),
