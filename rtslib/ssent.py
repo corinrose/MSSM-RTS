@@ -149,12 +149,12 @@ class ssent():
 								self.attacktimer -= 1
 								enemyInRange = True
 								break #Found one, we're done here
-					if self.attackTimer <= 0:
+					if self.attacktimer <= 0:
 						for ent in entities:
 							if ent.team == self.team:
 								if self.pathDistance(ent.dist) < self.attack["range"]+self.width+ent.width:
 									ent.health += self.attack["health"]
-									ent.health = base.clamp(ent.health, 0, ent.maxhealth)
+									ent.health = clamp(ent.health, 0, ent.maxhealth)
 									self.attacktimer = self.attack["delay"]*60
 				#If there is no enemy in range, reset the attack timer
 				if not enemyInRange:
